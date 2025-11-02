@@ -95,7 +95,6 @@ Useful for rebuilding everything from scratch.
 svger config --init && \
 svger config --set source=./src/assets/svg && \
 svger config --set output=./src/components/icons && \
-svger config --set watch=true && \
 svger config --set defaultWidth=24 && \
 svger config --set defaultHeight=24 && \
 svger config --set defaultFill=currentColor && \

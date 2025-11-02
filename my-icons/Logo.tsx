@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export const Logo: React.FC<React.SVGProps<SVGSVGElement>> = ({
-  width = 32,
+  width = 24,
   height = 24,
   fill = "currentColor",
   ...props
