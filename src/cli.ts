@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import { buildAll } from "./builder.js";
-import { generateSVG } from "./builder.js"; 
+import { generateSVG } from "./builder.js";
 import { lockFiles, unlockFiles } from "./lock.js";
 import { initConfig, setConfig, showConfig } from "./config.js";
 import { watchSVGs } from "./watch.js";
@@ -10,7 +10,7 @@ import { clean } from "./clean.js";
 const program = new Command();
 
 program
-  .name("svg-tool")
+  .name("svger")
   .description("Custom SVG to React component converter")
   .version("1.0.0");
 
@@ -26,7 +26,7 @@ program
     await buildAll({ src: opts.src, out: opts.out });
   });
 
-  program
+program
   .command("watch")
   .option("--src <src>", "source folder")
   .option("--out <out>", "output folder")
@@ -42,7 +42,7 @@ program
     await generateSVG({ svgFile, outDir: opts.out });
   });
 
-  program
+program
   .command("lock <files...>")
   .description("Lock one or more SVG files")
   .action((files: string[]) => {
@@ -57,9 +57,9 @@ program
   });
 
 
-  program
+program
   .command("config")
-  .description("Manage svg-tool configuration")
+  .description("Manage svger configuration")
   .option("--init", "Create a new .svgconfig.json with default settings")
   .option("--set <keyValue>", "Set a config key=value")
   .option("--show", "Show current configuration")

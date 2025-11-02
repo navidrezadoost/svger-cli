@@ -1,18 +1,23 @@
 {
-  "name": "svg-tool",
+  "name": "svger",
   "version": "1.0.0",
   "description": "CLI and runtime for converting SVGs to React components with watch support",
   "main": "dist/cli.js",
   "type": "module",
   "bin": {
-    "svg-tool": "./dist/cli.js"
+    "svger": "./dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/cli.ts"
   },
-  "keywords": ["svg", "react", "cli", "components"],
-  "author": "Your Name",
+  "keywords": [
+    "svg",
+    "react",
+    "cli",
+    "components"
+  ],
+  "author": "faeze mohadespoor",
   "license": "MIT",
   "dependencies": {
     "change-case": "^5.4.4",

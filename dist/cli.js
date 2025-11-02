@@ -8,7 +8,7 @@ import { watchSVGs } from "./watch.js";
 import { clean } from "./clean.js";
 const program = new Command();
 program
-    .name("svg-tool")
+    .name("svger")
     .description("Custom SVG to React component converter")
     .version("1.0.0");
 program
@@ -49,7 +49,7 @@ program
 });
 program
     .command("config")
-    .description("Manage svg-tool configuration")
+    .description("Manage svger configuration")
     .option("--init", "Create a new .svgconfig.json with default settings")
     .option("--set <keyValue>", "Set a config key=value")
     .option("--show", "Show current configuration")
@@ -64,7 +64,6 @@ program
             console.error("❌ Invalid format. Use key=value");
             process.exit(1);
         }
-        // اگر عدد هست، به number تبدیل کن
         const parsedValue = !isNaN(Number(value)) ? Number(value) : value;
         setConfig(key, parsedValue);
         return;

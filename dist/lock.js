@@ -7,27 +7,32 @@ function getLockFilePath() {
 function readLockFile() {
     if (!fs.existsSync(getLockFilePath()))
         return [];
-    const data = fs.readFileSync(getLockFilePath(), "utf-8");
-    return JSON.parse(data);
+    try {
+        const data = fs.readFileSync(getLockFilePath(), "utf-8");
+        return JSON.parse(data);
+    }
+    catch (e) {
+        return [];
+    }
 }
 function writeLockFile(files) {
     fs.writeFileSync(getLockFilePath(), JSON.stringify(files, null, 2), "utf-8");
 }
 export function lockFiles(files) {
-    const absFiles = files.map(f => path.resolve(f)); // ⚡ مسیر کامل
+    const fileNames = files.map(f => path.basename(f));
     const current = readLockFile();
-    const newFiles = Array.from(new Set([...current, ...absFiles]));
+    const newFiles = Array.from(new Set([...current, ...fileNames]));
     writeLockFile(newFiles);
     console.log(`🔒 Locked files: ${newFiles.join(", ")}`);
 }
 export function unlockFiles(files) {
-    const absFiles = files.map(f => path.resolve(f)); // ⚡ مسیر کامل
+    const fileNames = files.map(f => path.basename(f));
     const current = readLockFile();
-    const remaining = current.filter(f => !absFiles.includes(f));
+    const remaining = current.filter(f => !fileNames.includes(f));
     writeLockFile(remaining);
-    console.log(`🔓 Unlocked files: ${files.join(", ")}`);
+    console.log(`🔓 Unlocked files: ${fileNames.join(", ")}`);
 }
 export function isLocked(file) {
     const current = readLockFile();
-    return current.includes(path.resolve(file)); // ⚡ مسیر کامل
+    return current.includes(path.basename(file));
 }

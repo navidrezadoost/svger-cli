@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export const Activity: React.FC<React.SVGProps<SVGSVGElement>> = ({
-  width = 24,
+  width = 32,
   height = 24,
   fill = "currentColor",
   ...props

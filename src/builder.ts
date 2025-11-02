@@ -6,7 +6,7 @@ import { isLocked } from "./lock.js";
 import { readConfig } from "./config.js";
 
 export async function buildAll(config: { src: string; out: string }) {
-  const svgConfig = readConfig(); 
+  const svgConfig = readConfig();
   const srcDir = path.resolve(config.src);
   const outDir = path.resolve(config.out);
 
@@ -16,7 +16,7 @@ export async function buildAll(config: { src: string; out: string }) {
   }
 
   await fs.ensureDir(outDir);
-  const files = (await fs.readdir(srcDir)).filter((f: string) => f.endsWith(".svg"));
+  const files = (await fs.readdir(srcDir)).filter(f => f.endsWith(".svg"));
 
   if (!files.length) {
     console.log("⚠️  No SVG files found in", srcDir);

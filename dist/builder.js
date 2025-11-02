@@ -3,9 +3,9 @@ import path from "path";
 import { pascalCase } from "change-case";
 import { reactTemplate } from "./templates/ComponentTemplate.js";
 import { isLocked } from "./lock.js";
-import { readConfig } from "./config.js"; // ✅ اضافه شد
+import { readConfig } from "./config.js";
 export async function buildAll(config) {
-    const svgConfig = readConfig(); // ✅ خواندن .svgconfig.json
+    const svgConfig = readConfig();
     const srcDir = path.resolve(config.src);
     const outDir = path.resolve(config.out);
     if (!fs.existsSync(srcDir)) {
@@ -13,14 +13,13 @@ export async function buildAll(config) {
         process.exit(1);
     }
     await fs.ensureDir(outDir);
-    const files = (await fs.readdir(srcDir)).filter((f) => f.endsWith(".svg"));
+    const files = (await fs.readdir(srcDir)).filter(f => f.endsWith(".svg"));
     if (!files.length) {
         console.log("⚠️  No SVG files found in", srcDir);
         return;
     }
     for (const file of files) {
         const svgPath = path.join(srcDir, file);
-        // ⚠️ بررسی فایل قفل شده
         if (isLocked(svgPath)) {
             console.log(`⚠️ Skipped locked file: ${file}`);
             continue;
@@ -41,9 +40,8 @@ export async function buildAll(config) {
     console.log("🎉 All SVGs have been converted successfully!");
 }
 export async function generateSVG({ svgFile, outDir, }) {
-    const svgConfig = readConfig(); // ✅ خواندن .svgconfig.json
+    const svgConfig = readConfig();
     const filePath = path.resolve(svgFile);
-    // ⚠️ بررسی فایل قفل شده
     if (isLocked(filePath)) {
         console.log(`⚠️ Skipped locked file: ${path.basename(svgFile)}`);
         return;
