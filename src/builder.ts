@@ -3,10 +3,10 @@ import path from "path";
 import { pascalCase } from "change-case";
 import { reactTemplate } from "./templates/ComponentTemplate.js";
 import { isLocked } from "./lock.js";
-import { readConfig } from "./config.js"; // ✅ اضافه شد
+import { readConfig } from "./config.js";
 
 export async function buildAll(config: { src: string; out: string }) {
-  const svgConfig = readConfig(); // ✅ خواندن .svgconfig.json
+  const svgConfig = readConfig(); 
   const srcDir = path.resolve(config.src);
   const outDir = path.resolve(config.out);
 
@@ -26,7 +26,6 @@ export async function buildAll(config: { src: string; out: string }) {
   for (const file of files) {
     const svgPath = path.join(srcDir, file);
 
-    // ⚠️ بررسی فایل قفل شده
     if (isLocked(svgPath)) {
       console.log(`⚠️ Skipped locked file: ${file}`);
       continue;
@@ -57,10 +56,9 @@ export async function generateSVG({
   svgFile: string;
   outDir: string;
 }) {
-  const svgConfig = readConfig(); // ✅ خواندن .svgconfig.json
+  const svgConfig = readConfig();
   const filePath = path.resolve(svgFile);
 
-  // ⚠️ بررسی فایل قفل شده
   if (isLocked(filePath)) {
     console.log(`⚠️ Skipped locked file: ${path.basename(svgFile)}`);
     return;

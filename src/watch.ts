@@ -23,7 +23,7 @@ export function watchSVGs(config: { src: string; out: string }) {
     ignoreInitial: false,
     depth: 0,
     awaitWriteFinish: { stabilityThreshold: 500, pollInterval: 100 },
-    ignored: /(^|[\/\\])\../, // فقط فایل‌های مخفی نادیده گرفته شوند
+    ignored: /(^|[\/\\])\../, 
   });
 
   watcher

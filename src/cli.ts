@@ -76,7 +76,6 @@ program
         process.exit(1);
       }
 
-      // اگر عدد هست، به number تبدیل کن
       const parsedValue = !isNaN(Number(value)) ? Number(value) : value;
       setConfig(key, parsedValue);
       return;
