@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { buildAll } from "./builder.js";
-import { generateSVG } from "./builder.js";
+import { buildAll, generateSVG } from "./builder.js";
 import { lockFiles, unlockFiles } from "./lock.js";
 import { initConfig, setConfig, showConfig } from "./config.js";
 import { watchSVGs } from "./watch.js";
@@ -11,53 +10,50 @@ program
     .name("svger")
     .description("Custom SVG to React component converter")
     .version("1.0.0");
+// -------- Build Command --------
 program
-    .command("build")
-    .option("--src <path>", "Source SVG folder", "./my-svgs")
-    .option("--out <path>", "Output folder for React components", "./my-icons")
-    .action(async (opts) => {
+    .command("build <src> <out>")
+    .description("Build all SVGs from source to output")
+    .action(async (src, out) => {
     console.log("🛠️  Building SVGs...");
-    console.log("Source:", opts.src);
-    console.log("Output:", opts.out);
-    await buildAll({ src: opts.src, out: opts.out });
+    console.log("Source:", src);
+    console.log("Output:", out);
+    await buildAll({ src, out });
 });
+// -------- Watch Command --------
 program
-    .command("watch")
-    .option("--src <src>", "source folder")
-    .option("--out <out>", "output folder")
-    .action((options) => {
-    watchSVGs({ src: options.src, out: options.out });
+    .command("watch <src> <out>")
+    .description("Watch source folder and rebuild SVGs automatically")
+    .action((src, out) => {
+    console.log("🚀 Starting watch mode...");
+    watchSVGs({ src, out });
 });
+// -------- Generate Single SVG --------
 program
-    .command("generate <svgFile>")
+    .command("generate <svgFile> <out>")
     .description("Convert a single SVG file into a React component")
-    .option("--out <path>", "Output folder", "./my-icons")
-    .action(async (svgFile, opts) => {
-    await generateSVG({ svgFile, outDir: opts.out });
+    .action(async (svgFile, out) => {
+    await generateSVG({ svgFile, outDir: out });
 });
+// -------- Lock / Unlock --------
 program
     .command("lock <files...>")
     .description("Lock one or more SVG files")
-    .action((files) => {
-    lockFiles(files);
-});
+    .action((files) => lockFiles(files));
 program
     .command("unlock <files...>")
     .description("Unlock one or more SVG files")
-    .action((files) => {
-    unlockFiles(files);
-});
+    .action((files) => unlockFiles(files));
+// -------- Config --------
 program
     .command("config")
     .description("Manage svger configuration")
-    .option("--init", "Create a new .svgconfig.json with default settings")
-    .option("--set <keyValue>", "Set a config key=value")
-    .option("--show", "Show current configuration")
+    .option("--init", "Create default .svgconfig.json")
+    .option("--set <keyValue>", "Set config key=value")
+    .option("--show", "Show current config")
     .action((opts) => {
-    if (opts.init) {
-        initConfig();
-        return;
-    }
+    if (opts.init)
+        return initConfig();
     if (opts.set) {
         const [key, value] = opts.set.split("=");
         if (!key || value === undefined) {
@@ -65,20 +61,17 @@ program
             process.exit(1);
         }
         const parsedValue = !isNaN(Number(value)) ? Number(value) : value;
-        setConfig(key, parsedValue);
-        return;
+        return setConfig(key, parsedValue);
     }
-    if (opts.show) {
-        showConfig();
-        return;
-    }
+    if (opts.show)
+        return showConfig();
     console.log("❌ No option provided. Use --init, --set, or --show");
 });
+// -------- Clean Command --------
 program
-    .command("clean")
-    .description("Remove all generated SVG React components from the output folder")
-    .requiredOption("--out <dir>", "Output directory to clean")
-    .action(async (options) => {
-    await clean(options.out);
+    .command("clean <out>")
+    .description("Remove all generated SVG React components from output folder")
+    .action(async (out) => {
+    await clean(out);
 });
 program.parse();

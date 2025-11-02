@@ -99,11 +99,11 @@ svger config --set defaultWidth=24 && \
 svger config --set defaultHeight=24 && \
 svger config --set defaultFill=currentColor && \
 svger lock ./src/assets/svg/logo.svg && \
-svger build --src ./src/assets/svg --out ./src/components/icons --verbose && \
-svger generate ./src/assets/svg/new-icon.svg --out ./src/components/icons && \
+svger build ./src/assets/svg ./src/components/icons && \
+svger generate ./src/assets/svg/new-icon.svg ./src/components/icons && \
 svger unlock ./src/assets/svg/logo.svg && \
-svger watch --src ./src/assets/svg --out ./src/components/icons && \
-svger clean --out ./src/components/icons
+svger watch ./src/assets/svg ./src/components/icons && \
+svger clean ./src/components/icons
 
 
 What It Does
