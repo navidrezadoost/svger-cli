@@ -5,6 +5,7 @@ import { generateSVG } from "./builder.js";
 import { lockFiles, unlockFiles } from "./lock.js";
 import { initConfig, setConfig, showConfig } from "./config.js";
 import { watchSVGs } from "./watch.js";
+import { clean } from "./clean.js";
 const program = new Command();
 program
     .name("svg-tool")
@@ -73,5 +74,12 @@ program
         return;
     }
     console.log("❌ No option provided. Use --init, --set, or --show");
+});
+program
+    .command("clean")
+    .description("Remove all generated SVG React components from the output folder")
+    .requiredOption("--out <dir>", "Output directory to clean")
+    .action(async (options) => {
+    await clean(options.out);
 });
 program.parse();
