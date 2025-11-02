@@ -9,11 +9,11 @@ import { clean } from "./clean.js";
 const program = new Command();
 
 /**
- * SVGer CLI
+ * svger-cli CLI
  * Custom SVG to React component converter.
  */
 program
-  .name("svger")
+  .name("svger-cli")
   .description("Custom SVG to React component converter")
   .version("1.0.0");
 
@@ -86,7 +86,7 @@ program
 
 // -------- Config --------
 /**
- * Manage SVGer configuration.
+ * Manage svger-cli configuration.
  *
  * Options:
  * --init: Create default .svgconfig.json
@@ -97,7 +97,7 @@ program
  */
 program
   .command("config")
-  .description("Manage svger configuration")
+  .description("Manage svger-cli configuration")
   .option("--init", "Create default .svgconfig.json")
   .option("--set <keyValue>", "Set config key=value")
   .option("--show", "Show current config")

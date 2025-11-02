@@ -4,6 +4,23 @@ import chokidar from "chokidar";
 import { generateSVG } from "./builder.js";
 import { isLocked } from "./lock.js";
 import { readConfig } from "./config.js";
+/**
+ * Watches a source folder for changes to SVG files and automatically
+ * rebuilds React components when SVGs are added, modified, or deleted.
+ *
+ * @param {Object} config - Watch configuration object.
+ * @param {string} config.src - Source folder containing SVG files to watch.
+ * @param {string} config.out - Output folder where React components are generated.
+ * @returns {import("chokidar").FSWatcher} A chokidar file watcher instance.
+ *
+ * @example
+ * watchSVGs({ src: "./src/assets/svg", out: "./src/components/icons" });
+ *
+ * // Watches the SVG folder and:
+ * // - Generates new components when files are added.
+ * // - Updates components when files change.
+ * // - Removes components when SVGs are deleted.
+ */
 export function watchSVGs(config) {
     const srcDir = path.resolve(config.src);
     const outDir = path.resolve(config.out);
@@ -19,10 +36,10 @@ export function watchSVGs(config) {
         ignoreInitial: false,
         depth: 0,
         awaitWriteFinish: { stabilityThreshold: 500, pollInterval: 100 },
-        ignored: /(^|[\/\\])\../,
+        ignored: /(^|[\/\\])\../, // Ignore hidden files
     });
-    watcher
-        .on("add", async (filePath) => {
+    // ---- Handle new SVG files ----
+    watcher.on("add", async (filePath) => {
         if (path.extname(filePath) !== ".svg")
             return;
         console.log("Detected new file:", filePath);
@@ -32,8 +49,9 @@ export function watchSVGs(config) {
         }
         console.log(`➕ New SVG detected: ${path.basename(filePath)}`);
         await generateSVG({ svgFile: filePath, outDir });
-    })
-        .on("change", async (filePath) => {
+    });
+    // ---- Handle modified SVG files ----
+    watcher.on("change", async (filePath) => {
         if (path.extname(filePath) !== ".svg")
             return;
         console.log("Detected change in file:", filePath);
@@ -43,8 +61,9 @@ export function watchSVGs(config) {
         }
         console.log(`✏️ SVG updated: ${path.basename(filePath)}`);
         await generateSVG({ svgFile: filePath, outDir });
-    })
-        .on("unlink", async (filePath) => {
+    });
+    // ---- Handle deleted SVG files ----
+    watcher.on("unlink", async (filePath) => {
         if (path.extname(filePath) !== ".svg")
             return;
         const componentName = path.basename(filePath, ".svg");

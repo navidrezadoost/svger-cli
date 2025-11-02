@@ -1,11 +1,11 @@
 {
-  "name": "svger",
+  "name": "svger-cli",
   "version": "1.0.0",
   "description": "CLI and runtime for converting SVGs to React components with watch support",
   "main": "dist/cli.js",
   "type": "module",
   "bin": {
-    "svger": "./dist/cli.js"
+    "svger-cli": "./dist/cli.js"
   },
   "scripts": {
     "build": "tsc",

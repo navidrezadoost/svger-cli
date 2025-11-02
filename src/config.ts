@@ -13,7 +13,7 @@ function getConfigPath(): string {
 }
 
 /**
- * Read the current SVGer configuration.
+ * Read the current svger-cli configuration.
  *
  * @returns {Record<string, any>} Configuration object. Returns an empty object if no config file exists.
  */
@@ -32,7 +32,7 @@ export function writeConfig(config: Record<string, any>) {
 }
 
 /**
- * Initialize the SVGer configuration with default values.
+ * Initialize the svger-cli configuration with default values.
  * If a config file already exists, this function will not overwrite it.
  */
 export function initConfig() {
