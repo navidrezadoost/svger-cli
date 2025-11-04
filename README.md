@@ -118,4 +118,4 @@ Cleans output folder at the end if needed.
 
 Acknowledgements
 
-This project was implemented by Faeze Mohadespor, following the ADR authored by Navid Rezadoost and based on the TDR prepared by Ehsan Jafari. Their guidance and documentation on SVG integration methods in React were instrumental in shaping the design and functionality of the svger-cli CLI.
+This project was implemented by Faeze Mohades, following the ADR authored by Navid Rezadoost and based on the TDR prepared by Ehsan Jafari. Their guidance and documentation on SVG integration methods in React were instrumental in shaping the design and functionality of the svger-cli CLI.

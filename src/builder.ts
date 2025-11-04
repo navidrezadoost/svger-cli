@@ -1,9 +1,9 @@
 import fs from "fs-extra";
 import path from "path";
 import { pascalCase } from "change-case";
-import { reactTemplate } from "./templates/ComponentTemplate.js";
 import { isLocked } from "./lock.js";
 import { readConfig } from "./config.js";
+import { reactTemplate } from "./templates/ComponentTemplate.js";
 
 /**
  * Converts all SVG files from a source directory into React components and writes them to an output directory.
