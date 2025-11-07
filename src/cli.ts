@@ -8,12 +8,12 @@ const program = new CLI();
 
 /**
  * svger-cli CLI
- * Custom SVG to React component converter.
+ * Custom SVG to Angular, React, Vue, Svelte, Solid, and other component converter.
  */
 program
   .name("svger-cli")
-  .description("Custom SVG to React component converter")
-  .version("1.0.0");
+  .description("Custom SVG to Angular, React, Vue, Svelte, Solid, and other component converter")
+  .version("2.0.0");
 
 // -------- Build Command --------
 /**
