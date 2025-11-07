@@ -71,7 +71,7 @@ export {
   FrameworkTemplateEngine, 
   frameworkTemplateEngine,
   type FrameworkType,
-  type FrameworkTemplateOptions 
+  type FrameworkOptions 
 } from './core/framework-templates.js';
 
 // ============================================================================

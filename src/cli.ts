@@ -22,10 +22,47 @@ program
 program
   .command("build <src> <out>")
   .description("Build all SVGs from source to output")
-  .action(async (args: string[]) => {
+  .option("--framework <type>", "Target framework (react|vue|svelte|angular|solid|preact|lit|vanilla)")
+  .option("--typescript", "Generate TypeScript components (default: true)")
+  .option("--no-typescript", "Generate JavaScript components")
+  .option("--composition", "Use Vue Composition API with <script setup>")
+  .option("--standalone", "Generate Angular standalone components")
+  .option("--signals", "Use Angular signals for reactive state")
+  .action(async (args: string[], opts: Record<string, any>) => {
     try {
       const [src, out] = args;
-      await svgService.buildAll({ src, out });
+      
+      // Build config from CLI options
+      const buildConfig: any = { src, out };
+      
+      if (opts.framework) {
+        buildConfig.framework = opts.framework;
+      }
+      
+      if (opts.typescript !== undefined) {
+        buildConfig.typescript = opts.typescript;
+      }
+      
+      // Framework-specific options
+      const frameworkOptions: any = {};
+      
+      if (opts.composition !== undefined) {
+        frameworkOptions.scriptSetup = opts.composition;
+      }
+      
+      if (opts.standalone !== undefined) {
+        frameworkOptions.standalone = opts.standalone;
+      }
+      
+      if (opts.signals !== undefined) {
+        frameworkOptions.signals = opts.signals;
+      }
+      
+      if (Object.keys(frameworkOptions).length > 0) {
+        buildConfig.frameworkOptions = frameworkOptions;
+      }
+      
+      await svgService.buildAll(buildConfig);
     } catch (error) {
       logger.error('Build failed:', error);
       process.exit(1);
@@ -58,15 +95,45 @@ program
 
 // -------- Generate Single SVG --------
 /**
- * Generate a React component from a single SVG file.
+ * Generate a component from a single SVG file.
  */
 program
   .command("generate <svgFile> <out>")
-  .description("Convert a single SVG file into a React component")
-  .action(async (args: string[]) => {
+  .description("Convert a single SVG file into a component")
+  .option("--framework <type>", "Target framework (react|vue|svelte|angular|solid|preact|lit|vanilla)")
+  .option("--typescript", "Generate TypeScript component (default: true)")
+  .option("--no-typescript", "Generate JavaScript component")
+  .option("--composition", "Use Vue Composition API with <script setup>")
+  .option("--standalone", "Generate Angular standalone component")
+  .action(async (args: string[], opts: Record<string, any>) => {
     try {
       const [svgFile, out] = args;
-      await svgService.generateSingle({ svgFile, outDir: out });
+      
+      const generateConfig: any = { svgFile, outDir: out };
+      
+      if (opts.framework) {
+        generateConfig.framework = opts.framework;
+      }
+      
+      if (opts.typescript !== undefined) {
+        generateConfig.typescript = opts.typescript;
+      }
+      
+      const frameworkOptions: any = {};
+      
+      if (opts.composition !== undefined) {
+        frameworkOptions.scriptSetup = opts.composition;
+      }
+      
+      if (opts.standalone !== undefined) {
+        frameworkOptions.standalone = opts.standalone;
+      }
+      
+      if (Object.keys(frameworkOptions).length > 0) {
+        generateConfig.frameworkOptions = frameworkOptions;
+      }
+      
+      await svgService.generateSingle(generateConfig);
     } catch (error) {
       logger.error('Generation failed:', error);
       process.exit(1);

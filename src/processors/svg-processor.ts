@@ -5,7 +5,7 @@ import { logger } from '../core/logger.js';
 import { pluginManager } from '../core/plugin-manager.js';
 import { templateManager } from '../core/template-manager.js';
 import { performanceEngine } from '../core/performance-engine.js';
-import { frameworkTemplateEngine, FrameworkTemplateOptions } from '../core/framework-templates.js';
+import { frameworkTemplateEngine } from '../core/framework-templates.js';
 
 /**
  * SVG content processor and component generator
@@ -105,14 +105,13 @@ export class SVGProcessor {
       const fullOptions: ComponentGenerationOptions = {
         componentName,
         svgContent: processedContent,
+        framework: options.framework || 'react',
+        typescript: options.typescript !== undefined ? options.typescript : true,
         ...options
       };
       
-      // Generate component using template manager
-      const component = templateManager.generateComponent(
-        'react-functional',
-        fullOptions
-      );
+      // Use framework template engine directly
+      const component = frameworkTemplateEngine.generateComponent(fullOptions);
 
       logger.debug(`Generated component: ${componentName}`);
       return component;
@@ -129,7 +128,7 @@ export class SVGProcessor {
   public async generateFrameworkComponent(
     componentName: string,
     svgContent: string,
-    options: FrameworkTemplateOptions
+    options: ComponentGenerationOptions
   ): Promise<string> {
     try {
       // Optimize SVG content based on framework requirements
@@ -137,11 +136,11 @@ export class SVGProcessor {
       const optimizedContent = performanceEngine.optimizeSVGContent(svgContent, optimizationLevel);
       
       // Generate framework-specific component
-      const component = frameworkTemplateEngine.generateComponent(
+      const component = frameworkTemplateEngine.generateComponent({
+        ...options,
         componentName,
-        optimizedContent,
-        options
-      );
+        svgContent: optimizedContent
+      });
 
       logger.debug(`Generated ${options.framework} component: ${componentName}`);
       return component;
@@ -213,8 +212,13 @@ export class SVGProcessor {
       // Ensure output directory exists
       await FileSystem.ensureDir(outputDir);
 
+      // Get correct file extension based on framework
+      const framework = options.framework || 'react';
+      const typescript = options.typescript !== undefined ? options.typescript : true;
+      const fileExtension = frameworkTemplateEngine.getFileExtension(framework, typescript);
+
       // Write component file
-      const outputFilePath = path.join(outputDir, `${componentName}.tsx`);
+      const outputFilePath = path.join(outputDir, `${componentName}.${fileExtension}`);
       await FileSystem.writeFile(outputFilePath, componentCode, 'utf-8');
 
       // Update job status
@@ -227,7 +231,7 @@ export class SVGProcessor {
         filePath: outputFilePath
       };
 
-      logger.success(`Generated component: ${componentName}.tsx`);
+      logger.success(`Generated component: ${componentName}.${fileExtension}`);
       return result;
 
     } catch (error) {

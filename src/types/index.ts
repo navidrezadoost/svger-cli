@@ -2,10 +2,14 @@
  * Type definitions for svger-cli
  */
 
+export type FrameworkType = 'react' | 'vue' | 'svelte' | 'angular' | 'solid' | 'preact' | 'lit' | 'vanilla';
+
 export interface SVGConfig {
   source: string;
   output: string;
   watch: boolean;
+  framework: FrameworkType;
+  typescript: boolean;
   defaultWidth: number;
   defaultHeight: number;
   defaultFill: string;
@@ -17,6 +21,7 @@ export interface SVGConfig {
   };
   plugins?: PluginConfig[];
   template?: TemplateConfig;
+  frameworkOptions?: FrameworkOptions;
   errorHandling?: {
     skipOnError: boolean;
     logLevel: 'debug' | 'info' | 'warn' | 'error';
@@ -26,7 +31,34 @@ export interface SVGConfig {
     batchSize: number;
     parallel: boolean;
     timeout: number;
+    enableCache: boolean;
   };
+}
+
+export interface FrameworkOptions {
+  // Vue-specific
+  composition?: boolean;
+  setup?: boolean;
+  scriptSetup?: boolean;
+  
+  // Angular-specific
+  standalone?: boolean;
+  moduleImport?: boolean;
+  
+  // Solid-specific
+  signals?: boolean;
+  
+  // React/Preact-specific
+  forwardRef?: boolean;
+  memo?: boolean;
+  
+  // Lit-specific
+  customElement?: boolean;
+  shadowDom?: boolean;
+  
+  // General
+  cssModules?: boolean;
+  styledComponents?: boolean;
 }
 
 export interface BuildOptions {
@@ -50,11 +82,14 @@ export interface WatchOptions {
 export interface ComponentGenerationOptions {
   componentName: string;
   svgContent: string;
+  framework: FrameworkType;
+  typescript: boolean;
   defaultWidth?: number;
   defaultHeight?: number;
   defaultFill?: string;
   styleRules?: Record<string, string>;
   template?: TemplateConfig;
+  frameworkOptions?: FrameworkOptions;
 }
 
 export interface TemplateConfig {
@@ -87,6 +122,16 @@ export interface ProcessingContext {
   outputDir: string;
   fileQueue: string[];
   locks: Set<string>;
+  cache?: Map<string, CachedComponent>;
+}
+
+export interface CachedComponent {
+  hash: string;
+  componentName: string;
+  filePath: string;
+  framework: FrameworkType;
+  timestamp: number;
+  svgHash: string;
 }
 
 export interface Logger {

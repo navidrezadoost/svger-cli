@@ -119,6 +119,25 @@ export class FileSystem {
     const content = JSON.stringify(data, null, options?.spaces || 0);
     fs.writeFileSync(path, content, 'utf8');
   }
+
+  static existsSync(path: string): boolean {
+    try {
+      fs.statSync(path);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  static ensureDirSync(dirPath: string): void {
+    try {
+      fs.mkdirSync(dirPath, { recursive: true });
+    } catch (error: any) {
+      if (error.code !== 'EEXIST') {
+        throw error;
+      }
+    }
+  }
 }
 
 /**

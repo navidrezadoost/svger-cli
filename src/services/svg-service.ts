@@ -44,9 +44,16 @@ export class SVGService {
     // Ensure output directory exists
     await FileSystem.ensureDir(outDir);
 
-    // Get configuration
+    // Get configuration - merge config file with options
     const config = configService.readConfig();
-    const mergedConfig = { ...config, ...options.config };
+    const mergedConfig = { 
+      ...config, 
+      ...(options.config || {}),
+      // Support direct properties on options for CLI convenience
+      ...(options as any).framework && { framework: (options as any).framework },
+      ...(options as any).typescript !== undefined && { typescript: (options as any).typescript },
+      ...(options as any).frameworkOptions && { frameworkOptions: (options as any).frameworkOptions }
+    };
 
     // Read all SVG files
     const files = await FileSystem.readDir(srcDir);
@@ -73,6 +80,9 @@ export class SVGService {
 
       try {
         const processingResult = await svgProcessor.processSVGFile(svgPath, outDir, {
+          framework: mergedConfig.framework,
+          typescript: mergedConfig.typescript,
+          frameworkOptions: mergedConfig.frameworkOptions,
           defaultWidth: mergedConfig.defaultWidth,
           defaultHeight: mergedConfig.defaultHeight,
           defaultFill: mergedConfig.defaultFill,

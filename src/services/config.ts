@@ -27,6 +27,8 @@ export class ConfigService {
     return {
       source: './src/assets/svg',
       output: './src/components/icons',
+      framework: 'react',
+      typescript: true,
       watch: false,
       defaultWidth: 24,
       defaultHeight: 24,
@@ -40,6 +42,12 @@ export class ConfigService {
       template: {
         type: 'default'
       },
+      frameworkOptions: {
+        forwardRef: true,
+        memo: false,
+        scriptSetup: true,
+        standalone: true
+      },
       errorHandling: {
         skipOnError: false,
         logLevel: 'info',
@@ -48,7 +56,8 @@ export class ConfigService {
       performance: {
         batchSize: 10,
         parallel: true,
-        timeout: 30000
+        timeout: 30000,
+        enableCache: true
       }
     };
   }
