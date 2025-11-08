@@ -1,91 +1,158 @@
 #!/usr/bin/env node
-import { Command } from "commander";
-import { buildAll, generateSVG } from "./builder.js";
-import { lockFiles, unlockFiles } from "./lock.js";
-import { initConfig, setConfig, showConfig } from "./config.js";
-import { watchSVGs } from "./watch.js";
-import { clean } from "./clean.js";
-const program = new Command();
+import { CLI } from "./utils/native.js";
+import { svgService } from "./services/svg-service.js";
+import { configService } from "./services/config.js";
+import { logger } from "./core/logger.js";
+const program = new CLI();
 /**
  * svger-cli CLI
- * Custom SVG to React component converter.
+ * Custom SVG to Angular, React, Vue, Svelte, Solid, and other component converter.
  */
 program
     .name("svger-cli")
-    .description("Custom SVG to React component converter")
-    .version("1.0.0");
+    .description("Custom SVG to Angular, React, Vue, Svelte, Solid, and other component converter")
+    .version("2.0.0");
 // -------- Build Command --------
 /**
  * Build all SVGs from a source folder to an output folder.
- *
- * @param {string} src - Source folder containing SVG files.
- * @param {string} out - Output folder for generated React components.
  */
 program
     .command("build <src> <out>")
     .description("Build all SVGs from source to output")
-    .action(async (src, out) => {
-    console.log("🛠️  Building SVGs...");
-    console.log("Source:", src);
-    console.log("Output:", out);
-    await buildAll({ src, out });
+    .option("--framework <type>", "Target framework (react|vue|svelte|angular|solid|preact|lit|vanilla)")
+    .option("--typescript", "Generate TypeScript components (default: true)")
+    .option("--no-typescript", "Generate JavaScript components")
+    .option("--composition", "Use Vue Composition API with <script setup>")
+    .option("--standalone", "Generate Angular standalone components")
+    .option("--signals", "Use Angular signals for reactive state")
+    .action(async (args, opts) => {
+    try {
+        const [src, out] = args;
+        // Build config from CLI options
+        const buildConfig = { src, out };
+        if (opts.framework) {
+            buildConfig.framework = opts.framework;
+        }
+        if (opts.typescript !== undefined) {
+            buildConfig.typescript = opts.typescript;
+        }
+        // Framework-specific options
+        const frameworkOptions = {};
+        if (opts.composition !== undefined) {
+            frameworkOptions.scriptSetup = opts.composition;
+        }
+        if (opts.standalone !== undefined) {
+            frameworkOptions.standalone = opts.standalone;
+        }
+        if (opts.signals !== undefined) {
+            frameworkOptions.signals = opts.signals;
+        }
+        if (Object.keys(frameworkOptions).length > 0) {
+            buildConfig.frameworkOptions = frameworkOptions;
+        }
+        await svgService.buildAll(buildConfig);
+    }
+    catch (error) {
+        logger.error('Build failed:', error);
+        process.exit(1);
+    }
 });
 // -------- Watch Command --------
 /**
  * Watch a source folder and rebuild SVGs automatically on changes.
- *
- * @param {string} src - Source folder to watch.
- * @param {string} out - Output folder for generated components.
  */
 program
     .command("watch <src> <out>")
     .description("Watch source folder and rebuild SVGs automatically")
-    .action((src, out) => {
-    console.log("🚀 Starting watch mode...");
-    watchSVGs({ src, out });
+    .action(async (args) => {
+    try {
+        const [src, out] = args;
+        await svgService.startWatching({ src, out });
+        // Keep the process running
+        process.on('SIGINT', () => {
+            logger.info('Shutting down watch mode...');
+            svgService.shutdown();
+            process.exit(0);
+        });
+    }
+    catch (error) {
+        logger.error('Watch mode failed:', error);
+        process.exit(1);
+    }
 });
 // -------- Generate Single SVG --------
 /**
- * Generate a React component from a single SVG file.
- *
- * @param {string} svgFile - Path to the SVG file.
- * @param {string} out - Output folder for the generated component.
+ * Generate a component from a single SVG file.
  */
 program
     .command("generate <svgFile> <out>")
-    .description("Convert a single SVG file into a React component")
-    .action(async (svgFile, out) => {
-    await generateSVG({ svgFile, outDir: out });
+    .description("Convert a single SVG file into a component")
+    .option("--framework <type>", "Target framework (react|vue|svelte|angular|solid|preact|lit|vanilla)")
+    .option("--typescript", "Generate TypeScript component (default: true)")
+    .option("--no-typescript", "Generate JavaScript component")
+    .option("--composition", "Use Vue Composition API with <script setup>")
+    .option("--standalone", "Generate Angular standalone component")
+    .action(async (args, opts) => {
+    try {
+        const [svgFile, out] = args;
+        const generateConfig = { svgFile, outDir: out };
+        if (opts.framework) {
+            generateConfig.framework = opts.framework;
+        }
+        if (opts.typescript !== undefined) {
+            generateConfig.typescript = opts.typescript;
+        }
+        const frameworkOptions = {};
+        if (opts.composition !== undefined) {
+            frameworkOptions.scriptSetup = opts.composition;
+        }
+        if (opts.standalone !== undefined) {
+            frameworkOptions.standalone = opts.standalone;
+        }
+        if (Object.keys(frameworkOptions).length > 0) {
+            generateConfig.frameworkOptions = frameworkOptions;
+        }
+        await svgService.generateSingle(generateConfig);
+    }
+    catch (error) {
+        logger.error('Generation failed:', error);
+        process.exit(1);
+    }
 });
 // -------- Lock / Unlock --------
 /**
  * Lock one or more SVG files to prevent accidental overwrites.
- *
- * @param {string[]} files - Paths to SVG files to lock.
  */
 program
     .command("lock <files...>")
     .description("Lock one or more SVG files")
-    .action((files) => lockFiles(files));
+    .action((args) => {
+    try {
+        svgService.lockService.lockFiles(args);
+    }
+    catch (error) {
+        logger.error('Lock operation failed:', error);
+        process.exit(1);
+    }
+});
 /**
  * Unlock one or more SVG files to allow modifications.
- *
- * @param {string[]} files - Paths to SVG files to unlock.
  */
 program
     .command("unlock <files...>")
     .description("Unlock one or more SVG files")
-    .action((files) => unlockFiles(files));
+    .action((args) => {
+    try {
+        svgService.lockService.unlockFiles(args);
+    }
+    catch (error) {
+        logger.error('Unlock operation failed:', error);
+        process.exit(1);
+    }
+});
 // -------- Config --------
 /**
  * Manage svger-cli configuration.
- *
- * Options:
- * --init: Create default .svgconfig.json
- * --set key=value: Set a configuration value
- * --show: Show current configuration
- *
- * @param {Object} opts - CLI options
  */
 program
     .command("config")
@@ -93,32 +160,43 @@ program
     .option("--init", "Create default .svgconfig.json")
     .option("--set <keyValue>", "Set config key=value")
     .option("--show", "Show current config")
-    .action((opts) => {
-    if (opts.init)
-        return initConfig();
-    if (opts.set) {
-        const [key, value] = opts.set.split("=");
-        if (!key || value === undefined) {
-            console.error("❌ Invalid format. Use key=value");
-            process.exit(1);
+    .action(async (args, opts) => {
+    try {
+        if (opts.init)
+            return await configService.initConfig();
+        if (opts.set) {
+            const [key, value] = opts.set.split("=");
+            if (!key || value === undefined) {
+                logger.error("Invalid format. Use key=value");
+                process.exit(1);
+            }
+            const parsedValue = !isNaN(Number(value)) ? Number(value) : value;
+            return configService.setConfig(key, parsedValue);
         }
-        const parsedValue = !isNaN(Number(value)) ? Number(value) : value;
-        return setConfig(key, parsedValue);
+        if (opts.show)
+            return configService.showConfig();
+        logger.error("No option provided. Use --init, --set, or --show");
     }
-    if (opts.show)
-        return showConfig();
-    console.log("❌ No option provided. Use --init, --set, or --show");
+    catch (error) {
+        logger.error('Config operation failed:', error);
+        process.exit(1);
+    }
 });
 // -------- Clean Command --------
 /**
  * Remove all generated SVG React components from an output folder.
- *
- * @param {string} out - Output folder to clean.
  */
 program
     .command("clean <out>")
     .description("Remove all generated SVG React components from output folder")
-    .action(async (out) => {
-    await clean(out);
+    .action(async (args) => {
+    try {
+        const [out] = args;
+        await svgService.clean(out);
+    }
+    catch (error) {
+        logger.error('Clean operation failed:', error);
+        process.exit(1);
+    }
 });
 program.parse();
