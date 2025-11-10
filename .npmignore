@@ -1,0 +1,35 @@
+# Source files
+src/
+tsconfig.json
+
+# Development files
+*.test.js
+*.test.ts
+cli-test-*/
+test-output*/
+my-svgs/
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Configuration
+.svgconfig.json
+.gitignore
+.git/
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
