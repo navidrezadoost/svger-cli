@@ -1,4 +1,4 @@
-# SVGER-CLI v2.0.4 - Enterprise SVG Processing Framework
+# SVGER-CLI v2.0.5 - Enterprise SVG Processing Framework
 
 [![npm version](https://badge.fury.io/js/svger-cli.svg)](https://badge.fury.io/js/svger-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -11,8 +11,9 @@
 
 ## 🆕 **Latest Developer Experience Improvements**
 
-### **🔧 Recent Critical Fixes (v2.0.4)**
+### **🔧 Recent Critical Fixes (v2.0.5)**
 
+- **🆕 CRITICAL FIX: PascalCase Component Naming**: Fixed issue where files like "ArrowBendDownLeft.svg" were incorrectly converted to "Arrowbenddownleft.tsx" instead of preserving the correct "ArrowBendDownLeft.tsx" format
 - **✅ Fixed TypeScript Duplicate Export Errors**: Resolved duplicate export issues in
   auto-generated index files
 - **✅ Enhanced PascalCase Preservation**: Improved filename casing preservation (e.g.,
@@ -1868,7 +1869,7 @@ jobs:
           node-version: '18'
 
       - name: Install SVGER-CLI
-        run: npm install -g svger-cli@2.0.4
+        run: npm install -g svger-cli@2.0.5
 
       - name: Generate Components
         run: |
@@ -1899,7 +1900,7 @@ pipeline {
     stage('Generate SVG Components') {
       steps {
         sh '''
-          npm install -g svger-cli@2.0.4
+          npm install -g svger-cli@2.0.5
           svger-cli build \
             --src ./assets/svg \
             --out ./components \
@@ -1921,7 +1922,7 @@ pipeline {
 FROM node:18-alpine
 
 # Install SVGER-CLI globally
-RUN npm install -g svger-cli@2.0.4
+RUN npm install -g svger-cli@2.0.5
 
 # Set working directory
 WORKDIR /app
@@ -2056,7 +2057,7 @@ svger-cli build --performance --memory
 ```bash
 # Install SVGER-CLI
 npm uninstall @svgr/webpack @svgr/cli
-npm install -g svger-cli@2.0.4
+npm install -g svger-cli@2.0.5
 
 # Migrate configuration
 svger-cli init --framework react --typescript
@@ -2069,7 +2070,7 @@ svger-cli build --src ./assets --out ./components
 
 ```bash
 # Upgrade to v2.0
-npm install -g svger-cli@2.0.4
+npm install -g svger-cli@2.0.5
 
 # Migrate configuration
 svger-cli config --migrate

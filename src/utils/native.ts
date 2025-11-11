@@ -31,8 +31,8 @@ type BufferEncoding =
  * toPascalCase('ArrowBendDownLeft') => 'ArrowBendDownLeft'
  */
 export function toPascalCase(str: string): string {
-  // If the string is already in a good format (contains capital letters and no separators), preserve it
-  if (/^[A-Z][a-zA-Z0-9]*$/.test(str)) {
+  // If the string is already in PascalCase format (no separators and starts with capital), preserve it
+  if (/^[A-Z]/.test(str) && !/[-_\s]/.test(str)) {
     return str;
   }
 
