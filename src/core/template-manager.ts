@@ -1,4 +1,8 @@
-import { Template, ComponentGenerationOptions, TemplateConfig } from '../types/index.js';
+import {
+  Template,
+  ComponentGenerationOptions,
+  TemplateConfig,
+} from '../types/index.js';
 import { logger } from '../core/logger.js';
 import { FileSystem } from '../utils/native.js';
 import path from 'path';
@@ -29,43 +33,55 @@ export class TemplateManager {
     // Standard React Functional Component
     this.registerTemplate({
       name: 'react-functional',
-      generate: (options: ComponentGenerationOptions) => this.generateReactFunctional(options),
-      validate: (options: ComponentGenerationOptions) => !!options.componentName && !!options.svgContent
+      generate: (options: ComponentGenerationOptions) =>
+        this.generateReactFunctional(options),
+      validate: (options: ComponentGenerationOptions) =>
+        !!options.componentName && !!options.svgContent,
     });
 
     // React Functional Component with forwardRef
     this.registerTemplate({
       name: 'react-forwardref',
-      generate: (options: ComponentGenerationOptions) => this.generateReactForwardRef(options),
-      validate: (options: ComponentGenerationOptions) => !!options.componentName && !!options.svgContent
+      generate: (options: ComponentGenerationOptions) =>
+        this.generateReactForwardRef(options),
+      validate: (options: ComponentGenerationOptions) =>
+        !!options.componentName && !!options.svgContent,
     });
 
     // React Class Component (legacy support)
     this.registerTemplate({
       name: 'react-class',
-      generate: (options: ComponentGenerationOptions) => this.generateReactClass(options),
-      validate: (options: ComponentGenerationOptions) => !!options.componentName && !!options.svgContent
+      generate: (options: ComponentGenerationOptions) =>
+        this.generateReactClass(options),
+      validate: (options: ComponentGenerationOptions) =>
+        !!options.componentName && !!options.svgContent,
     });
 
     // Styled Components Template
     this.registerTemplate({
       name: 'styled-components',
-      generate: (options: ComponentGenerationOptions) => this.generateStyledComponents(options),
-      validate: (options: ComponentGenerationOptions) => !!options.componentName && !!options.svgContent
+      generate: (options: ComponentGenerationOptions) =>
+        this.generateStyledComponents(options),
+      validate: (options: ComponentGenerationOptions) =>
+        !!options.componentName && !!options.svgContent,
     });
 
     // TypeScript Native (no React)
     this.registerTemplate({
       name: 'typescript-native',
-      generate: (options: ComponentGenerationOptions) => this.generateTypeScriptNative(options),
-      validate: (options: ComponentGenerationOptions) => !!options.componentName && !!options.svgContent
+      generate: (options: ComponentGenerationOptions) =>
+        this.generateTypeScriptNative(options),
+      validate: (options: ComponentGenerationOptions) =>
+        !!options.componentName && !!options.svgContent,
     });
 
     // Enhanced Styled Template
     this.registerTemplate({
       name: 'enhanced-styled',
-      generate: (options: ComponentGenerationOptions) => this.generateEnhancedStyled(options),
-      validate: (options: ComponentGenerationOptions) => !!options.componentName && !!options.svgContent
+      generate: (options: ComponentGenerationOptions) =>
+        this.generateEnhancedStyled(options),
+      validate: (options: ComponentGenerationOptions) =>
+        !!options.componentName && !!options.svgContent,
     });
 
     logger.debug('Built-in templates loaded');
@@ -87,7 +103,7 @@ export class TemplateManager {
     options: ComponentGenerationOptions
   ): string {
     const template = this.templates.get(templateName);
-    
+
     if (!template) {
       logger.warn(`Template not found: ${templateName}, using default`);
       return this.generateComponent(this.defaultTemplate, options);
@@ -106,22 +122,25 @@ export class TemplateManager {
   public async loadCustomTemplate(templatePath: string): Promise<void> {
     try {
       const resolvedPath = path.resolve(templatePath);
-      
+
       if (!(await FileSystem.exists(resolvedPath))) {
         throw new Error(`Template file not found: ${resolvedPath}`);
       }
 
       const templateContent = await FileSystem.readFile(resolvedPath, 'utf-8');
-      
+
       // Parse template (assuming it's a JavaScript module)
-      const templateName = path.basename(templatePath, path.extname(templatePath));
-      
+      const templateName = path.basename(
+        templatePath,
+        path.extname(templatePath)
+      );
+
       // For now, we'll treat it as a simple string template
       this.registerTemplate({
         name: templateName,
         generate: (options: ComponentGenerationOptions) => {
           return this.processStringTemplate(templateContent, options);
-        }
+        },
       });
 
       logger.info(`Custom template loaded: ${templateName}`);
@@ -160,7 +179,7 @@ export class TemplateManager {
       svgContent,
       defaultWidth = 24,
       defaultHeight = 24,
-      defaultFill = 'currentColor'
+      defaultFill = 'currentColor',
     } = options;
 
     return `import React from "react";
@@ -214,7 +233,7 @@ export default ${componentName};
       svgContent,
       defaultWidth = 24,
       defaultHeight = 24,
-      defaultFill = 'currentColor'
+      defaultFill = 'currentColor',
     } = options;
 
     return `import { forwardRef } from "react";
@@ -257,7 +276,7 @@ export default ${componentName};
       svgContent,
       defaultWidth = 24,
       defaultHeight = 24,
-      defaultFill = 'currentColor'
+      defaultFill = 'currentColor',
     } = options;
 
     return `import { Component } from "react";
@@ -293,13 +312,15 @@ export default ${componentName};
   /**
    * Styled Components Template
    */
-  private generateStyledComponents(options: ComponentGenerationOptions): string {
+  private generateStyledComponents(
+    options: ComponentGenerationOptions
+  ): string {
     const {
       componentName,
       svgContent,
       defaultWidth = 24,
       defaultHeight = 24,
-      defaultFill = 'currentColor'
+      defaultFill = 'currentColor',
     } = options;
 
     return `import styled from "styled-components";
@@ -334,13 +355,15 @@ export default ${componentName};
   /**
    * TypeScript Native (no React dependencies)
    */
-  private generateTypeScriptNative(options: ComponentGenerationOptions): string {
+  private generateTypeScriptNative(
+    options: ComponentGenerationOptions
+  ): string {
     const {
       componentName,
       svgContent,
       defaultWidth = 24,
       defaultHeight = 24,
-      defaultFill = 'currentColor'
+      defaultFill = 'currentColor',
     } = options;
 
     return `/**
@@ -399,11 +422,11 @@ export default ${componentName};
       ...options,
       defaultWidth: options.defaultWidth || 24,
       defaultHeight: options.defaultHeight || 24,
-      defaultFill: options.defaultFill || 'currentColor'
+      defaultFill: options.defaultFill || 'currentColor',
     };
 
     let processed = template;
-    
+
     // Replace variables in the format {{variableName}}
     for (const [key, value] of Object.entries(variables)) {
       const regex = new RegExp(`\\{\\{\\s*${key}\\s*\\}\\}`, 'g');
@@ -422,7 +445,7 @@ export default ${componentName};
       svgContent,
       defaultWidth = 24,
       defaultHeight = 24,
-      defaultFill = 'currentColor'
+      defaultFill = 'currentColor',
     } = options;
 
     return `import React from "react";

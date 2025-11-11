@@ -45,15 +45,15 @@ export class LoggerService implements Logger {
 
     const colors = {
       debug: '\x1b[36m', // Cyan
-      info: '\x1b[34m',  // Blue
-      warn: '\x1b[33m',  // Yellow
+      info: '\x1b[34m', // Blue
+      warn: '\x1b[33m', // Yellow
       error: '\x1b[31m', // Red
       success: '\x1b[32m', // Green
     };
 
     const reset = '\x1b[0m';
     const color = colors[level as keyof typeof colors] || colors.info;
-    
+
     const icons = {
       debug: '🔍',
       info: 'ℹ️',

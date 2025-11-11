@@ -9,12 +9,9 @@ import {
   ComponentGenerationOptions,
   SVGProcessorResult,
   ProcessingJob,
-  ProcessingStatus,
   NamingConvention,
 } from '../types/index.js';
 import { logger } from '../core/logger.js';
-import { pluginManager } from '../core/plugin-manager.js';
-import { templateManager } from '../core/template-manager.js';
 import { performanceEngine } from '../core/performance-engine.js';
 import { frameworkTemplateEngine } from '../core/framework-templates.js';
 
@@ -99,13 +96,14 @@ export class SVGProcessor {
         // Keep kebab-case for filename, but component still needs PascalCase
         return toPascalCase(baseName);
 
-      case 'camel':
+      case 'camel': {
         // Convert to camelCase
         const pascalName = toPascalCase(baseName);
         return pascalName.charAt(0).toLowerCase() + pascalName.slice(1);
+      }
 
       case 'pascal':
-      default:
+      default: {
         // Default to PascalCase
         const componentName = toPascalCase(baseName);
 
@@ -115,6 +113,7 @@ export class SVGProcessor {
         }
 
         return componentName;
+      }
     }
   }
 
@@ -288,9 +287,11 @@ export class SVGProcessor {
       // Read SVG content
       const svgContent = await FileSystem.readFile(svgFilePath, 'utf-8');
 
-      // Generate component name (always PascalCase for component)
+      // Generate component name using the specified naming convention
+      const namingConvention = options.namingConvention || 'pascal';
       const componentName = this.generateComponentName(
-        path.basename(svgFilePath)
+        path.basename(svgFilePath),
+        namingConvention
       );
 
       // Generate component code
@@ -312,8 +313,7 @@ export class SVGProcessor {
         typescript
       );
 
-      // Generate filename using naming convention
-      const namingConvention = options.namingConvention;
+      // Generate filename using naming convention from options
       const fileName = this.generateFileName(
         componentName,
         fileExtension,

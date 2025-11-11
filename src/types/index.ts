@@ -13,6 +13,12 @@ export type FrameworkType =
   | 'vanilla';
 
 export type NamingConvention = 'kebab' | 'pascal' | 'camel';
+export type ComponentType = 'functional' | 'class' | 'arrow';
+export type ErrorHandlingStrategy = 'continue' | 'stop' | 'retry';
+export type PerformanceOptimization = 'fast' | 'balanced' | 'maximum';
+export type ThemeMode = 'light' | 'dark' | 'auto';
+export type ChangeDetectionStrategy = 'Default' | 'OnPush';
+export type ViewEncapsulation = 'Emulated' | 'None' | 'ShadowDom';
 
 export interface OutputConfig {
   naming?: NamingConvention;
@@ -20,35 +26,107 @@ export interface OutputConfig {
   directory?: string;
 }
 
+export interface ResponsiveConfig {
+  breakpoints: string[];
+  values: {
+    [property: string]: string[];
+  };
+}
+
+export interface ThemeConfig {
+  mode: ThemeMode;
+  variables: {
+    [name: string]: string;
+  };
+}
+
+export interface ErrorHandlingConfig {
+  strategy: ErrorHandlingStrategy;
+  maxRetries: number;
+  timeout: number;
+}
+
+export interface PerformanceConfig {
+  optimization: PerformanceOptimization;
+  memoryLimit: number;
+  cacheTimeout: number;
+}
+
+export interface ReactConfig {
+  componentType?: ComponentType;
+  forwardRef?: boolean;
+  memo?: boolean;
+  propsInterface?: string;
+  styledComponents?: boolean;
+  cssModules?: boolean;
+}
+
+export interface VueConfig {
+  api?: 'composition' | 'options';
+  setup?: boolean;
+  typescript?: boolean;
+  scoped?: boolean;
+  cssVariables?: boolean;
+}
+
+export interface AngularConfig {
+  standalone?: boolean;
+  signals?: boolean;
+  changeDetection?: ChangeDetectionStrategy;
+  encapsulation?: ViewEncapsulation;
+}
+
 export interface SVGConfig {
+  // Source & Output
   source: string;
-  output: string | OutputConfig;
-  watch: boolean;
+  output: string;
+
+  // Framework Configuration
   framework: FrameworkType;
   typescript: boolean;
+  componentType?: ComponentType;
+
+  // Processing Options
+  watch: boolean;
+  parallel: boolean;
+  batchSize: number;
+  maxConcurrency: number;
+  cache: boolean;
+
+  // Default Properties
   defaultWidth: number;
   defaultHeight: number;
   defaultFill: string;
-  exclude: string[];
+  defaultStroke?: string;
+  defaultStrokeWidth?: number;
+
+  // Styling Configuration
   styleRules: {
-    fill?: string;
-    stroke?: string;
-    [key: string]: string | undefined;
+    [property: string]: string;
   };
-  plugins?: PluginConfig[];
-  template?: TemplateConfig;
-  frameworkOptions?: FrameworkOptions;
-  errorHandling?: {
-    skipOnError: boolean;
-    logLevel: 'debug' | 'info' | 'warn' | 'error';
-    maxRetries: number;
-  };
-  performance?: {
-    batchSize: number;
-    parallel: boolean;
-    timeout: number;
-    enableCache: boolean;
-  };
+
+  responsive?: ResponsiveConfig;
+  theme?: ThemeConfig;
+  animations?: string[];
+
+  // Advanced Options
+  plugins: PluginConfig[];
+  exclude: string[];
+  include?: string[];
+
+  // Error Handling
+  errorHandling: ErrorHandlingConfig;
+
+  // Performance Settings
+  performance: PerformanceConfig;
+
+  // Output Customization
+  outputConfig: OutputConfig;
+
+  // Framework-specific configurations
+  react?: ReactConfig;
+  vue?: VueConfig;
+  angular?: AngularConfig;
 }
 
 export interface FrameworkOptions {
@@ -106,6 +184,7 @@ export interface ComponentGenerationOptions {
   styleRules?: Record<string, string>;
   template?: TemplateConfig;
   frameworkOptions?: FrameworkOptions;
+  namingConvention?: 'kebab' | 'pascal' | 'camel';
 }
 
 export interface TemplateConfig {

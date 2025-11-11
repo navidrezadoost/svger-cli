@@ -13,16 +13,16 @@
  * @param [options.defaultFill="currentColor"] - The default fill color for the SVG.
  * @returns A string containing the complete TypeScript code for the React SVG component.
  */
-export function reactTemplate({ componentName, svgContent, defaultWidth = 24, defaultHeight = 24, defaultFill = "currentColor", }) {
+export function reactTemplate({ componentName, svgContent, defaultWidth = 24, defaultHeight = 24, defaultFill = 'currentColor', }) {
     const cleaned = svgContent
-        .replace(/<\?xml.*?\?>/g, "")
-        .replace(/<!DOCTYPE.*?>/g, "")
-        .replace(/\r?\n|\r/g, "")
-        .replace(/\s{2,}/g, " ")
-        .replace(/style="[^"]*"/g, "")
-        .replace(/\s+xmlns(:xlink)?="[^"]*"/g, "")
+        .replace(/<\?xml.*?\?>/g, '')
+        .replace(/<!DOCTYPE.*?>/g, '')
+        .replace(/\r?\n|\r/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .replace(/style="[^"]*"/g, '')
+        .replace(/\s+xmlns(:xlink)?="[^"]*"/g, '')
         .trim()
-        .replace(/^.*?<svg[^>]*>(.*?)<\/svg>.*$/i, "$1");
+        .replace(/^.*?<svg[^>]*>(.*?)<\/svg>.*$/i, '$1');
     return `import type { SVGProps } from "react";
 const Svg${componentName} = (props: SVGProps<SVGSVGElement>) => (
   <svg

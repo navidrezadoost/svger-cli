@@ -1,13 +1,25 @@
 import fs from 'fs';
 import { promisify } from 'util';
 
+type BufferEncoding =
+  | 'ascii'
+  | 'utf8'
+  | 'utf-8'
+  | 'utf16le'
+  | 'ucs2'
+  | 'ucs-2'
+  | 'base64'
+  | 'base64url'
+  | 'latin1'
+  | 'binary'
+  | 'hex';
+
 /**
  * Native Node.js utilities to replace external dependencies
  */
 
 /**
- * Convert a string to PascalCase.
- * Handles kebab-case, snake_case, and space-separated strings.
+ * Convert a string to PascalCase, preserving existing capital letters.
  *
  * @param {string} str - Input string to convert.
  * @returns {string} PascalCase string.
@@ -16,8 +28,14 @@ import { promisify } from 'util';
  * toPascalCase('hello-world') => 'HelloWorld'
  * toPascalCase('hello_world') => 'HelloWorld'
  * toPascalCase('hello world') => 'HelloWorld'
+ * toPascalCase('ArrowBendDownLeft') => 'ArrowBendDownLeft'
  */
 export function toPascalCase(str: string): string {
+  // If the string is already in a good format (contains capital letters and no separators), preserve it
+  if (/^[A-Z][a-zA-Z0-9]*$/.test(str)) {
+    return str;
+  }
+
   return str
     .replace(/[-_\s]+(.)?/g, (_, char) => (char ? char.toUpperCase() : ''))
     .replace(/^(.)/, char => char.toUpperCase());
@@ -79,7 +97,7 @@ export class FileSystem {
     path: string,
     encoding: BufferEncoding = 'utf8'
   ): Promise<string> {
-    return this._readFile(path, encoding);
+    return this._readFile(path, encoding) as unknown as Promise<string>;
   }
 
   static async writeFile(

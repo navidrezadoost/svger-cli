@@ -31,7 +31,7 @@ export class PluginManager {
       process: async (content: string, options?: any) => {
         return this.optimizeSVG(content, options);
       },
-      validate: (options?: any) => true
+      validate: (options?: any) => true,
     });
 
     // Color Theme Plugin
@@ -43,7 +43,7 @@ export class PluginManager {
       },
       validate: (options?: any) => {
         return options && typeof options.theme === 'object';
-      }
+      },
     });
 
     // Size Normalizer Plugin
@@ -52,7 +52,7 @@ export class PluginManager {
       version: '1.0.0',
       process: async (content: string, options?: any) => {
         return this.normalizeSizes(content, options);
-      }
+      },
     });
 
     logger.debug('Built-in plugins loaded');
@@ -65,7 +65,7 @@ export class PluginManager {
     if (this.plugins.has(plugin.name)) {
       logger.warn(`Plugin ${plugin.name} is already registered, overwriting`);
     }
-    
+
     this.plugins.set(plugin.name, plugin);
     logger.debug(`Plugin registered: ${plugin.name} v${plugin.version}`);
   }
@@ -79,7 +79,11 @@ export class PluginManager {
       throw new Error(`Plugin not found: ${name}`);
     }
 
-    if (plugin.validate && config?.options && !plugin.validate(config.options)) {
+    if (
+      plugin.validate &&
+      config?.options &&
+      !plugin.validate(config.options)
+    ) {
       throw new Error(`Invalid options for plugin: ${name}`);
     }
 
@@ -99,14 +103,14 @@ export class PluginManager {
    * Process content through all active plugins
    */
   public async processContent(
-    content: string, 
+    content: string,
     pluginConfigs: PluginConfig[] = []
   ): Promise<string> {
     let processedContent = content;
 
     for (const config of pluginConfigs) {
       const plugin = this.plugins.get(config.name);
-      
+
       if (!plugin) {
         logger.warn(`Plugin not found: ${config.name}, skipping`);
         continue;
@@ -119,7 +123,10 @@ export class PluginManager {
 
       try {
         logger.debug(`Processing with plugin: ${config.name}`);
-        processedContent = await plugin.process(processedContent, config.options);
+        processedContent = await plugin.process(
+          processedContent,
+          config.options
+        );
       } catch (error) {
         logger.error(`Plugin ${config.name} failed:`, error);
         // Continue processing with other plugins
@@ -132,11 +139,15 @@ export class PluginManager {
   /**
    * Get list of available plugins
    */
-  public getAvailablePlugins(): Array<{ name: string; version: string; enabled: boolean }> {
+  public getAvailablePlugins(): Array<{
+    name: string;
+    version: string;
+    enabled: boolean;
+  }> {
     return Array.from(this.plugins.entries()).map(([name, plugin]) => ({
       name,
       version: plugin.version,
-      enabled: this.activePlugins.has(name)
+      enabled: this.activePlugins.has(name),
     }));
   }
 
@@ -183,7 +194,10 @@ export class PluginManager {
 
     // Replace colors according to theme
     for (const [originalColor, newColor] of Object.entries(theme)) {
-      const colorRegex = new RegExp(`(fill|stroke)=["']${originalColor}["']`, 'g');
+      const colorRegex = new RegExp(
+        `(fill|stroke)=["']${originalColor}["']`,
+        'g'
+      );
       themed = themed.replace(colorRegex, `$1="${newColor}"`);
     }
 
@@ -195,10 +209,10 @@ export class PluginManager {
    */
   private normalizeSizes(content: string, options: any = {}): string {
     const targetSize = options.size || 24;
-    
+
     // This is a basic implementation - would need more sophisticated sizing logic
     let normalized = content;
-    
+
     // Normalize stroke-width relative to size
     if (options.normalizeStrokes !== false) {
       const strokeRegex = /stroke-width=["']([^"']+)["']/g;

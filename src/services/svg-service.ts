@@ -1,6 +1,11 @@
 import path from 'path';
 import { FileSystem } from '../utils/native.js';
-import { BuildOptions, GenerateOptions, WatchOptions, FileWatchEvent } from '../types/index.js';
+import {
+  BuildOptions,
+  GenerateOptions,
+  WatchOptions,
+  FileWatchEvent,
+} from '../types/index.js';
 import { logger } from '../core/logger.js';
 import { configService } from './config.js';
 import { svgProcessor } from '../processors/svg-processor.js';
@@ -46,13 +51,19 @@ export class SVGService {
 
     // Get configuration - merge config file with options
     const config = configService.readConfig();
-    const mergedConfig = { 
-      ...config, 
+    const mergedConfig = {
+      ...config,
       ...(options.config || {}),
       // Support direct properties on options for CLI convenience
-      ...(options as any).framework && { framework: (options as any).framework },
-      ...(options as any).typescript !== undefined && { typescript: (options as any).typescript },
-      ...(options as any).frameworkOptions && { frameworkOptions: (options as any).frameworkOptions }
+      ...((options as any).framework && {
+        framework: (options as any).framework,
+      }),
+      ...((options as any).typescript !== undefined && {
+        typescript: (options as any).typescript,
+      }),
+      ...((options as any).frameworkOptions && {
+        frameworkOptions: (options as any).frameworkOptions,
+      }),
     };
 
     // Read all SVG files
@@ -66,7 +77,8 @@ export class SVGService {
 
     logger.info(`Found ${svgFiles.length} SVG files to process`);
 
-    const results: Array<{ success: boolean; file: string; error?: Error }> = [];
+    const results: Array<{ success: boolean; file: string; error?: Error }> =
+      [];
 
     // Process each SVG file
     for (const file of svgFiles) {
@@ -79,30 +91,36 @@ export class SVGService {
       }
 
       try {
-        const processingResult = await svgProcessor.processSVGFile(svgPath, outDir, {
-          framework: mergedConfig.framework,
-          typescript: mergedConfig.typescript,
-          frameworkOptions: mergedConfig.frameworkOptions,
-          defaultWidth: mergedConfig.defaultWidth,
-          defaultHeight: mergedConfig.defaultHeight,
-          defaultFill: mergedConfig.defaultFill,
-          styleRules: Object.fromEntries(
-            Object.entries(mergedConfig.styleRules || {}).filter(([_, v]) => v !== undefined)
-          ) as Record<string, string>
-        });
+        const processingResult = await svgProcessor.processSVGFile(
+          svgPath,
+          outDir,
+          {
+            framework: mergedConfig.framework,
+            typescript: mergedConfig.typescript,
+            frameworkOptions: mergedConfig.frameworkOptions,
+            defaultWidth: mergedConfig.defaultWidth,
+            defaultHeight: mergedConfig.defaultHeight,
+            defaultFill: mergedConfig.defaultFill,
+            namingConvention: mergedConfig.output?.naming || 'pascal',
+            styleRules: Object.fromEntries(
+              Object.entries(mergedConfig.styleRules || {}).filter(
+                ([, v]) => v !== undefined
+              )
+            ) as Record<string, string>,
+          }
+        );
 
         results.push({
           success: processingResult.success,
           file,
-          error: processingResult.error
+          error: processingResult.error,
         });
-
       } catch (error) {
         logger.error(`Failed to process ${file}:`, error);
         results.push({
           success: false,
           file,
-          error: error as Error
+          error: error as Error,
         });
       }
     }
@@ -115,14 +133,20 @@ export class SVGService {
 
     if (failed > 0) {
       logger.warn('Some files failed to process:');
-      results.filter(r => !r.success).forEach(r => {
-        logger.warn(`  - ${r.file}: ${r.error?.message}`);
-      });
+      results
+        .filter(r => !r.success)
+        .forEach(r => {
+          logger.warn(`  - ${r.file}: ${r.error?.message}`);
+        });
     }
 
     // Generate index.ts file with all component exports
     if (successful > 0) {
-      await this.generateIndexFile(outDir, results.filter(r => r.success).map(r => r.file));
+      await this.generateIndexFile(
+        outDir,
+        results.filter(r => r.success).map(r => r.file),
+        mergedConfig
+      );
     }
   }
 
@@ -156,8 +180,10 @@ export class SVGService {
       defaultHeight: mergedConfig.defaultHeight,
       defaultFill: mergedConfig.defaultFill,
       styleRules: Object.fromEntries(
-        Object.entries(mergedConfig.styleRules || {}).filter(([_, v]) => v !== undefined)
-      ) as Record<string, string>
+        Object.entries(mergedConfig.styleRules || {}).filter(
+          ([, v]) => v !== undefined
+        )
+      ) as Record<string, string>,
     });
 
     if (!result.success) {
@@ -200,23 +226,23 @@ export class SVGService {
    * Handle file watch events
    */
   private async handleWatchEvent(
-    event: FileWatchEvent, 
+    event: FileWatchEvent,
     outDir: string,
     config?: Partial<any>
   ): Promise<void> {
     const fileName = path.basename(event.filePath);
-    
+
     switch (event.type) {
       case 'add':
         logger.info(`New SVG detected: ${fileName}`);
         await this.processWatchedFile(event.filePath, outDir, config);
         break;
-        
+
       case 'change':
         logger.info(`SVG updated: ${fileName}`);
         await this.processWatchedFile(event.filePath, outDir, config);
         break;
-        
+
       case 'unlink':
         logger.info(`SVG removed: ${fileName}`);
         await this.handleFileRemoval(event.filePath, outDir);
@@ -249,21 +275,33 @@ export class SVGService {
         defaultHeight: mergedConfig.defaultHeight,
         defaultFill: mergedConfig.defaultFill,
         styleRules: Object.fromEntries(
-          Object.entries(mergedConfig.styleRules || {}).filter(([_, v]) => v !== undefined)
-        ) as Record<string, string>
+          Object.entries(mergedConfig.styleRules || {}).filter(
+            ([, v]) => v !== undefined
+          )
+        ) as Record<string, string>,
       });
-
     } catch (error) {
-      logger.error(`Failed to process watched file ${path.basename(filePath)}:`, error);
+      logger.error(
+        `Failed to process watched file ${path.basename(filePath)}:`,
+        error
+      );
     }
   }
 
   /**
    * Handle file removal in watch mode
    */
-  private async handleFileRemoval(filePath: string, outDir: string): Promise<void> {
+  private async handleFileRemoval(
+    filePath: string,
+    outDir: string,
+    config?: any
+  ): Promise<void> {
     try {
-      const componentName = svgProcessor.generateComponentName(path.basename(filePath));
+      const namingConvention = config?.output?.naming || 'pascal';
+      const componentName = svgProcessor.generateComponentName(
+        path.basename(filePath),
+        namingConvention
+      );
       const componentPath = path.join(outDir, `${componentName}.tsx`);
 
       if (await FileSystem.exists(componentPath)) {
@@ -271,7 +309,10 @@ export class SVGService {
         logger.success(`Removed component: ${componentName}.tsx`);
       }
     } catch (error) {
-      logger.error(`Failed to remove component for ${path.basename(filePath)}:`, error);
+      logger.error(
+        `Failed to remove component for ${path.basename(filePath)}:`,
+        error
+      );
     }
   }
 
@@ -309,18 +350,25 @@ export class SVGService {
   /**
    * Generate index.ts file with all component exports
    */
-  private async generateIndexFile(outDir: string, svgFiles: string[]): Promise<void> {
+  private async generateIndexFile(
+    outDir: string,
+    svgFiles: string[],
+    config?: any
+  ): Promise<void> {
     try {
+      const namingConvention = config?.output?.naming || 'pascal';
       const componentNames = svgFiles.map(file => {
         const baseName = path.basename(file, '.svg');
-        return svgProcessor.generateComponentName(baseName);
+        return svgProcessor.generateComponentName(baseName, namingConvention);
       });
 
       const indexContent = this.generateIndexContent(componentNames);
       const indexPath = path.join(outDir, 'index.ts');
-      
+
       await FileSystem.writeFile(indexPath, indexContent, 'utf-8');
-      logger.success(`Generated index.ts with ${componentNames.length} component exports`);
+      logger.success(
+        `Generated index.ts with ${componentNames.length} component exports`
+      );
     } catch (error) {
       logger.error('Failed to generate index.ts:', error);
     }
@@ -330,19 +378,9 @@ export class SVGService {
    * Generate the content for index.ts file
    */
   private generateIndexContent(componentNames: string[]): string {
-    const imports = componentNames.map(name => `export { default as ${name} } from './${name}';`).join('\n');
-    
-    const exportAll = `
-// Export all components
-export {
-${componentNames.map(name => `  ${name},`).join('\n')}
-};
-
-// Re-export for convenience
-export default {
-${componentNames.map(name => `  ${name},`).join('\n')}
-};
-`;
+    const imports = componentNames
+      .map(name => `export { default as ${name} } from './${name}';`)
+      .join('\n');
 
     return `/**
  * SVG Components Index
@@ -353,10 +391,10 @@ ${componentNames.map(name => `  ${name},`).join('\n')}
  * 
  * Import all components:
  * import * as Icons from './components';
- * import Icons from './components'; // default export
  */
 
-${imports}${exportAll}`;
+${imports}
+`;
   }
 
   /**
@@ -370,7 +408,7 @@ ${imports}${exportAll}`;
     return {
       activeWatchers: this.activeWatchers.size,
       processingQueue: svgProcessor.getProcessingStats(),
-      watcherStats: fileWatcher.getWatchStats()
+      watcherStats: fileWatcher.getWatchStats(),
     };
   }
 
@@ -423,7 +461,9 @@ export class LockService {
 
   private writeLockFile(locks: Set<string>): void {
     try {
-      FileSystem.writeJSONSync(this.getLockFilePath(), Array.from(locks), { spaces: 2 });
+      FileSystem.writeJSONSync(this.getLockFilePath(), Array.from(locks), {
+        spaces: 2,
+      });
       this.cachedLocks = locks;
     } catch (error) {
       logger.error('Failed to write lock file:', error);
@@ -433,11 +473,11 @@ export class LockService {
   public lockFiles(files: string[]): void {
     const fileNames = files.map(f => path.basename(f));
     const current = this.readLockFile();
-    
+
     for (const fileName of fileNames) {
       current.add(fileName);
     }
-    
+
     this.writeLockFile(current);
     logger.success(`Locked files: ${fileNames.join(', ')}`);
   }
@@ -445,11 +485,11 @@ export class LockService {
   public unlockFiles(files: string[]): void {
     const fileNames = files.map(f => path.basename(f));
     const current = this.readLockFile();
-    
+
     for (const fileName of fileNames) {
       current.delete(fileName);
     }
-    
+
     this.writeLockFile(current);
     logger.success(`Unlocked files: ${fileNames.join(', ')}`);
   }

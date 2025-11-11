@@ -1,4 +1,8 @@
-import { ComponentGenerationOptions, FrameworkType, FrameworkOptions } from '../types/index.js';
+import {
+  ComponentGenerationOptions,
+  FrameworkType,
+  FrameworkOptions,
+} from '../types/index.js';
 
 // Re-export types for convenience
 export type { FrameworkType, FrameworkOptions } from '../types/index.js';
@@ -14,35 +18,74 @@ interface SVGAttributes {
 }
 
 export class FrameworkTemplateEngine {
-  
   public generateComponent(options: ComponentGenerationOptions): string {
-    const { framework, componentName, svgContent, typescript = true, frameworkOptions = {} } = options;
+    const {
+      framework,
+      componentName,
+      svgContent,
+      typescript = true,
+      frameworkOptions = {},
+    } = options;
 
     switch (framework) {
       case 'react':
-        return this.generateReactComponent(componentName, svgContent, typescript, frameworkOptions);
+        return this.generateReactComponent(
+          componentName,
+          svgContent,
+          typescript,
+          frameworkOptions
+        );
       case 'vue':
-        return this.generateVueComponent(componentName, svgContent, typescript, frameworkOptions);
+        return this.generateVueComponent(
+          componentName,
+          svgContent,
+          typescript,
+          frameworkOptions
+        );
       case 'svelte':
-        return this.generateSvelteComponent(componentName, svgContent, typescript);
+        return this.generateSvelteComponent(
+          componentName,
+          svgContent,
+          typescript
+        );
       case 'angular':
-        return this.generateAngularComponent(componentName, svgContent, typescript, frameworkOptions);
+        return this.generateAngularComponent(
+          componentName,
+          svgContent,
+          typescript,
+          frameworkOptions
+        );
       case 'solid':
-        return this.generateSolidComponent(componentName, svgContent, typescript);
+        return this.generateSolidComponent(
+          componentName,
+          svgContent,
+          typescript
+        );
       case 'preact':
-        return this.generatePreactComponent(componentName, svgContent, typescript);
+        return this.generatePreactComponent(
+          componentName,
+          svgContent,
+          typescript
+        );
       case 'lit':
         return this.generateLitComponent(componentName, svgContent, typescript);
       case 'vanilla':
-        return this.generateVanillaComponent(componentName, svgContent, typescript);
+        return this.generateVanillaComponent(
+          componentName,
+          svgContent,
+          typescript
+        );
       default:
         throw new Error(`Unsupported framework: ${framework}`);
     }
   }
 
-  public getFileExtension(framework: FrameworkType, typescript: boolean = true): string {
+  public getFileExtension(
+    framework: FrameworkType,
+    typescript: boolean = true
+  ): string {
     const tsExt = typescript ? 'ts' : 'js';
-    
+
     switch (framework) {
       case 'react':
       case 'preact':
@@ -62,7 +105,10 @@ export class FrameworkTemplateEngine {
     }
   }
 
-  private parseSVG(svgContent: string): { attributes: SVGAttributes; innerContent: string } {
+  private parseSVG(svgContent: string): {
+    attributes: SVGAttributes;
+    innerContent: string;
+  } {
     const svgMatch = svgContent.match(/<svg([^>]*)>([\s\S]*?)<\/svg>/);
     if (!svgMatch) {
       return { attributes: {}, innerContent: svgContent };
@@ -81,7 +127,12 @@ export class FrameworkTemplateEngine {
     return { attributes, innerContent };
   }
 
-  private generateReactComponent(componentName: string, svgContent: string, typescript: boolean, options: FrameworkOptions): string {
+  private generateReactComponent(
+    componentName: string,
+    svgContent: string,
+    typescript: boolean,
+    options: FrameworkOptions
+  ): string {
     const { attributes, innerContent } = this.parseSVG(svgContent);
     return `import React from "react";
 import type { SVGProps } from "react";
@@ -121,7 +172,12 @@ export default ${componentName};
 `;
   }
 
-  private generateVueComponent(componentName: string, svgContent: string, typescript: boolean, options: FrameworkOptions): string {
+  private generateVueComponent(
+    componentName: string,
+    svgContent: string,
+    typescript: boolean,
+    options: FrameworkOptions
+  ): string {
     const { attributes, innerContent } = this.parseSVG(svgContent);
     const { scriptSetup = true } = options;
 
@@ -196,7 +252,11 @@ export default defineComponent({
 `;
   }
 
-  private generateSvelteComponent(componentName: string, svgContent: string, typescript: boolean): string {
+  private generateSvelteComponent(
+    componentName: string,
+    svgContent: string,
+    typescript: boolean
+  ): string {
     const { attributes, innerContent } = this.parseSVG(svgContent);
     return `<script${typescript ? ' lang="ts"' : ''}>
   export let className${typescript ? ': string' : ''} = '';
@@ -223,7 +283,12 @@ export default defineComponent({
 `;
   }
 
-  private generateAngularComponent(componentName: string, svgContent: string, typescript: boolean, options: FrameworkOptions): string {
+  private generateAngularComponent(
+    componentName: string,
+    svgContent: string,
+    typescript: boolean,
+    options: FrameworkOptions
+  ): string {
     const { attributes, innerContent } = this.parseSVG(svgContent);
     const { standalone = true } = options;
     const kebabName = this.toKebabCase(componentName);
@@ -245,8 +310,12 @@ export default defineComponent({
     >
       ${innerContent}
     </svg>
-  \`,${standalone ? `
-  changeDetection: ChangeDetectionStrategy.OnPush` : ''}
+  \`,${
+    standalone
+      ? `
+  changeDetection: ChangeDetectionStrategy.OnPush`
+      : ''
+  }
 })
 export class ${componentName}Component {
   @Input() className: string = '';
@@ -258,7 +327,11 @@ export class ${componentName}Component {
 `;
   }
 
-  private generateSolidComponent(componentName: string, svgContent: string, typescript: boolean): string {
+  private generateSolidComponent(
+    componentName: string,
+    svgContent: string,
+    typescript: boolean
+  ): string {
     const { attributes, innerContent } = this.parseSVG(svgContent);
     return `import { Component, JSX } from 'solid-js';
 
@@ -290,7 +363,11 @@ export default ${componentName};
 `;
   }
 
-  private generatePreactComponent(componentName: string, svgContent: string, typescript: boolean): string {
+  private generatePreactComponent(
+    componentName: string,
+    svgContent: string,
+    typescript: boolean
+  ): string {
     const { attributes, innerContent } = this.parseSVG(svgContent);
     return `import { h, FunctionComponent } from 'preact';
 import { JSX } from 'preact/jsx-runtime';
@@ -333,7 +410,11 @@ export default ${componentName};
 `;
   }
 
-  private generateLitComponent(componentName: string, svgContent: string, typescript: boolean): string {
+  private generateLitComponent(
+    componentName: string,
+    svgContent: string,
+    typescript: boolean
+  ): string {
     const { attributes, innerContent } = this.parseSVG(svgContent);
     const kebabName = this.toKebabCase(componentName);
 
@@ -375,8 +456,12 @@ declare global {
 `;
   }
 
-  private generateVanillaComponent(componentName: string, svgContent: string, typescript: boolean): string {
-    const { attributes, innerContent} = this.parseSVG(svgContent);
+  private generateVanillaComponent(
+    componentName: string,
+    svgContent: string,
+    typescript: boolean
+  ): string {
+    const { attributes, innerContent } = this.parseSVG(svgContent);
     return `export interface ${componentName}Options {
   className?: string;
   width?: string | number;

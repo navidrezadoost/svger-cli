@@ -1,8 +1,8 @@
-import path from "path";
-import { toPascalCase, FileSystem } from "./utils/native.js";
-import { isLocked } from "./lock.js";
-import { readConfig } from "./config.js";
-import { reactTemplate } from "./templates/ComponentTemplate.js";
+import path from 'path';
+import { toPascalCase, FileSystem } from './utils/native.js';
+import { isLocked } from './lock.js';
+import { readConfig } from './config.js';
+import { reactTemplate } from './templates/ComponentTemplate.js';
 /**
  * Converts all SVG files from a source directory into React components and writes them to an output directory.
  *
@@ -16,13 +16,13 @@ export async function buildAll(config) {
     const srcDir = path.resolve(config.src);
     const outDir = path.resolve(config.out);
     if (!(await FileSystem.exists(srcDir))) {
-        console.error("❌ Source folder not found:", srcDir);
+        console.error('❌ Source folder not found:', srcDir);
         process.exit(1);
     }
     await FileSystem.ensureDir(outDir);
-    const files = (await FileSystem.readDir(srcDir)).filter((f) => f.endsWith(".svg"));
+    const files = (await FileSystem.readDir(srcDir)).filter((f) => f.endsWith('.svg'));
     if (!files.length) {
-        console.log("⚠️  No SVG files found in", srcDir);
+        console.log('⚠️  No SVG files found in', srcDir);
         return;
     }
     for (const file of files) {
@@ -31,8 +31,8 @@ export async function buildAll(config) {
             console.log(`⚠️ Skipped locked file: ${file}`);
             continue;
         }
-        const svgContent = await FileSystem.readFile(svgPath, "utf-8");
-        const componentName = toPascalCase(file.replace(".svg", ""));
+        const svgContent = await FileSystem.readFile(svgPath, 'utf-8');
+        const componentName = toPascalCase(file.replace('.svg', ''));
         const componentCode = reactTemplate({
             componentName,
             svgContent,
@@ -41,10 +41,10 @@ export async function buildAll(config) {
             defaultFill: svgConfig.defaultFill,
         });
         const outFile = path.join(outDir, `${componentName}.tsx`);
-        await FileSystem.writeFile(outFile, componentCode, "utf-8");
+        await FileSystem.writeFile(outFile, componentCode, 'utf-8');
         console.log(`✅ Generated: ${componentName}.tsx`);
     }
-    console.log("🎉 All SVGs have been converted successfully!");
+    console.log('🎉 All SVGs have been converted successfully!');
 }
 /**
  * Generates a single React component from an SVG file.
@@ -62,11 +62,11 @@ export async function generateSVG({ svgFile, outDir, }) {
         return;
     }
     if (!(await FileSystem.exists(filePath))) {
-        console.error("❌ SVG file not found:", filePath);
+        console.error('❌ SVG file not found:', filePath);
         process.exit(1);
     }
-    const svgContent = await FileSystem.readFile(filePath, "utf-8");
-    const componentName = toPascalCase(path.basename(svgFile, ".svg"));
+    const svgContent = await FileSystem.readFile(filePath, 'utf-8');
+    const componentName = toPascalCase(path.basename(svgFile, '.svg'));
     const componentCode = reactTemplate({
         componentName,
         svgContent,
@@ -77,6 +77,6 @@ export async function generateSVG({ svgFile, outDir, }) {
     const outputFolder = path.resolve(outDir);
     await FileSystem.ensureDir(outputFolder);
     const outFile = path.join(outputFolder, `${componentName}.tsx`);
-    await FileSystem.writeFile(outFile, componentCode, "utf-8");
+    await FileSystem.writeFile(outFile, componentCode, 'utf-8');
     console.log(`✅ Generated: ${componentName}.tsx`);
 }

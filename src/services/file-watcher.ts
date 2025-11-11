@@ -31,29 +31,36 @@ export class FileWatcherService {
     options: Partial<WatchOptions> = {}
   ): Promise<string> {
     const resolvedPath = path.resolve(watchPath);
-    
+
     if (!(await FileSystem.exists(resolvedPath))) {
       throw new Error(`Watch path does not exist: ${resolvedPath}`);
     }
 
     const watchId = `watch-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
+
     try {
-      const watcher = fs.watch(resolvedPath, {
-        persistent: true,
-        recursive: false
-      }, (eventType, filename) => {
-        if (filename) {
-          this.handleFileEvent(watchId, eventType, path.join(resolvedPath, filename));
+      const watcher = fs.watch(
+        resolvedPath,
+        {
+          persistent: true,
+          recursive: false,
+        },
+        (eventType, filename) => {
+          if (filename) {
+            this.handleFileEvent(
+              watchId,
+              eventType,
+              path.join(resolvedPath, filename)
+            );
+          }
         }
-      });
+      );
 
       this.watchers.set(watchId, watcher);
       this.eventHandlers.set(watchId, []);
 
       logger.info(`Started watching directory: ${resolvedPath}`);
       return watchId;
-
     } catch (error) {
       logger.error(`Failed to start watching ${resolvedPath}:`, error);
       throw error;
@@ -63,14 +70,18 @@ export class FileWatcherService {
   /**
    * Handle file system events with debouncing
    */
-  private handleFileEvent(watchId: string, eventType: string, filePath: string): void {
+  private handleFileEvent(
+    watchId: string,
+    eventType: string,
+    filePath: string
+  ): void {
     // Only process SVG files
     if (!filePath.endsWith('.svg')) {
       return;
     }
 
     const debounceKey = `${watchId}-${filePath}`;
-    
+
     // Clear existing timer
     if (this.debounceTimers.has(debounceKey)) {
       clearTimeout(this.debounceTimers.get(debounceKey)!);
@@ -88,7 +99,11 @@ export class FileWatcherService {
   /**
    * Process debounced file events
    */
-  private async processFileEvent(watchId: string, eventType: string, filePath: string): Promise<void> {
+  private async processFileEvent(
+    watchId: string,
+    eventType: string,
+    filePath: string
+  ): Promise<void> {
     try {
       const exists = await FileSystem.exists(filePath);
       let actualEventType: FileWatchEvent['type'];
@@ -103,14 +118,15 @@ export class FileWatcherService {
       const event: FileWatchEvent = {
         type: actualEventType,
         filePath,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
-      logger.debug(`File event: ${actualEventType} - ${path.basename(filePath)}`);
-      
+      logger.debug(
+        `File event: ${actualEventType} - ${path.basename(filePath)}`
+      );
+
       // Emit event to registered handlers
       this.emitEvent(watchId, event);
-
     } catch (error) {
       logger.error(`Error processing file event for ${filePath}:`, error);
     }
@@ -119,7 +135,10 @@ export class FileWatcherService {
   /**
    * Register an event handler for a specific watcher
    */
-  public onFileEvent(watchId: string, handler: (event: FileWatchEvent) => void | Promise<void>): void {
+  public onFileEvent(
+    watchId: string,
+    handler: (event: FileWatchEvent) => void | Promise<void>
+  ): void {
     const handlers = this.eventHandlers.get(watchId) || [];
     handlers.push(handler);
     this.eventHandlers.set(watchId, handlers);
@@ -130,7 +149,7 @@ export class FileWatcherService {
    */
   private emitEvent(watchId: string, event: FileWatchEvent): void {
     const handlers = this.eventHandlers.get(watchId) || [];
-    
+
     for (const handler of handlers) {
       try {
         const result = handler(event);
@@ -155,7 +174,7 @@ export class FileWatcherService {
       watcher.close();
       this.watchers.delete(watchId);
       this.eventHandlers.delete(watchId);
-      
+
       // Clear any pending debounce timers for this watcher
       for (const [key, timer] of this.debounceTimers.entries()) {
         if (key.startsWith(`${watchId}-`)) {
@@ -163,7 +182,7 @@ export class FileWatcherService {
           this.debounceTimers.delete(key);
         }
       }
-      
+
       logger.info(`Stopped watching: ${watchId}`);
     }
   }
@@ -194,7 +213,7 @@ export class FileWatcherService {
     return {
       activeWatchers: this.watchers.size,
       pendingEvents: this.debounceTimers.size,
-      totalHandlers
+      totalHandlers,
     };
   }
 
@@ -203,13 +222,13 @@ export class FileWatcherService {
    */
   public shutdown(): void {
     this.stopAllWatchers();
-    
+
     // Clear all debounce timers
     for (const timer of this.debounceTimers.values()) {
       clearTimeout(timer);
     }
     this.debounceTimers.clear();
-    
+
     logger.info('File watcher service shutdown complete');
   }
 }
