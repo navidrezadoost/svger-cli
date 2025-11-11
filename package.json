@@ -25,6 +25,21 @@
     "components"
   ],
   "author": "faeze mohades",
+  "contributors": [
+    {
+      "name": "Navid Rezadoost",
+      "email": "navidrezadoost07@gmail.com",
+      "url": "https://www.linkedin.com/in/navid-rezadoost-5526b9173/?originalSubdomain=ir"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/faezemohades/svger-cli.git"
+  },
+  "homepage": "https://github.com/faezemohades/svger-cli#readme",
+  "bugs": {
+    "url": "https://github.com/faezemohades/svger-cli/issues"
+  },
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
