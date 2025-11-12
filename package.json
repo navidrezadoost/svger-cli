@@ -1,6 +1,6 @@
 {
   "name": "svger-cli",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Enterprise-grade, zero-dependency SVG to component converter supporting React, Vue, Angular, Svelte, Solid, Lit, Preact & Vanilla. Features auto-generated TypeScript exports, responsive design, themes, performance optimization & 85% faster processing than SVGR.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
