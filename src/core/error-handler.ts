@@ -43,23 +43,26 @@ export class SVGErrorHandler {
     context?: Record<string, any>
   ): Promise<{ recovered: boolean; result?: any }> {
     const svgError = this.normalizeError(error, context);
-    
+
     // Log error based on severity
     this.logError(svgError);
-    
+
     // Add to history
     this.addToHistory(svgError);
-    
+
     // Attempt recovery
     const recoveryResult = await this.attemptRecovery(svgError, context);
-    
+
     return recoveryResult;
   }
 
   /**
    * Register a custom error recovery strategy
    */
-  public registerRecoveryStrategy(errorCode: string, strategy: ErrorRecoveryStrategy): void {
+  public registerRecoveryStrategy(
+    errorCode: string,
+    strategy: ErrorRecoveryStrategy
+  ): void {
     this.recoveryStrategies.set(errorCode, strategy);
     logger.debug(`Recovery strategy registered for error code: ${errorCode}`);
   }
@@ -85,7 +88,7 @@ export class SVGErrorHandler {
       total: this.errorHistory.length,
       bySeverity,
       byCode,
-      recentErrors: this.errorHistory.slice(-10)
+      recentErrors: this.errorHistory.slice(-10),
     };
   }
 
@@ -99,7 +102,10 @@ export class SVGErrorHandler {
 
   // Private methods
 
-  private normalizeError(error: Error | SVGError, context?: Record<string, any>): SVGError {
+  private normalizeError(
+    error: Error | SVGError,
+    context?: Record<string, any>
+  ): SVGError {
     if ('code' in error && 'severity' in error) {
       return error as SVGError;
     }
@@ -112,13 +118,13 @@ export class SVGErrorHandler {
       severity: this.determineSeverity(regularError),
       context: context || {},
       timestamp: Date.now(),
-      stack: regularError.stack
+      stack: regularError.stack,
     };
   }
 
   private categorizeError(error: Error): string {
     const message = error.message.toLowerCase();
-    
+
     if (message.includes('file not found') || message.includes('enoent')) {
       return 'FILE_NOT_FOUND';
     }
@@ -137,13 +143,13 @@ export class SVGErrorHandler {
     if (message.includes('svg') && message.includes('invalid')) {
       return 'INVALID_SVG';
     }
-    
+
     return 'UNKNOWN_ERROR';
   }
 
   private determineSeverity(error: Error): SVGError['severity'] {
     const message = error.message.toLowerCase();
-    
+
     if (message.includes('critical') || message.includes('fatal')) {
       return 'critical';
     }
@@ -153,13 +159,13 @@ export class SVGErrorHandler {
     if (message.includes('parse') || message.includes('invalid')) {
       return 'medium';
     }
-    
+
     return 'low';
   }
 
   private logError(error: SVGError): void {
     const logMessage = `[${error.code}] ${error.message}`;
-    
+
     switch (error.severity) {
       case 'critical':
         logger.error('CRITICAL:', logMessage, error.context);
@@ -178,7 +184,7 @@ export class SVGErrorHandler {
 
   private addToHistory(error: SVGError): void {
     this.errorHistory.push(error);
-    
+
     // Maintain history size limit
     if (this.errorHistory.length > this.maxHistorySize) {
       this.errorHistory = this.errorHistory.slice(-this.maxHistorySize);
@@ -190,7 +196,7 @@ export class SVGErrorHandler {
     context?: any
   ): Promise<{ recovered: boolean; result?: any }> {
     const strategy = this.recoveryStrategies.get(error.code);
-    
+
     if (!strategy) {
       logger.debug(`No recovery strategy found for error code: ${error.code}`);
       return { recovered: false };
@@ -198,16 +204,17 @@ export class SVGErrorHandler {
 
     try {
       if (!strategy.canRecover(error)) {
-        logger.debug(`Recovery strategy declined to handle error: ${error.code}`);
+        logger.debug(
+          `Recovery strategy declined to handle error: ${error.code}`
+        );
         return { recovered: false };
       }
 
       logger.info(`Attempting recovery for error: ${error.code}`);
       const result = await strategy.recover(error, context);
-      
+
       logger.success(`Successfully recovered from error: ${error.code}`);
       return { recovered: true, result };
-      
     } catch (recoveryError) {
       logger.error(`Recovery failed for error ${error.code}:`, recoveryError);
       return { recovered: false };
@@ -217,40 +224,43 @@ export class SVGErrorHandler {
   private setupDefaultStrategies(): void {
     // File not found recovery
     this.registerRecoveryStrategy('FILE_NOT_FOUND', {
-      canRecover: (error) => error.context?.filePath && error.context?.canSkip === true,
+      canRecover: error =>
+        error.context?.filePath && error.context?.canSkip === true,
       recover: async (error, context) => {
         logger.warn(`Skipping missing file: ${error.context?.filePath}`);
         return { skipped: true, filePath: error.context?.filePath };
-      }
+      },
     });
 
     // Invalid SVG recovery
     this.registerRecoveryStrategy('INVALID_SVG', {
-      canRecover: (error) => error.context?.svgContent,
+      canRecover: error => error.context?.svgContent,
       recover: async (error, context) => {
         logger.info('Attempting to clean invalid SVG content');
-        
+
         // Basic SVG cleanup
         let cleaned = error.context?.svgContent || '';
-        
+
         // Remove potentially problematic content
         cleaned = cleaned
           .replace(/<script[\s\S]*?<\/script>/gi, '') // Remove scripts
-          .replace(/<style[\s\S]*?<\/style>/gi, '')   // Remove styles
-          .replace(/on\w+="[^"]*"/gi, '')             // Remove event handlers
-          .replace(/javascript:[^"']*/gi, '');        // Remove javascript: URLs
-        
+          .replace(/<style[\s\S]*?<\/style>/gi, '') // Remove styles
+          .replace(/on\w+="[^"]*"/gi, '') // Remove event handlers
+          .replace(/javascript:[^"']*/gi, ''); // Remove javascript: URLs
+
         return { cleanedContent: cleaned };
-      }
+      },
     });
 
     // Permission denied recovery
     this.registerRecoveryStrategy('PERMISSION_DENIED', {
-      canRecover: (error) => error.context?.alternative,
+      canRecover: error => error.context?.alternative,
       recover: async (error, context) => {
-        logger.warn(`Using alternative path due to permission issue: ${error.context?.alternative}`);
+        logger.warn(
+          `Using alternative path due to permission issue: ${error.context?.alternative}`
+        );
         return { alternativePath: error.context?.alternative };
-      }
+      },
     });
 
     logger.debug('Default error recovery strategies loaded');
@@ -271,17 +281,17 @@ export async function withErrorHandling<T>(
     return await operation();
   } catch (error) {
     const result = await errorHandler.handleError(error as Error, context);
-    
+
     if (result.recovered) {
       return result.result as T;
     }
-    
+
     // Re-throw if not recovered and severity is high
     const svgError = error as any;
     if (svgError.severity === 'high' || svgError.severity === 'critical') {
       throw error;
     }
-    
+
     return null;
   }
 }
@@ -290,14 +300,18 @@ export async function withErrorHandling<T>(
  * Decorator for automatic error handling
  */
 export function handleErrors(context?: Record<string, any>) {
-  return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  return function (
+    target: any,
+    propertyName: string,
+    descriptor: PropertyDescriptor
+  ) {
     const method = descriptor.value;
-    
+
     descriptor.value = async function (...args: any[]) {
-      return withErrorHandling(
-        () => method.apply(this, args),
-        { method: propertyName, ...context }
-      );
+      return withErrorHandling(() => method.apply(this, args), {
+        method: propertyName,
+        ...context,
+      });
     };
   };
 }

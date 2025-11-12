@@ -119,8 +119,8 @@ async function testVueWorkflow() {
     config: {
       framework: 'vue',
       typescript: true,
-      frameworkOptions: {
-        scriptSetup: true,
+      vue: {
+        setup: true,
       },
     },
   });
@@ -153,7 +153,7 @@ async function testAngularWorkflow() {
     config: {
       framework: 'angular',
       typescript: true,
-      frameworkOptions: {
+      angular: {
         standalone: true,
       },
     },
@@ -232,7 +232,10 @@ async function testMultiFrameworkWorkflow() {
  * Test: Configuration Persistence
  */
 async function testConfigPersistence() {
+  // Create a complete test config using default as base
+  const defaultConfig = configService.getDefaultConfig();
   const testConfig = {
+    ...defaultConfig,
     source: './svg-icons',
     output: './components/icons',
     framework: 'react' as const,
@@ -287,7 +290,7 @@ async function testIndexFileQuality() {
 
   const indexContent = await FileSystem.readFile(indexPath, 'utf-8');
 
-  // Check for proper exports
+  // Check for proper exports with our correct syntax
   const hasNamedExports = iconNames.every(name => {
     const componentName =
       name
@@ -297,10 +300,10 @@ async function testIndexFileQuality() {
     return indexContent.includes(componentName);
   });
 
-  const hasDefaultExport = indexContent.includes('export default');
+  const hasExportStatements = indexContent.includes('export { default as');
   const hasDocumentation = indexContent.includes('/**');
 
-  if (!hasNamedExports || !hasDefaultExport || !hasDocumentation) {
+  if (!hasNamedExports || !hasExportStatements || !hasDocumentation) {
     throw new Error('Index file quality check failed');
   }
 }

@@ -1,16 +1,36 @@
-# SVGER-CLI v2.0 - Enterprise SVG Processing Framework
+# SVGER-CLI v2.0.5 - Enterprise SVG Processing Framework
 
 [![npm version](https://badge.fury.io/js/svger-cli.svg)](https://badge.fury.io/js/svger-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-green.svg)](https://www.npmjs.com/package/svger-cli)
 
-> **The most advanced, zero-dependency SVG to component converter, now with first-class support for 8+ UI frameworks. Enjoy enterprise-grade performance, auto-generated exports, and a unified workflow for your entire design system.**
+> **The most advanced, zero-dependency SVG to component converter, now with first-class support for
+> 8+ UI frameworks. Enjoy enterprise-grade performance, auto-generated exports, and a unified
+> workflow for your entire design system.**
 
 ## 🆕 **Latest Developer Experience Improvements**
 
+### **🔧 Recent Critical Fixes (v2.0.5)**
+
+- **🆕 CRITICAL FIX: PascalCase Component Naming**: Fixed issue where files like "ArrowBendDownLeft.svg" were incorrectly converted to "Arrowbenddownleft.tsx" instead of preserving the correct "ArrowBendDownLeft.tsx" format
+- **✅ Fixed TypeScript Duplicate Export Errors**: Resolved duplicate export issues in
+  auto-generated index files
+- **✅ Enhanced PascalCase Preservation**: Improved filename casing preservation (e.g.,
+  "ArrowBendDownLeft.svg" → "ArrowBendDownLeft.tsx")
+- **✅ Comprehensive Configuration Schema**: Complete implementation of all promised configuration
+  features
+- **✅ Framework-Specific Configuration**: Full React, Vue, and Angular configuration support
+- **✅ Advanced Performance Options**: Parallel processing, caching, and memory optimization
+- **✅ Enhanced Error Handling**: Robust error strategies with retry mechanisms
+- **✅ Responsive Design System**: Built-in responsive breakpoints and values
+- **✅ Theme System Integration**: Light/dark mode with CSS variable support
+
 ### **Auto-Generated index.ts Exports (Enhanced)**
-Automatically generates clean index.ts files with **unified export pattern** for maximum flexibility:
+
+Automatically generates clean index.ts files with **unified export pattern** for maximum
+flexibility:
+
 ```typescript
 // Auto-generated in your output directory
 // Named exports for tree-shaking
@@ -25,6 +45,7 @@ export default { ArrowLeft, ArrowRight };
 ```
 
 **Import flexibility:**
+
 ```typescript
 // Named imports (tree-shaking friendly)
 import { ArrowLeft, ArrowRight } from './components';
@@ -38,32 +59,40 @@ const { ArrowLeft } = Icons;
 ```
 
 ### **Enhanced Props & Styling**
+
 Components now support comprehensive prop interfaces with React.forwardRef:
+
 ```typescript
 <Icon className="custom-class" style={{ color: 'red' }} size={32} />
 ```
 
 ### **Comprehensive File Protection**
+
 Lock files to prevent accidental modifications during builds:
+
 ```bash
 svger-cli lock ./icons/critical-logo.svg  # Protects during all operations
 ```
 
 ## 🚀 **Key Features & Competitive Advantages**
 
-| **Feature** | **SVGER-CLI v2.0** | **SVGR (React)** | **vite-svg-loader (Vue)** | **svelte-svg (Svelte)** | **SVGO** |
-|-------------|--------------------|------------------|-------------------------|-------------------------|----------|
-| **Dependencies** | ✅ **Zero** | ❌ 15+ deps | ❌ 9+ deps | ❌ 7+ deps | ❌ 8+ deps |
-| **Auto-Generated Exports** | ✅ **Full Support** | ❌ Manual | ❌ Manual | ❌ Manual | ❌ N/A |
-| **Framework Support** | ✅ **8+ Frameworks** | ❌ React only | ❌ Vue only | ❌ Svelte only | ❌ N/A |
-| **Advanced Props** | ✅ **Full Support** | ❌ Basic | ❌ Basic | ❌ Basic | ❌ N/A |
-| **File Protection** | ✅ **Lock System** | ❌ None | ❌ None | ❌ None | ❌ None |
-| **Performance** | ✅ **Up to 85% Faster** | Standard | Slow | Standard | Fast (Optimization) |
-| **Bundle Size** | ✅ **~2MB** | ~18.7MB | ~14.2MB | ~11.8MB | ~12.3MB |
-| **Enterprise Features** | ✅ **Full Suite** | ❌ Limited | ❌ None | ❌ None | ❌ None |
-| **TypeScript** | ✅ **Native** | Plugin | Limited | Limited | None |
-| **Batch Processing** | ✅ **Optimized** | Basic | None | None | None |
-| **Plugin System** | ✅ **Extensible** | Limited | None | None | None |
+| **Feature**                | **SVGER-CLI v2.0.4**       | **SVGR (React)** | **vite-svg-loader (Vue)** | **svelte-svg (Svelte)** | **SVGO**            |
+| -------------------------- | -------------------------- | ---------------- | ------------------------- | ----------------------- | ------------------- |
+| **Dependencies**           | ✅ **Zero**                | ❌ 15+ deps      | ❌ 9+ deps                | ❌ 7+ deps              | ❌ 8+ deps          |
+| **Auto-Generated Exports** | ✅ **Full Support**        | ❌ Manual        | ❌ Manual                 | ❌ Manual               | ❌ N/A              |
+| **Framework Support**      | ✅ **8+ Frameworks**       | ❌ React only    | ❌ Vue only               | ❌ Svelte only          | ❌ N/A              |
+| **Advanced Props**         | ✅ **Full Support**        | ❌ Basic         | ❌ Basic                  | ❌ Basic                | ❌ N/A              |
+| **File Protection**        | ✅ **Lock System**         | ❌ None          | ❌ None                   | ❌ None                 | ❌ None             |
+| **Performance**            | ✅ **Up to 85% Faster**    | Standard         | Slow                      | Standard                | Fast (Optimization) |
+| **Bundle Size**            | ✅ **~2MB**                | ~18.7MB          | ~14.2MB                   | ~11.8MB                 | ~12.3MB             |
+| **Enterprise Features**    | ✅ **Full Suite**          | ❌ Limited       | ❌ None                   | ❌ None                 | ❌ None             |
+| **TypeScript**             | ✅ **Native**              | Plugin           | Limited                   | Limited                 | None                |
+| **Batch Processing**       | ✅ **Optimized**           | Basic            | None                      | None                    | None                |
+| **Plugin System**          | ✅ **Extensible**          | Limited          | None                      | None                    | None                |
+| **Configuration Schema**   | ✅ **28 Options**          | ❌ 8 Options     | ❌ 4 Options              | ❌ 3 Options            | ❌ N/A              |
+| **Responsive Design**      | ✅ **Built-in**            | ❌ Manual        | ❌ None                   | ❌ None                 | ❌ None             |
+| **Theme System**           | ✅ **Auto Dark/Light**     | ❌ Manual        | ❌ None                   | ❌ None                 | ❌ None             |
+| **Error Handling**         | ✅ **Advanced Strategies** | ❌ Basic         | ❌ Basic                  | ❌ Basic                | ❌ Basic            |
 
 ---
 
@@ -442,14 +471,16 @@ const recommendations = [
 
 ## � **Why SVGER-CLI? The Zero-Dependency Advantage**
 
-In a landscape cluttered with heavy, single-framework tools, **SVGER-CLI** stands alone. It's engineered from the ground up with a single philosophy: **native, zero-dependency performance**.
+In a landscape cluttered with heavy, single-framework tools, **SVGER-CLI** stands alone. It's
+engineered from the ground up with a single philosophy: **native, zero-dependency performance**.
 
 - **No `node_modules` bloat**: Drastically smaller footprint.
 - **Faster installs**: Perfect for CI/CD and rapid development.
 - **Unmatched security**: No third-party vulnerabilities.
 - **Cross-framework consistency**: The same powerful engine for every framework.
 
-This lean approach delivers up to **85% faster processing** and a **90% smaller bundle size** compared to alternatives that rely on dozens of transitive dependencies.
+This lean approach delivers up to **85% faster processing** and a **90% smaller bundle size**
+compared to alternatives that rely on dozens of transitive dependencies.
 
 ---
 
@@ -499,7 +530,8 @@ npm install --save-dev svger-cli
 
 ## 🌐 **Multi-Framework Usage Guide**
 
-SVGER-CLI brings a unified, powerful experience to every major framework. Select your target with the `--framework` flag.
+SVGER-CLI brings a unified, powerful experience to every major framework. Select your target with
+the `--framework` flag.
 
 ### **React**
 
@@ -510,6 +542,7 @@ svger-cli build ./my-svgs ./react-components --framework react
 ```
 
 **Generated React Component (`.tsx`):**
+
 ```tsx
 import * as React from 'react';
 
@@ -519,13 +552,7 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
 
 const MyIcon: React.FC<IconProps> = React.memo(
   React.forwardRef<SVGSVGElement, IconProps>(({ size = 24, ...props }, ref) => (
-    <svg
-      ref={ref}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      {...props}
-    >
+    <svg ref={ref} width={size} height={size} viewBox="0 0 24 24" {...props}>
       {/* SVG content */}
     </svg>
   ))
@@ -548,6 +575,7 @@ svger-cli build ./my-svgs ./vue-components --framework vue
 ```
 
 **Generated Vue Component (`.vue`):**
+
 ```vue
 <script setup lang="ts">
 import { computed } from 'vue';
@@ -564,12 +592,7 @@ const sizeValue = computed(() => `${props.size}px`);
 </script>
 
 <template>
-  <svg
-    :width="sizeValue"
-    :height="sizeValue"
-    viewBox="0 0 24 24"
-    v-bind="$attrs"
-  >
+  <svg :width="sizeValue" :height="sizeValue" viewBox="0 0 24 24" v-bind="$attrs">
     {/* SVG content */}
   </svg>
 </template>
@@ -588,6 +611,7 @@ svger-cli build ./my-svgs ./angular-components --framework angular
 ```
 
 **Generated Angular Component (`.component.ts`):**
+
 ```typescript
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
@@ -619,19 +643,13 @@ svger-cli build ./my-svgs ./svelte-components --framework svelte
 ```
 
 **Generated Svelte Component (`.svelte`):**
+
 ```html
 <script lang="ts">
   export let size: number | string = 24;
 </script>
 
-<svg
-  width={size}
-  height={size}
-  viewBox="0 0 24 24"
-  {...$$restProps}
->
-  {/* SVG content */}
-</svg>
+<svg width="{size}" height="{size}" viewBox="0 0 24 24" {...$$restProps}>{/* SVG content */}</svg>
 ```
 
 ### **Solid**
@@ -643,6 +661,7 @@ svger-cli build ./my-svgs ./solid-components --framework solid
 ```
 
 **Generated Solid Component (`.tsx`):**
+
 ```tsx
 import type { Component, JSX } from 'solid-js';
 
@@ -650,14 +669,9 @@ interface IconProps extends JSX.SvgSVGAttributes<SVGSVGElement> {
   size?: number | string;
 }
 
-const MyIcon: Component<IconProps> = (props) => {
+const MyIcon: Component<IconProps> = props => {
   return (
-    <svg
-      width={props.size || 24}
-      height={props.size || 24}
-      viewBox="0 0 24 24"
-      {...props}
-    >
+    <svg width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" {...props}>
       {/* SVG content */}
     </svg>
   );
@@ -675,6 +689,7 @@ svger-cli build ./my-svgs ./lit-components --framework lit
 ```
 
 **Generated Lit Component (`.ts`):**
+
 ```ts
 import { LitElement, html, svg } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
@@ -686,11 +701,7 @@ export class MyIcon extends LitElement {
 
   render() {
     return html`
-      <svg
-        width=${this.size}
-        height=${this.size}
-        viewBox="0 0 24 24"
-      >
+      <svg width=${this.size} height=${this.size} viewBox="0 0 24 24">
         ${svg`{/* SVG content */}`}
       </svg>
     `;
@@ -707,6 +718,7 @@ svger-cli build ./my-svgs ./preact-components --framework preact
 ```
 
 **Generated Preact Component (`.tsx`):**
+
 ```tsx
 import { h } from 'preact';
 import type { FunctionalComponent } from 'preact';
@@ -717,12 +729,7 @@ interface IconProps extends h.JSX.SVGAttributes<SVGSVGElement> {
 
 const MyIcon: FunctionalComponent<IconProps> = ({ size = 24, ...props }) => {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      {...props}
-    >
+    <svg width={size} height={size} viewBox="0 0 24 24" {...props}>
       {/* SVG content */}
     </svg>
   );
@@ -740,6 +747,7 @@ svger-cli build ./my-svgs ./vanilla-components --framework vanilla
 ```
 
 **Generated Vanilla Component (`.ts`):**
+
 ```ts
 interface IconOptions {
   size?: number | string;
@@ -764,6 +772,7 @@ export function createMyIcon(options: IconOptions = {}): SVGSVGElement {
 ## 🔧 **Comprehensive CLI Reference**
 
 ### **1. Initialize Command**
+
 Set up SVGER-CLI configuration for your project.
 
 ```bash
@@ -771,6 +780,7 @@ svger-cli init [options]
 ```
 
 **Options:**
+
 - `--framework <type>` - Target framework (react|vue|svelte|angular|solid|preact|lit|vanilla)
 - `--typescript` - Enable TypeScript generation (default: true)
 - `--src <path>` - Source directory for SVG files (default: ./src/assets/svg)
@@ -778,6 +788,7 @@ svger-cli init [options]
 - `--interactive` - Interactive configuration wizard
 
 **Examples:**
+
 ```bash
 # Initialize with React + TypeScript
 svger-cli init --framework react --typescript
@@ -790,40 +801,114 @@ svger-cli init --interactive
 ```
 
 **Generated Configuration (`.svgerconfig.json`):**
+
 ```json
 {
   "source": "./src/assets/svg",
-  "output": "./src/components/icons", 
+  "output": "./src/components/icons",
   "framework": "react",
   "typescript": true,
+  "componentType": "functional",
+
   "watch": false,
   "parallel": true,
   "batchSize": 10,
+  "maxConcurrency": 4,
+  "cache": true,
+
   "defaultWidth": 24,
   "defaultHeight": 24,
   "defaultFill": "currentColor",
+  "defaultStroke": "none",
+  "defaultStrokeWidth": 1,
+
   "exclude": ["logo.svg"],
+  "include": ["icons/**", "illustrations/**"],
+
   "styleRules": {
     "fill": "inherit",
-    "stroke": "none"
+    "stroke": "none",
+    "strokeWidth": "1",
+    "opacity": "1"
   },
+
   "responsive": {
-    "breakpoints": ["sm", "md", "lg"],
+    "breakpoints": ["sm", "md", "lg", "xl"],
     "values": {
-      "width": ["20px", "24px", "32px"]
+      "width": ["16px", "20px", "24px", "32px"],
+      "height": ["16px", "20px", "24px", "32px"]
     }
   },
+
   "theme": {
-    "mode": "light",
+    "mode": "auto",
     "variables": {
-      "primary": "#007bff",
-      "secondary": "#6c757d"
+      "primary": "currentColor",
+      "secondary": "#6b7280",
+      "accent": "#3b82f6",
+      "background": "#ffffff",
+      "foreground": "#000000"
     }
+  },
+
+  "animations": ["fadeIn", "slideIn", "bounce"],
+
+  "plugins": [
+    {
+      "name": "svg-optimizer",
+      "options": {
+        "removeComments": true,
+        "removeMetadata": true
+      }
+    }
+  ],
+
+  "errorHandling": {
+    "strategy": "continue",
+    "maxRetries": 3,
+    "timeout": 30000
+  },
+
+  "performance": {
+    "optimization": "balanced",
+    "memoryLimit": 512,
+    "cacheTimeout": 3600000
+  },
+
+  "outputConfig": {
+    "naming": "pascal",
+    "extension": "tsx",
+    "directory": "./src/components/icons"
+  },
+
+  "react": {
+    "componentType": "functional",
+    "forwardRef": true,
+    "memo": false,
+    "propsInterface": "SVGProps",
+    "styledComponents": false,
+    "cssModules": false
+  },
+
+  "vue": {
+    "api": "composition",
+    "setup": true,
+    "typescript": true,
+    "scoped": true,
+    "cssVariables": true
+  },
+
+  "angular": {
+    "standalone": true,
+    "signals": true,
+    "changeDetection": "OnPush",
+    "encapsulation": "Emulated"
   }
 }
 ```
 
 ### **2. Build Command**
+
 Convert SVG files to framework components with advanced processing.
 
 ```bash
@@ -831,6 +916,7 @@ svger-cli build [options]
 ```
 
 **Core Options:**
+
 - `--src <path>` - Source directory containing SVG files
 - `--out <path>` - Output directory for generated components
 - `--framework <type>` - Target framework for component generation
@@ -838,6 +924,7 @@ svger-cli build [options]
 - `--clean` - Clean output directory before building
 
 **Performance Options:**
+
 - `--parallel` - Enable parallel processing (default: true)
 - `--batch-size <number>` - Number of files per batch (default: 10)
 - `--max-concurrency <number>` - Maximum concurrent processes (default: CPU cores)
@@ -845,6 +932,7 @@ svger-cli build [options]
 - `--performance` - Display performance metrics
 
 **Framework-Specific Options:**
+
 - `--composition` - Use Vue Composition API (Vue only)
 - `--setup` - Use Vue script setup syntax (Vue only)
 - `--standalone` - Generate Angular standalone components (Angular only)
@@ -852,12 +940,14 @@ svger-cli build [options]
 - `--forward-ref` - Generate React forwardRef components (React only)
 
 **Styling Options:**
+
 - `--responsive` - Enable responsive design utilities
 - `--theme <mode>` - Apply theme mode (light|dark|auto)
 - `--styled-components` - Generate styled-components (React/Solid)
 - `--css-modules` - Enable CSS Modules support
 
 **Examples:**
+
 ```bash
 # Basic build
 svger-cli build --src ./icons --out ./components
@@ -904,6 +994,7 @@ svger-cli build \
 ```
 
 ### **3. Watch Command**
+
 Monitor directories for SVG changes and auto-generate components.
 
 ```bash
@@ -911,12 +1002,14 @@ svger-cli watch [options]
 ```
 
 **Options:**
+
 - All `build` command options
 - `--debounce <ms>` - Debounce time for file changes (default: 300ms)
 - `--ignore <patterns>` - Ignore file patterns (glob syntax)
 - `--verbose` - Detailed logging of file changes
 
 **Examples:**
+
 ```bash
 # Basic watch mode
 svger-cli watch --src ./icons --out ./components
@@ -942,6 +1035,7 @@ svger-cli watch \
 ```
 
 ### **4. Generate Command**
+
 Process specific SVG files with precise control.
 
 ```bash
@@ -949,14 +1043,17 @@ svger-cli generate <input> [options]
 ```
 
 **Arguments:**
+
 - `<input>` - SVG file path or glob pattern
 
 **Options:**
+
 - All `build` command options
 - `--name <string>` - Override component name
 - `--template <type>` - Component template (functional|class|forwardRef|memo)
 
 **Examples:**
+
 ```bash
 # Generate single component
 svger-cli generate ./icons/heart.svg --out ./components --name HeartIcon
@@ -984,6 +1081,7 @@ svger-cli generate ./icons/logo.svg \
 ```
 
 ### **5. Lock/Unlock Commands**
+
 Manage file protection during batch operations.
 
 ```bash
@@ -992,6 +1090,7 @@ svger-cli unlock <files...>
 ```
 
 **Examples:**
+
 ```bash
 # Lock specific files
 svger-cli lock ./icons/logo.svg ./icons/brand.svg
@@ -1007,6 +1106,7 @@ svger-cli unlock --all
 ```
 
 ### **6. Config Command**
+
 Manage project configuration dynamically.
 
 ```bash
@@ -1014,6 +1114,7 @@ svger-cli config [options]
 ```
 
 **Options:**
+
 - `--show` - Display current configuration
 - `--set <key=value>` - Set configuration value
 - `--get <key>` - Get specific configuration value
@@ -1021,6 +1122,7 @@ svger-cli config [options]
 - `--validate` - Validate current configuration
 
 **Examples:**
+
 ```bash
 # Show current config
 svger-cli config --show
@@ -1042,6 +1144,7 @@ svger-cli config --validate
 ```
 
 ### **7. Clean Command**
+
 Remove generated components and clean workspace.
 
 ```bash
@@ -1049,6 +1152,7 @@ svger-cli clean [options]
 ```
 
 **Options:**
+
 - `--out <path>` - Output directory to clean
 - `--cache` - Clear processing cache
 - `--logs` - Clear log files
@@ -1056,6 +1160,7 @@ svger-cli clean [options]
 - `--dry-run` - Preview what would be cleaned
 
 **Examples:**
+
 ```bash
 # Clean output directory
 svger-cli clean --out ./components
@@ -1071,6 +1176,7 @@ svger-cli clean --all --dry-run
 ```
 
 ### **8. Performance Command**
+
 Analyze and optimize processing performance.
 
 ```bash
@@ -1078,6 +1184,7 @@ svger-cli performance [options]
 ```
 
 **Options:**
+
 - `--analyze` - Analyze current project performance
 - `--benchmark` - Run performance benchmarks
 - `--memory` - Display memory usage statistics
@@ -1085,6 +1192,7 @@ svger-cli performance [options]
 - `--optimize` - Apply performance optimizations
 
 **Examples:**
+
 ```bash
 # Analyze performance
 svger-cli performance --analyze
@@ -1107,6 +1215,7 @@ svger-cli performance --optimize
 ## 💻 **Usage Examples: From Simple to Complex**
 
 ### **🔥 Example 1: Quick Start (Simplest)**
+
 Get started in 30 seconds:
 
 ```bash
@@ -1131,6 +1240,7 @@ function App() {
 ```
 
 **What happens:**
+
 - ✅ All SVGs in `./my-icons` converted to React components
 - ✅ Auto-generated `index.ts` with clean exports
 - ✅ Components support `className`, `style`, `size` props
@@ -1139,6 +1249,7 @@ function App() {
 ---
 
 ### **🚀 Example 2: Production Setup (Intermediate)**
+
 Professional setup with configuration and optimization:
 
 ```bash
@@ -1170,6 +1281,7 @@ svger-cli watch --debounce 500 --verbose
 ```
 
 **Generated Components:**
+
 ```typescript
 // Auto-generated: src/components/icons/ArrowLeft.tsx
 import React from 'react';
@@ -1180,8 +1292,8 @@ interface ArrowLeftProps extends React.SVGProps<SVGSVGElement> {
 
 const ArrowLeft = React.forwardRef<SVGSVGElement, ArrowLeftProps>(
   ({ size = 24, className, style, ...props }, ref) => {
-    const sizeValue = typeof size === 'string' 
-      ? { sm: 16, md: 24, lg: 32 }[size] 
+    const sizeValue = typeof size === 'string'
+      ? { sm: 16, md: 24, lg: 32 }[size]
       : size;
 
     return (
@@ -1206,6 +1318,7 @@ export default ArrowLeft;
 ```
 
 **Auto-generated index.ts:**
+
 ```typescript
 /**
  * Auto-generated icon exports
@@ -1224,23 +1337,24 @@ export default {
 ```
 
 **Usage in App:**
+
 ```typescript
 import { ArrowLeft, Home, User } from './components/icons';
 
 function Navigation() {
   return (
     <nav className="flex items-center space-x-4">
-      <ArrowLeft 
-        size="sm" 
-        className="text-gray-600 hover:text-gray-900" 
+      <ArrowLeft
+        size="sm"
+        className="text-gray-600 hover:text-gray-900"
         onClick={() => history.back()}
       />
-      <Home 
-        size={28} 
+      <Home
+        size={28}
         style={{ color: 'var(--primary-color)' }}
       />
-      <User 
-        className="w-6 h-6 text-blue-500" 
+      <User
+        className="w-6 h-6 text-blue-500"
         ref={userIconRef}
       />
     </nav>
@@ -1251,6 +1365,7 @@ function Navigation() {
 ---
 
 ### **🏗️ Example 3: Enterprise Multi-Framework (Advanced)**
+
 Complete enterprise setup supporting multiple frameworks:
 
 ```bash
@@ -1304,6 +1419,7 @@ svger-cli build \
 ```
 
 **React Components with Styled Components:**
+
 ```typescript
 // Generated: react-components/ArrowLeft.tsx
 import React from 'react';
@@ -1317,24 +1433,24 @@ interface ArrowLeftProps extends React.SVGProps<SVGSVGElement> {
 
 const StyledSVG = styled.svg<ArrowLeftProps>`
   ${({ theme, variant }) => css`
-    color: ${theme === 'dark' 
-      ? 'var(--icon-color-dark)' 
+    color: ${theme === 'dark'
+      ? 'var(--icon-color-dark)'
       : 'var(--icon-color-light)'};
-    
+
     ${variant === 'primary' && css`
       color: var(--primary-color);
     `}
-    
+
     ${variant === 'secondary' && css`
       color: var(--secondary-color);
     `}
-    
+
     ${variant === 'accent' && css`
       color: var(--accent-color);
     `}
-    
+
     transition: all 0.2s ease;
-    
+
     &:hover {
       transform: scale(1.1);
     }
@@ -1346,9 +1462,9 @@ const ArrowLeft = React.forwardRef<SVGSVGElement, ArrowLeftProps>(
     const sizeMap = {
       sm: 16, md: 24, lg: 32, xl: 40
     };
-    
+
     const sizeValue = typeof size === 'string' ? sizeMap[size] : size;
-    
+
     return (
       <StyledSVG
         ref={ref}
@@ -1360,9 +1476,9 @@ const ArrowLeft = React.forwardRef<SVGSVGElement, ArrowLeftProps>(
         theme={theme}
         {...props}
       >
-        <path 
-          d="M19 12H5M12 19l-7-7 7-7" 
-          stroke="currentColor" 
+        <path
+          d="M19 12H5M12 19l-7-7 7-7"
+          stroke="currentColor"
           strokeWidth="2"
         />
       </StyledSVG>
@@ -1375,6 +1491,7 @@ export default ArrowLeft;
 ```
 
 **Vue Composition API Components:**
+
 ```vue
 <!-- Generated: vue-components/ArrowLeft.vue -->
 <script setup lang="ts">
@@ -1385,7 +1502,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: 'md'
+  size: 'md',
 });
 
 const sizeValue = computed(() => {
@@ -1406,11 +1523,7 @@ const sizeValue = computed(() => {
     :style="style"
     v-bind="$attrs"
   >
-    <path 
-      d="M19 12H5M12 19l-7-7 7-7" 
-      stroke="currentColor" 
-      stroke-width="2"
-    />
+    <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" />
   </svg>
 </template>
 
@@ -1427,6 +1540,7 @@ svg:hover {
 ```
 
 **Angular Standalone Components:**
+
 ```typescript
 // Generated: angular-components/arrow-left.component.ts
 import { Component, Input, signal } from '@angular/core';
@@ -1445,34 +1559,30 @@ import { CommonModule } from '@angular/common';
       [class]="className"
       [style]="style"
     >
-      <path 
-        d="M19 12H5M12 19l-7-7 7-7" 
-        stroke="currentColor" 
-        stroke-width="2"
-      />
+      <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" />
     </svg>
   `,
-  styles: [`
-    svg {
-      color: var(--icon-color, currentColor);
-      transition: all 0.2s ease;
-    }
-    svg:hover {
-      transform: scale(1.05);
-    }
-  `]
+  styles: [
+    `
+      svg {
+        color: var(--icon-color, currentColor);
+        transition: all 0.2s ease;
+      }
+      svg:hover {
+        transform: scale(1.05);
+      }
+    `,
+  ],
 })
 export class ArrowLeftComponent {
   @Input() size: number | 'sm' | 'md' | 'lg' = 'md';
   @Input() className: string = '';
   @Input() style: Record<string, any> = {};
-  
+
   private sizeMap = { sm: 16, md: 24, lg: 32 };
-  
+
   computedSize = signal(() => {
-    return typeof this.size === 'string' 
-      ? this.sizeMap[this.size] 
-      : this.size;
+    return typeof this.size === 'string' ? this.sizeMap[this.size] : this.size;
   });
 }
 ```
@@ -1480,6 +1590,7 @@ export class ArrowLeftComponent {
 ---
 
 ### **🔒 Example 4: File Protection & Team Workflows (Advanced)**
+
 Protect critical files and manage team workflows:
 
 ```bash
@@ -1506,6 +1617,7 @@ svger-cli status --locked
 ```
 
 **Team Configuration (.svgerconfig.json):**
+
 ```json
 {
   "source": "./src/assets/icons",
@@ -1513,10 +1625,7 @@ svger-cli status --locked
   "framework": "react",
   "typescript": true,
   "forwardRef": true,
-  "lockedFiles": [
-    "./src/assets/icons/logo.svg",
-    "./src/assets/icons/brand-mark.svg"
-  ],
+  "lockedFiles": ["./src/assets/icons/logo.svg", "./src/assets/icons/brand-mark.svg"],
   "teamSettings": {
     "requireConfirmation": true,
     "lockByDefault": false,
@@ -1528,6 +1637,7 @@ svger-cli status --locked
 ---
 
 ### **⚡ Example 5: Performance Optimization (Expert)**
+
 Maximum performance setup for large-scale projects:
 
 ```bash
@@ -1567,6 +1677,7 @@ svger-cli performance --benchmark --compare-with v1.5.0
 ```
 
 **Performance Configuration:**
+
 ```json
 {
   "performance": {
@@ -1590,6 +1701,7 @@ svger-cli performance --benchmark --compare-with v1.5.0
 ```
 
 **Enterprise Usage Patterns:**
+
 ```typescript
 // Large-scale import pattern
 import IconLibrary from './components/icons';
@@ -1598,12 +1710,12 @@ import IconLibrary from './components/icons';
 const LazyIcon = React.lazy(() => import('./components/icons/SpecificIcon'));
 
 // Tree-shaking friendly imports
-import { 
+import {
   ArrowLeft,
   ArrowRight,
   Home,
   User,
-  Settings 
+  Settings
 } from './components/icons';
 
 // Dynamic icon loading
@@ -1618,6 +1730,7 @@ const DynamicIcon = ({ name, ...props }) => {
 ## 🎨 **Advanced Styling & Theming**
 
 ### **Responsive Design System**
+
 SVGER-CLI includes a comprehensive responsive design system:
 
 ```bash
@@ -1626,6 +1739,7 @@ svger-cli build --responsive --src ./icons --out ./components
 ```
 
 **Configuration:**
+
 ```json
 {
   "responsive": {
@@ -1640,6 +1754,7 @@ svger-cli build --responsive --src ./icons --out ./components
 ```
 
 **Generated React Component:**
+
 ```tsx
 interface ResponsiveIconProps extends React.SVGProps<SVGSVGElement> {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -1650,14 +1765,19 @@ const ResponsiveIcon: React.FC<ResponsiveIconProps> = ({ size = 'md', ...props }
     sm: { width: 16, height: 16 },
     md: { width: 20, height: 20 },
     lg: { width: 24, height: 24 },
-    xl: { width: 32, height: 32 }
+    xl: { width: 32, height: 32 },
   };
-  
-  return <svg {...sizeMap[size]} {...props}>...</svg>;
+
+  return (
+    <svg {...sizeMap[size]} {...props}>
+      ...
+    </svg>
+  );
 };
 ```
 
 ### **Theme System**
+
 Built-in dark/light theme support with CSS variables:
 
 ```bash
@@ -1666,6 +1786,7 @@ svger-cli build --theme dark --src ./icons --out ./components
 ```
 
 **Theme Configuration:**
+
 ```json
 {
   "theme": {
@@ -1680,6 +1801,7 @@ svger-cli build --theme dark --src ./icons --out ./components
 ```
 
 **Generated CSS Variables:**
+
 ```css
 :root {
   --icon-primary: #ffffff;
@@ -1694,6 +1816,7 @@ svger-cli build --theme dark --src ./icons --out ./components
 ```
 
 ### **Animation System**
+
 Built-in animation utilities:
 
 ```bash
@@ -1702,8 +1825,9 @@ svger-cli build --animations hover,focus --src ./icons --out ./components
 ```
 
 **Available Animations:**
+
 - `hover` - Hover state transitions
-- `focus` - Focus state transitions  
+- `focus` - Focus state transitions
 - `spin` - Continuous rotation
 - `pulse` - Pulsing opacity
 - `bounce` - Bouncing effect
@@ -1714,6 +1838,7 @@ svger-cli build --animations hover,focus --src ./icons --out ./components
 ## 💻 **Programmatic API**
 
 ### **Core API Usage**
+
 ```typescript
 import { SVGER, svgProcessor, frameworkTemplateEngine } from 'svger-cli';
 
@@ -1725,24 +1850,21 @@ await SVGER.processBatch(files, { parallel: true, batchSize: 20 });
 await SVGER.generateFrameworkComponent('IconName', svgContent, {
   framework: 'vue',
   composition: true,
-  typescript: true
+  typescript: true,
 });
 
 // Advanced processing
-const result = await svgProcessor.processSVGFile(
-  './icon.svg',
-  './components/',
-  {
-    framework: 'react',
-    typescript: true,
-    forwardRef: true,
-    responsive: true,
-    theme: 'dark'
-  }
-);
+const result = await svgProcessor.processSVGFile('./icon.svg', './components/', {
+  framework: 'react',
+  typescript: true,
+  forwardRef: true,
+  responsive: true,
+  theme: 'dark',
+});
 ```
 
 ### **Performance Engine API**
+
 ```typescript
 import { performanceEngine } from 'svger-cli';
 
@@ -1750,7 +1872,7 @@ import { performanceEngine } from 'svger-cli';
 const results = await performanceEngine.processBatch(files, {
   batchSize: 15,
   parallel: true,
-  maxConcurrency: 6
+  maxConcurrency: 6,
 });
 
 // Memory monitoring
@@ -1763,6 +1885,7 @@ const optimized = performanceEngine.optimizeSVGContent(svgContent, 'maximum');
 ```
 
 ### **Style Compiler API**
+
 ```typescript
 import { styleCompiler } from 'svger-cli';
 
@@ -1770,10 +1893,10 @@ import { styleCompiler } from 'svger-cli';
 const styles = styleCompiler.compileStyles({
   responsive: {
     width: ['20px', '24px', '32px'],
-    height: ['20px', '24px', '32px']
+    height: ['20px', '24px', '32px'],
   },
   theme: 'dark',
-  animations: ['hover', 'focus']
+  animations: ['hover', 'focus'],
 });
 
 // Generate CSS
@@ -1781,6 +1904,7 @@ const css = styleCompiler.generateCSS(styles);
 ```
 
 ### **Plugin System API**
+
 ```typescript
 import { pluginManager } from 'svger-cli';
 
@@ -1792,7 +1916,7 @@ pluginManager.registerPlugin({
     // Custom SVG processing logic
     return processedContent;
   },
-  validate: (options?: any) => true
+  validate: (options?: any) => true,
 });
 
 // Enable plugin
@@ -1801,7 +1925,7 @@ pluginManager.enablePlugin('custom-optimizer', { level: 'maximum' });
 // Process with plugins
 const processed = await pluginManager.processContent(svgContent, [
   { name: 'svg-optimizer', options: { level: 'balanced' } },
-  { name: 'custom-optimizer', options: { level: 'maximum' } }
+  { name: 'custom-optimizer', options: { level: 'maximum' } },
 ]);
 ```
 
@@ -1810,83 +1934,135 @@ const processed = await pluginManager.processContent(svgContent, [
 ## 🔧 **Configuration Reference**
 
 ### **Complete Configuration Schema**
+
+All configuration options are now fully implemented and tested:
+
 ```typescript
 interface SVGConfig {
   // Source & Output
-  source: string;                    // Input directory path
-  output: string;                    // Output directory path
-  
+  source: string; // Input directory path
+  output: string; // Output directory path
+
   // Framework Configuration
-  framework: FrameworkType;          // Target framework
-  typescript: boolean;               // Generate TypeScript
-  componentType: ComponentType;      // Component pattern
-  
+  framework: FrameworkType; // Target framework
+  typescript: boolean; // Generate TypeScript
+  componentType: ComponentType; // Component pattern
+
   // Processing Options
-  watch: boolean;                    // Enable file watching
-  parallel: boolean;                 // Enable parallel processing
-  batchSize: number;                 // Batch processing size
-  maxConcurrency: number;            // Maximum concurrent processes
-  cache: boolean;                    // Enable processing cache
-  
+  watch: boolean; // Enable file watching
+  parallel: boolean; // Enable parallel processing
+  batchSize: number; // Batch processing size
+  maxConcurrency: number; // Maximum concurrent processes
+  cache: boolean; // Enable processing cache
+
   // Default Properties
-  defaultWidth: number;              // Default SVG width
-  defaultHeight: number;             // Default SVG height
-  defaultFill: string;              // Default fill color
-  defaultStroke: string;            // Default stroke color
-  defaultStrokeWidth: number;       // Default stroke width
-  
+  defaultWidth: number; // Default SVG width
+  defaultHeight: number; // Default SVG height
+  defaultFill: string; // Default fill color
+  defaultStroke: string; // Default stroke color
+  defaultStrokeWidth: number; // Default stroke width
+
   // Styling Configuration
-  styleRules: {                     // CSS styling rules
+  styleRules: {
+    // CSS styling rules
     [property: string]: string;
   };
-  
-  responsive: {                     // Responsive design
+
+  responsive: {
+    // Responsive design
     breakpoints: string[];
     values: {
       [property: string]: string[];
     };
   };
-  
-  theme: {                          // Theme configuration
+
+  theme: {
+    // Theme configuration
     mode: 'light' | 'dark' | 'auto';
     variables: {
       [name: string]: string;
     };
   };
-  
-  animations: string[];             // Animation effects
-  
+
+  animations: string[]; // Animation effects
+
   // Advanced Options
-  plugins: PluginConfig[];          // Plugin configurations
-  exclude: string[];                // Files to exclude
-  include: string[];                // Files to include (overrides exclude)
-  
+  plugins: PluginConfig[]; // Plugin configurations
+  exclude: string[]; // Files to exclude
+  include: string[]; // Files to include (overrides exclude)
+
   // Error Handling
   errorHandling: {
     strategy: 'continue' | 'stop' | 'retry';
     maxRetries: number;
     timeout: number;
   };
-  
+
   // Performance Settings
   performance: {
     optimization: 'fast' | 'balanced' | 'maximum';
-    memoryLimit: number;            // Memory limit in MB
-    cacheTimeout: number;           // Cache timeout in ms
+    memoryLimit: number; // Memory limit in MB
+    cacheTimeout: number; // Cache timeout in ms
   };
-  
+
   // Output Customization
-  output: {
+  outputConfig: {
     naming: 'kebab' | 'pascal' | 'camel';
-    extension: string;              // File extension override
-    directory: string;              // Output directory structure
+    extension: string; // File extension override
+    directory: string; // Output directory structure
   };
+
+  // Framework-specific configurations
+  react?: ReactConfig;
+  vue?: VueConfig;
+  angular?: AngularConfig;
 }
 ```
+
+**✅ All 28 configuration properties are fully implemented and tested**
+
+### **Configuration Validation**
+
+SVGER-CLI includes comprehensive configuration validation to ensure all settings are correct:
+
+```bash
+# Validate current configuration
+svger-cli config --validate
+
+# Show detailed configuration analysis
+svger-cli config --show
+
+# Test configuration with sample files
+svger-cli build --dry-run --src ./test-svg --out ./test-output
+```
+
+**Validation Features:**
+
+- ✅ **Type Safety**: All configuration options are type-checked
+- ✅ **Framework Compatibility**: Validates framework-specific options
+- ✅ **Performance Settings**: Ensures optimal performance configuration
+- ✅ **Path Validation**: Verifies source and output directories
+- ✅ **Plugin Validation**: Checks plugin compatibility and options
+
+### **Example Configuration Files**
+
+A comprehensive example configuration is included with detailed explanations:
+
+```bash
+# Copy example configuration
+cp .svgerconfig.example.json .svgerconfig.json
+
+# Initialize with interactive setup
+svger-cli init --interactive
+```
+
+The example file includes all 28 configuration options with documentation and examples for React,
+Vue, Angular, and other frameworks.
 
 ### **Framework-Specific Options**
 
 #### **React Configuration**
+
 ```json
 {
   "framework": "react",
@@ -1901,7 +2077,8 @@ interface SVGConfig {
 }
 ```
 
-#### **Vue Configuration**  
+#### **Vue Configuration**
+
 ```json
 {
   "framework": "vue",
@@ -1916,9 +2093,10 @@ interface SVGConfig {
 ```
 
 #### **Angular Configuration**
+
 ```json
 {
-  "framework": "angular", 
+  "framework": "angular",
   "angular": {
     "standalone": true,
     "signals": true,
@@ -1933,17 +2111,19 @@ interface SVGConfig {
 ## 📊 **Performance Optimization**
 
 ### **Benchmarks vs Competitors**
-| **Operation** | **SVGER v2.0** | **SVGR** | **Improvement** |
-|---------------|-----------------|-----------|-----------------|
-| Single file (100KB SVG) | 15ms | 25ms | **40% faster** |
-| Batch (100 files) | 850ms | 1,450ms | **70% faster** |
-| Memory (1000 files) | 45MB | 120MB | **62% less** |
-| Bundle size | 2.1MB | 18.7MB | **89% smaller** |
-| Startup time | 120ms | 340ms | **65% faster** |
+
+| **Operation**           | **SVGER v2.0** | **SVGR** | **Improvement** |
+| ----------------------- | -------------- | -------- | --------------- |
+| Single file (100KB SVG) | 15ms           | 25ms     | **40% faster**  |
+| Batch (100 files)       | 850ms          | 1,450ms  | **70% faster**  |
+| Memory (1000 files)     | 45MB           | 120MB    | **62% less**    |
+| Bundle size             | 2.1MB          | 18.7MB   | **89% smaller** |
+| Startup time            | 120ms          | 340ms    | **65% faster**  |
 
 ### **Performance Best Practices**
 
 #### **Batch Processing Optimization**
+
 ```bash
 # Optimal batch processing
 svger-cli build \
@@ -1957,6 +2137,7 @@ svger-cli build \
 ```
 
 #### **Memory Management**
+
 ```typescript
 // Monitor memory usage
 import { performanceEngine } from 'svger-cli';
@@ -1971,6 +2152,7 @@ const monitor = setInterval(() => {
 ```
 
 #### **Cache Configuration**
+
 ```json
 {
   "performance": {
@@ -1986,6 +2168,7 @@ const monitor = setInterval(() => {
 ## 🧪 **Testing & Quality Assurance**
 
 ### **Component Testing**
+
 Generated components include comprehensive testing utilities:
 
 ```typescript
@@ -1999,7 +2182,7 @@ describe('IconName', () => {
     const svg = screen.getByRole('img', { hidden: true });
     expect(svg).toBeInTheDocument();
   });
-  
+
   it('accepts custom props', () => {
     render(<IconName width={32} height={32} fill="red" />);
     const svg = screen.getByRole('img', { hidden: true });
@@ -2011,6 +2194,7 @@ describe('IconName', () => {
 ```
 
 ### **Integration Testing**
+
 ```bash
 # Run integration tests
 npm run test:integration
@@ -2022,6 +2206,7 @@ npm run test:framework:angular
 ```
 
 ### **Performance Testing**
+
 ```bash
 # Run performance benchmarks
 svger-cli performance --benchmark
@@ -2040,6 +2225,7 @@ svger-cli performance --load --files 1000
 ### **CI/CD Integration**
 
 #### **GitHub Actions**
+
 ```yaml
 name: SVG Component Generation
 on:
@@ -2054,10 +2240,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
+
       - name: Install SVGER-CLI
-        run: npm install -g svger-cli@2.0.0
-      
+        run: npm install -g svger-cli@2.0.5
+
       - name: Generate Components
         run: |
           svger-cli build \
@@ -2067,7 +2253,7 @@ jobs:
             --typescript \
             --parallel \
             --performance
-      
+
       - name: Commit Generated Components
         run: |
           git config --local user.email "action@github.com"
@@ -2078,15 +2264,16 @@ jobs:
 ```
 
 #### **Jenkins Pipeline**
+
 ```groovy
 pipeline {
   agent any
-  
+
   stages {
     stage('Generate SVG Components') {
       steps {
         sh '''
-          npm install -g svger-cli@2.0.0
+          npm install -g svger-cli@2.0.5
           svger-cli build \
             --src ./assets/svg \
             --out ./components \
@@ -2103,11 +2290,12 @@ pipeline {
 ```
 
 ### **Docker Integration**
+
 ```dockerfile
 FROM node:18-alpine
 
 # Install SVGER-CLI globally
-RUN npm install -g svger-cli@2.0.0
+RUN npm install -g svger-cli@2.0.5
 
 # Set working directory
 WORKDIR /app
@@ -2132,25 +2320,26 @@ COPY src/components ./src/components
 ## 🔌 **Plugin Development**
 
 ### **Creating Custom Plugins**
+
 ```typescript
 import { Plugin } from 'svger-cli';
 
 const customOptimizer: Plugin = {
   name: 'custom-svg-optimizer',
   version: '1.0.0',
-  
+
   process: async (content: string, options?: any) => {
     // Custom SVG processing logic
     const optimized = content
       .replace(/fill="none"/g, '')
       .replace(/stroke="currentColor"/g, 'stroke="inherit"');
-    
+
     return optimized;
   },
-  
+
   validate: (options?: any) => {
     return options && typeof options.level === 'string';
-  }
+  },
 };
 
 // Register plugin
@@ -2159,6 +2348,7 @@ pluginManager.registerPlugin(customOptimizer);
 ```
 
 ### **Plugin Configuration**
+
 ```json
 {
   "plugins": [
@@ -2185,6 +2375,7 @@ pluginManager.registerPlugin(customOptimizer);
 ### **Common Issues**
 
 #### **Memory Issues**
+
 ```bash
 # If experiencing memory issues with large batches
 svger-cli build \
@@ -2195,6 +2386,7 @@ svger-cli build \
 ```
 
 #### **Performance Issues**
+
 ```bash
 # Enable performance monitoring
 svger-cli performance --analyze
@@ -2207,6 +2399,7 @@ svger-cli performance --optimize
 ```
 
 #### **TypeScript Errors**
+
 ```bash
 # Validate configuration
 svger-cli config --validate
@@ -2216,6 +2409,7 @@ svger-cli build --typescript --strict
 ```
 
 ### **Debugging**
+
 ```bash
 # Enable verbose logging
 svger-cli build --verbose --src ./icons --out ./components
@@ -2232,10 +2426,11 @@ svger-cli build --performance --memory
 ## 📚 **Migration Guide**
 
 ### **From SVGR**
+
 ```bash
 # Install SVGER-CLI
 npm uninstall @svgr/webpack @svgr/cli
-npm install -g svger-cli@2.0.0
+npm install -g svger-cli@2.0.5
 
 # Migrate configuration
 svger-cli init --framework react --typescript
@@ -2245,9 +2440,10 @@ svger-cli build --src ./assets --out ./components
 ```
 
 ### **From v1.x**
+
 ```bash
 # Upgrade to v2.0
-npm install -g svger-cli@2.0.0
+npm install -g svger-cli@2.0.5
 
 # Migrate configuration
 svger-cli config --migrate
@@ -2261,37 +2457,44 @@ svger-cli build --framework react --responsive --theme dark
 ## 🤝 **Contributing & Support**
 
 ### **Contributing**
+
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`) 
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 ### **Support**
+
 - 📧 **Email**: navidrezadoost07@gmail.com
 - 🐛 **Issues**: [GitHub Issues](https://github.com/faezemohades/svger-cli/issues)
 - 📖 **Documentation**: [docs.svger-cli.com](https://docs.svger-cli.com)
-
 
 ---
 
 ## 📄 **License & Acknowledgements**
 
 ### **License**
+
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ### **Acknowledgements**
 
 This project was developed through the collaborative efforts of:
 
-- **🏗️ Architecture Design**: [ADR-001](./docs/ADR-SVG-INTRGRATION-METHODS-001.adr.md) authored by **Engineer Navid Rezadoost**
-- **📋 Technical Requirements**: [TDR-001](https://docs.google.com/document/d/1b04_V01xOvLiSMzuPdaRynANlnt2wYdJ_vjs9MAqtn4/edit?tab=t.0) prepared by **Ehsan Jafari**  
+- **🏗️ Architecture Design**: [ADR-001](./docs/ADR-SVG-INTRGRATION-METHODS-001.adr.md) authored by
+  **Engineer Navid Rezadoost**
+- **📋 Technical Requirements**:
+  [TDR-001](https://docs.google.com/document/d/1b04_V01xOvLiSMzuPdaRynANlnt2wYdJ_vjs9MAqtn4/edit?tab=t.0)
+  prepared by **Ehsan Jafari**
 - **💻 Implementation**: **Navid Rezadoost** - Faeze Mohades Lead developer and package maintainer
 - **🏢 Enterprise Architecture**: SVGER Development Team
 
-Their guidance and documentation on SVG integration methods in React, Vue, and other frameworks were instrumental in shaping the design and functionality of the SVGER-CLI v2.0.
+Their guidance and documentation on SVG integration methods in React, Vue, and other frameworks were
+instrumental in shaping the design and functionality of the SVGER-CLI v2.0.
 
 ### **Special Thanks**
+
 - The open-source community for inspiration and feedback
 - Framework maintainers for excellent documentation
 - Beta testers who provided valuable insights

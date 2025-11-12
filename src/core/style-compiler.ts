@@ -26,47 +26,47 @@ export interface SVGStyleOptions {
   fill?: string | ResponsiveValue<string>;
   stroke?: string | ResponsiveValue<string>;
   strokeWidth?: number | string | ResponsiveValue<number | string>;
-  
+
   // Size and dimensions
   width?: number | string | ResponsiveValue<number | string>;
   height?: number | string | ResponsiveValue<number | string>;
   size?: number | string | ResponsiveValue<number | string>; // shorthand for width & height
-  
+
   // Positioning and transform
   transform?: string;
   rotate?: number | string;
   scale?: number | string;
   translateX?: number | string;
   translateY?: number | string;
-  
+
   // Visual effects
   opacity?: number | ResponsiveValue<number>;
   filter?: string;
   clipPath?: string;
   mask?: string;
-  
+
   // Animation
   animation?: string;
   transition?: string;
-  
+
   // Interaction states
   hover?: Partial<SVGStyleOptions>;
   focus?: Partial<SVGStyleOptions>;
   active?: Partial<SVGStyleOptions>;
   disabled?: Partial<SVGStyleOptions>;
-  
+
   // Theme integration
   theme?: string | StyleTheme;
-  
+
   // Responsive design
   responsive?: boolean;
-  
+
   // Custom CSS properties
   css?: Record<string, string | number>;
-  
+
   // CSS classes
   className?: string;
-  
+
   // Accessibility
   'aria-label'?: string;
   'aria-hidden'?: boolean;
@@ -85,7 +85,7 @@ export class SVGStyleCompiler {
   private static instance: SVGStyleCompiler;
   private themes: Map<string, StyleTheme> = new Map();
   private globalCSS: string[] = [];
-  
+
   private constructor() {
     this.loadDefaultThemes();
   }
@@ -108,33 +108,33 @@ export class SVGStyleCompiler {
       inline: {},
       classes: [],
       cssRules: [],
-      mediaQueries: []
+      mediaQueries: [],
     };
 
     // Get theme if specified
     const theme = this.resolveTheme(options.theme);
-    
+
     // Compile base styles
     this.compileBaseStyles(options, compiled, theme);
-    
+
     // Compile responsive styles
     if (options.responsive) {
       this.compileResponsiveStyles(options, compiled, theme, componentName);
     }
-    
+
     // Compile interaction states
     this.compileInteractionStates(options, compiled, componentName);
-    
+
     // Add custom CSS
     if (options.css) {
       Object.assign(compiled.inline, options.css);
     }
-    
+
     // Add class names
     if (options.className) {
       compiled.classes.push(options.className);
     }
-    
+
     return compiled;
   }
 
@@ -153,19 +153,19 @@ export class SVGStyleCompiler {
     options: SVGStyleOptions
   ): string {
     const compiled = this.compileStyles(options, componentName);
-    
+
     let css = '';
-    
+
     // Add CSS rules
     if (compiled.cssRules.length > 0) {
       css += compiled.cssRules.join('\n') + '\n';
     }
-    
+
     // Add media queries
     if (compiled.mediaQueries.length > 0) {
       css += compiled.mediaQueries.join('\n') + '\n';
     }
-    
+
     return css;
   }
 
@@ -178,13 +178,15 @@ export class SVGStyleCompiler {
     options: SVGStyleOptions = {}
   ): string {
     const compiled = this.compileStyles(options, componentName);
-    const hasCustomStyles = compiled.cssRules.length > 0 || compiled.mediaQueries.length > 0;
-    
-    const imports = hasCustomStyles 
+    const hasCustomStyles =
+      compiled.cssRules.length > 0 || compiled.mediaQueries.length > 0;
+
+    const imports = hasCustomStyles
       ? `import React from 'react';\nimport type { SVGProps } from "react";`
       : `import type { SVGProps } from "react";`;
 
-    const styledCSS = hasCustomStyles ? `
+    const styledCSS = hasCustomStyles
+      ? `
 const ${componentName}Styles = \`
 ${compiled.cssRules.join('\n')}
 ${compiled.mediaQueries.join('\n')}
@@ -200,15 +202,18 @@ if (typeof document !== 'undefined') {
     document.head.appendChild(style);
   }
 }
-` : '';
-
-    const inlineStyleObject = Object.keys(compiled.inline).length > 0
-      ? `const defaultStyles = ${JSON.stringify(compiled.inline, null, 2)};`
+`
       : '';
 
-    const classNames = compiled.classes.length > 0
-      ? `'${compiled.classes.join(' ')} ' + (props.className || '')`
-      : 'props.className';
+    const inlineStyleObject =
+      Object.keys(compiled.inline).length > 0
+        ? `const defaultStyles = ${JSON.stringify(compiled.inline, null, 2)};`
+        : '';
+
+    const classNames =
+      compiled.classes.length > 0
+        ? `'${compiled.classes.join(' ')} ' + (props.className || '')`
+        : 'props.className';
 
     return `${imports}
 
@@ -408,28 +413,28 @@ if (typeof document !== 'undefined') {
         danger: '#dc3545',
         info: '#17a2b8',
         light: '#f8f9fa',
-        dark: '#343a40'
+        dark: '#343a40',
       },
       sizes: {
         xs: 12,
         sm: 16,
         md: 24,
         lg: 32,
-        xl: 48
+        xl: 48,
       },
       spacing: {
         1: '0.25rem',
         2: '0.5rem',
         3: '0.75rem',
         4: '1rem',
-        5: '1.5rem'
+        5: '1.5rem',
       },
       breakpoints: {
         sm: '576px',
         md: '768px',
         lg: '992px',
-        xl: '1200px'
-      }
+        xl: '1200px',
+      },
     });
 
     // Dark theme
@@ -443,38 +448,38 @@ if (typeof document !== 'undefined') {
         danger: '#dc3545',
         info: '#0dcaf0',
         light: '#212529',
-        dark: '#f8f9fa'
+        dark: '#f8f9fa',
       },
       sizes: {
         xs: 12,
         sm: 16,
         md: 24,
         lg: 32,
-        xl: 48
+        xl: 48,
       },
       spacing: {
         1: '0.25rem',
         2: '0.5rem',
         3: '0.75rem',
         4: '1rem',
-        5: '1.5rem'
+        5: '1.5rem',
       },
       breakpoints: {
         sm: '576px',
         md: '768px',
         lg: '992px',
-        xl: '1200px'
-      }
+        xl: '1200px',
+      },
     });
   }
 
   private resolveTheme(theme?: string | StyleTheme): StyleTheme | null {
     if (!theme) return null;
-    
+
     if (typeof theme === 'string') {
       return this.themes.get(theme) || null;
     }
-    
+
     return theme;
   }
 
@@ -494,7 +499,7 @@ if (typeof document !== 'undefined') {
       clipPath: 'clipPath',
       mask: 'mask',
       animation: 'animation',
-      transition: 'transition'
+      transition: 'transition',
     };
 
     for (const [cssProp, optionKey] of Object.entries(styleMap)) {
@@ -521,9 +526,11 @@ if (typeof document !== 'undefined') {
     const transforms: string[] = [];
     if (options.rotate) transforms.push(`rotate(${options.rotate}deg)`);
     if (options.scale) transforms.push(`scale(${options.scale})`);
-    if (options.translateX) transforms.push(`translateX(${options.translateX})`);
-    if (options.translateY) transforms.push(`translateY(${options.translateY})`);
-    
+    if (options.translateX)
+      transforms.push(`translateX(${options.translateX})`);
+    if (options.translateY)
+      transforms.push(`translateY(${options.translateY})`);
+
     if (transforms.length > 0) {
       const existingTransform = compiled.inline.transform as string;
       compiled.inline.transform = existingTransform
@@ -542,16 +549,18 @@ if (typeof document !== 'undefined') {
       sm: '576px',
       md: '768px',
       lg: '992px',
-      xl: '1200px'
+      xl: '1200px',
     };
 
     for (const [prop, value] of Object.entries(options)) {
       if (this.isResponsiveValue(value)) {
         const responsiveValue = value as ResponsiveValue<any>;
-        
-        for (const [breakpoint, breakpointValue] of Object.entries(responsiveValue)) {
+
+        for (const [breakpoint, breakpointValue] of Object.entries(
+          responsiveValue
+        )) {
           if (breakpoint === 'base') continue;
-          
+
           const mediaQuery = breakpoints[breakpoint];
           if (mediaQuery && breakpointValue !== undefined) {
             const rule = `@media (min-width: ${mediaQuery}) {
@@ -572,19 +581,20 @@ if (typeof document !== 'undefined') {
     componentName: string
   ): void {
     const states = ['hover', 'focus', 'active', 'disabled'] as const;
-    
+
     for (const state of states) {
       const stateStyles = options[state];
       if (stateStyles) {
-        const selector = state === 'disabled' 
-          ? `.${componentName.toLowerCase()}[disabled], .${componentName.toLowerCase()}[aria-disabled="true"]`
-          : `.${componentName.toLowerCase()}:${state}`;
-        
+        const selector =
+          state === 'disabled'
+            ? `.${componentName.toLowerCase()}[disabled], .${componentName.toLowerCase()}[aria-disabled="true"]`
+            : `.${componentName.toLowerCase()}:${state}`;
+
         const rules: string[] = [];
         for (const [prop, value] of Object.entries(stateStyles)) {
           rules.push(`  ${this.camelToKebab(prop)}: ${value};`);
         }
-        
+
         if (rules.length > 0) {
           compiled.cssRules.push(`${selector} {\n${rules.join('\n')}\n}`);
         }

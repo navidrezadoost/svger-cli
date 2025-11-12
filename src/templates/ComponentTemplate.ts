@@ -18,7 +18,7 @@ export function reactTemplate({
   svgContent,
   defaultWidth = 24,
   defaultHeight = 24,
-  defaultFill = "currentColor",
+  defaultFill = 'currentColor',
 }: {
   componentName: string;
   svgContent: string;
@@ -27,14 +27,14 @@ export function reactTemplate({
   defaultFill?: string;
 }) {
   const cleaned = svgContent
-    .replace(/<\?xml.*?\?>/g, "")
-    .replace(/<!DOCTYPE.*?>/g, "") 
-    .replace(/\r?\n|\r/g, "")
-    .replace(/\s{2,}/g, " ")
-    .replace(/style="[^"]*"/g, "")
-    .replace(/\s+xmlns(:xlink)?="[^"]*"/g, "") 
+    .replace(/<\?xml.*?\?>/g, '')
+    .replace(/<!DOCTYPE.*?>/g, '')
+    .replace(/\r?\n|\r/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/style="[^"]*"/g, '')
+    .replace(/\s+xmlns(:xlink)?="[^"]*"/g, '')
     .trim()
-    .replace(/^.*?<svg[^>]*>(.*?)<\/svg>.*$/i, "$1");
+    .replace(/^.*?<svg[^>]*>(.*?)<\/svg>.*$/i, '$1');
 
   return `import type { SVGProps } from "react";
 const Svg${componentName} = (props: SVGProps<SVGSVGElement>) => (

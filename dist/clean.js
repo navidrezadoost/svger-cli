@@ -1,5 +1,5 @@
-import path from "path";
-import { FileSystem } from "./utils/native.js";
+import path from 'path';
+import { FileSystem } from './utils/native.js';
 /**
  * Cleans the specified output directory by removing all files and folders inside it.
  * Typically used to clear previously generated SVG React components before a new build.

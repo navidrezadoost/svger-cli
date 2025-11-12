@@ -1,6 +1,6 @@
-import path from "path";
-import { FileSystem } from "./utils/native.js";
-const CONFIG_FILE = ".svgconfig.json";
+import path from 'path';
+import { FileSystem } from './utils/native.js';
+const CONFIG_FILE = '.svgconfig.json';
 /**
  * Get the absolute path to the configuration file.
  *
@@ -31,24 +31,107 @@ export function writeConfig(config) {
  */
 export async function initConfig() {
     if (await FileSystem.exists(getConfigPath())) {
-        console.log("⚠️  Config file already exists:", getConfigPath());
+        console.log('⚠️  Config file already exists:', getConfigPath());
         return;
     }
     const defaultConfig = {
-        source: "./src/assets/svg",
-        output: "./src/components/icons",
+        // Source & Output
+        source: './src/assets/svg',
+        output: './src/components/icons',
+        // Framework Configuration
+        framework: 'react',
+        typescript: true,
+        componentType: 'functional',
+        // Processing Options
         watch: false,
+        parallel: true,
+        batchSize: 10,
+        maxConcurrency: 4,
+        cache: true,
+        // Default Properties
         defaultWidth: 24,
         defaultHeight: 24,
-        defaultFill: "currentColor",
-        exclude: [],
+        defaultFill: 'currentColor',
+        defaultStroke: 'none',
+        defaultStrokeWidth: 1,
+        // Styling Configuration
         styleRules: {
-            fill: "inherit",
-            stroke: "none",
+            fill: 'inherit',
+            stroke: 'none',
+        },
+        responsive: {
+            breakpoints: ['sm', 'md', 'lg', 'xl'],
+            values: {
+                width: ['16px', '20px', '24px', '32px'],
+                height: ['16px', '20px', '24px', '32px'],
+            },
+        },
+        theme: {
+            mode: 'auto',
+            variables: {
+                primary: 'currentColor',
+                secondary: '#6b7280',
+                accent: '#3b82f6',
+            },
+        },
+        animations: [],
+        // Advanced Options
+        plugins: [],
+        exclude: [],
+        include: [],
+        // Error Handling
+        errorHandling: {
+            strategy: 'continue',
+            maxRetries: 3,
+            timeout: 30000,
+        },
+        // Performance Settings
+        performance: {
+            optimization: 'balanced',
+            memoryLimit: 512,
+            cacheTimeout: 3600000,
+        },
+        // Output Customization
+        outputConfig: {
+            naming: 'pascal',
+            extension: 'tsx',
+            directory: './src/components/icons',
+        },
+        // Framework-specific configurations
+        react: {
+            componentType: 'functional',
+            forwardRef: true,
+            memo: false,
+            propsInterface: 'SVGProps',
+            styledComponents: false,
+            cssModules: false,
+        },
+        vue: {
+            api: 'composition',
+            setup: true,
+            typescript: true,
+            scoped: true,
+            cssVariables: true,
+        },
+        angular: {
+            standalone: true,
+            signals: true,
+            changeDetection: 'OnPush',
+            encapsulation: 'Emulated',
+        },
+        // Legacy support (deprecated)
+        template: {
+            type: 'default',
+        },
+        frameworkOptions: {
+            forwardRef: true,
+            memo: false,
+            scriptSetup: true,
+            standalone: true,
         },
     };
     writeConfig(defaultConfig);
-    console.log("✅ Config file created:", getConfigPath());
+    console.log('✅ Config file created:', getConfigPath());
 }
 /**
  * Set a specific configuration key to a new value.
@@ -67,6 +150,6 @@ export function setConfig(key, value) {
  */
 export function showConfig() {
     const config = readConfig();
-    console.log("📄 Current Config:");
+    console.log('📄 Current Config:');
     console.log(JSON.stringify(config, null, 2));
 }

@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-const LOCK_FILE = ".svg-lock";
+import fs from 'fs';
+import path from 'path';
+const LOCK_FILE = '.svg-lock';
 /**
  * Get the absolute path to the lock file.
  *
@@ -18,7 +18,7 @@ function readLockFile() {
     if (!fs.existsSync(getLockFilePath()))
         return [];
     try {
-        const data = fs.readFileSync(getLockFilePath(), "utf-8");
+        const data = fs.readFileSync(getLockFilePath(), 'utf-8');
         return JSON.parse(data);
     }
     catch (e) {
@@ -31,7 +31,7 @@ function readLockFile() {
  * @param {string[]} files - Array of SVG file names to lock.
  */
 function writeLockFile(files) {
-    fs.writeFileSync(getLockFilePath(), JSON.stringify(files, null, 2), "utf-8");
+    fs.writeFileSync(getLockFilePath(), JSON.stringify(files, null, 2), 'utf-8');
 }
 /**
  * Lock one or more SVG files to prevent them from being processed.
@@ -43,7 +43,7 @@ export function lockFiles(files) {
     const current = readLockFile();
     const newFiles = Array.from(new Set([...current, ...fileNames]));
     writeLockFile(newFiles);
-    console.log(`🔒 Locked files: ${newFiles.join(", ")}`);
+    console.log(`🔒 Locked files: ${newFiles.join(', ')}`);
 }
 /**
  * Unlock one or more SVG files, allowing them to be processed again.
@@ -55,7 +55,7 @@ export function unlockFiles(files) {
     const current = readLockFile();
     const remaining = current.filter(f => !fileNames.includes(f));
     writeLockFile(remaining);
-    console.log(`🔓 Unlocked files: ${fileNames.join(", ")}`);
+    console.log(`🔓 Unlocked files: ${fileNames.join(', ')}`);
 }
 /**
  * Check if a specific SVG file is locked.

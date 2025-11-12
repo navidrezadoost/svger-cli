@@ -1,38 +1,119 @@
 {
   "$schema": "https://raw.githubusercontent.com/faezemohades/svger-cli/main/schemas/config.schema.json",
+
+  "_comment": "Complete Configuration Schema - This file demonstrates all available configuration options for svger-cli",
+
+  "// Source & Output": "",
   "source": "./src/assets/svg",
   "output": "./src/components/icons",
+
+  "// Framework Configuration": "",
   "framework": "react",
   "typescript": true,
+  "componentType": "functional",
+
+  "// Processing Options": "",
   "watch": false,
   "parallel": true,
   "batchSize": 10,
+  "maxConcurrency": 4,
+  "cache": true,
+
+  "// Default Properties": "",
   "defaultWidth": 24,
   "defaultHeight": 24,
   "defaultFill": "currentColor",
-  "exclude": [],
+  "defaultStroke": "none",
+  "defaultStrokeWidth": 1,
+
+  "// Styling Configuration": "",
   "styleRules": {
     "fill": "inherit",
-    "stroke": "none"
+    "stroke": "none",
+    "strokeWidth": "1",
+    "opacity": "1"
   },
+
+  "// Responsive Design": "",
   "responsive": {
-    "enabled": false,
-    "breakpoints": ["sm", "md", "lg"],
+    "breakpoints": ["sm", "md", "lg", "xl"],
     "values": {
-      "width": ["20px", "24px", "32px"],
-      "height": ["20px", "24px", "32px"]
+      "width": ["16px", "20px", "24px", "32px"],
+      "height": ["16px", "20px", "24px", "32px"]
     }
   },
+
+  "// Theme Configuration": "",
   "theme": {
-    "mode": "light",
+    "mode": "auto",
     "variables": {
-      "primary": "#007bff",
-      "secondary": "#6c757d"
+      "primary": "currentColor",
+      "secondary": "#6b7280",
+      "accent": "#3b82f6",
+      "background": "#ffffff",
+      "foreground": "#000000"
     }
   },
+
+  "// Animation Effects": "",
+  "animations": ["fadeIn", "slideIn", "bounce"],
+
+  "// Advanced Options": "",
+  "plugins": [
+    {
+      "name": "svg-optimizer",
+      "options": {
+        "removeComments": true,
+        "removeMetadata": true
+      }
+    }
+  ],
+  "exclude": ["*.test.svg", "deprecated/**"],
+  "include": ["icons/**", "illustrations/**"],
+
+  "// Error Handling": "",
+  "errorHandling": {
+    "strategy": "continue",
+    "maxRetries": 3,
+    "timeout": 30000
+  },
+
+  "// Performance Settings": "",
   "performance": {
     "optimization": "balanced",
-    "cache": true,
-    "memoryLimit": 512
+    "memoryLimit": 512,
+    "cacheTimeout": 3600000
+  },
+
+  "// Output Customization": "",
+  "outputConfig": {
+    "naming": "pascal",
+    "extension": "tsx",
+    "directory": "./src/components/icons"
+  },
+
+  "// Framework-Specific Configurations": "",
+  "react": {
+    "componentType": "functional",
+    "forwardRef": true,
+    "memo": false,
+    "propsInterface": "SVGProps",
+    "styledComponents": false,
+    "cssModules": false
+  },
+
+  "vue": {
+    "api": "composition",
+    "setup": true,
+    "typescript": true,
+    "scoped": true,
+    "cssVariables": true
+  },
+
+  "angular": {
+    "standalone": true,
+    "signals": true,
+    "changeDetection": "OnPush",
+    "encapsulation": "Emulated"
   }
 }

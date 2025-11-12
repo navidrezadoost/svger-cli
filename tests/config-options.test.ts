@@ -8,9 +8,8 @@
 import { svgProcessor } from '../dist/processors/svg-processor.js';
 import { configService } from '../dist/services/config.js';
 import { svgService } from '../dist/services/svg-service.js';
-import { FileSystem, toPascalCase } from '../dist/utils/native.js';
+import { FileSystem } from '../dist/utils/native.js';
 import path from 'path';
-import fs from 'fs';
 
 // Test SVG content
 const testSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
@@ -99,14 +98,6 @@ async function setup() {
 async function testNamingKebab() {
   const outputDir = path.join(TEST_OUTPUT_DIR, 'naming-kebab');
   await FileSystem.ensureDir(outputDir);
-
-  const config = {
-    ...configService.getDefaultConfig(),
-    output: {
-      naming: 'kebab' as const,
-      directory: outputDir,
-    },
-  };
 
   // Process SVG with kebab naming
   await svgProcessor.processSVGFile(
@@ -293,8 +284,10 @@ async function testFrameworkExtensions() {
  * Test 8: Config File Integration
  */
 async function testConfigFileIntegration() {
-  // Create a test config
+  // Create a test config using default config as base
+  const defaultConfig = configService.getDefaultConfig();
   const testConfig = {
+    ...defaultConfig,
     source: './test-svgs',
     output: './test-output',
     framework: 'react' as const,

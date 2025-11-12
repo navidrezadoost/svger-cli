@@ -25,40 +25,104 @@ export class ConfigService {
    */
   public getDefaultConfig(): SVGConfig {
     return {
+      // Source & Output
       source: './src/assets/svg',
       output: './src/components/icons',
+
+      // Framework Configuration
       framework: 'react',
       typescript: true,
+      componentType: 'functional',
+
+      // Processing Options
       watch: false,
+      parallel: true,
+      batchSize: 10,
+      maxConcurrency: 4,
+      cache: true,
+
+      // Default Properties
       defaultWidth: 24,
       defaultHeight: 24,
       defaultFill: 'currentColor',
-      exclude: [],
+      defaultStroke: 'none',
+      defaultStrokeWidth: 1,
+
+      // Styling Configuration
       styleRules: {
         fill: 'inherit',
         stroke: 'none',
       },
-      plugins: [],
-      template: {
-        type: 'default'
+
+      responsive: {
+        breakpoints: ['sm', 'md', 'lg', 'xl'],
+        values: {
+          width: ['16px', '20px', '24px', '32px'],
+          height: ['16px', '20px', '24px', '32px'],
+        },
       },
-      frameworkOptions: {
+
+      theme: {
+        mode: 'auto',
+        variables: {
+          primary: 'currentColor',
+          secondary: '#6b7280',
+          accent: '#3b82f6',
+        },
+      },
+
+      animations: [],
+
+      // Advanced Options
+      plugins: [],
+      exclude: [],
+      include: [],
+
+      // Error Handling
+      errorHandling: {
+        strategy: 'continue',
+        maxRetries: 3,
+        timeout: 30000,
+      },
+
+      // Performance Settings
+      performance: {
+        optimization: 'balanced',
+        memoryLimit: 512,
+        cacheTimeout: 3600000,
+      },
+
+      // Output Customization
+      outputConfig: {
+        naming: 'pascal',
+        extension: 'tsx',
+        directory: './src/components/icons',
+      },
+
+      // Framework-specific configurations
+      react: {
+        componentType: 'functional',
         forwardRef: true,
         memo: false,
-        scriptSetup: true,
-        standalone: true
+        propsInterface: 'SVGProps',
+        styledComponents: false,
+        cssModules: false,
       },
-      errorHandling: {
-        skipOnError: false,
-        logLevel: 'info',
-        maxRetries: 3
+
+      vue: {
+        api: 'composition',
+        setup: true,
+        typescript: true,
+        scoped: true,
+        cssVariables: true,
       },
-      performance: {
-        batchSize: 10,
-        parallel: true,
-        timeout: 30000,
-        enableCache: true
-      }
+
+      angular: {
+        standalone: true,
+        signals: true,
+        changeDetection: 'OnPush',
+        encapsulation: 'Emulated',
+      },
     };
   }
 
@@ -79,7 +143,7 @@ export class ConfigService {
 
     try {
       const configData = FileSystem.readJSONSync(this.getConfigPath());
-      
+
       if (Object.keys(configData).length === 0) {
         logger.debug('No configuration found, using defaults');
         this.cachedConfig = this.getDefaultConfig();
@@ -89,7 +153,7 @@ export class ConfigService {
       // Merge with defaults to ensure all required properties exist
       this.cachedConfig = {
         ...this.getDefaultConfig(),
-        ...configData
+        ...configData,
       };
 
       logger.debug('Configuration loaded successfully');
@@ -120,7 +184,7 @@ export class ConfigService {
    */
   public async initConfig(): Promise<void> {
     const configPath = this.getConfigPath();
-    
+
     if (await FileSystem.exists(configPath)) {
       logger.warn('Config file already exists:', configPath);
       return;
@@ -136,11 +200,11 @@ export class ConfigService {
    */
   public setConfig(key: string, value: any): void {
     const config = this.readConfig();
-    
+
     // Support nested key paths like 'styleRules.fill'
     const keys = key.split('.');
     let current: any = config;
-    
+
     for (let i = 0; i < keys.length - 1; i++) {
       const k = keys[i];
       if (!(k in current)) {
@@ -148,10 +212,10 @@ export class ConfigService {
       }
       current = current[k];
     }
-    
+
     const finalKey = keys[keys.length - 1];
     current[finalKey] = value;
-    
+
     this.writeConfig(config);
     logger.success(`Configuration updated: ${key} = ${value}`);
   }
@@ -161,7 +225,7 @@ export class ConfigService {
    */
   public getConfig(key?: string): any {
     const config = this.readConfig();
-    
+
     if (!key) {
       return config;
     }
@@ -169,28 +233,34 @@ export class ConfigService {
     // Support nested key paths
     const keys = key.split('.');
     let current: any = config;
-    
+
     for (const k of keys) {
       if (!(k in current)) {
         return undefined;
       }
       current = current[k];
     }
-    
+
     return current;
   }
 
   /**
    * Validate configuration
    */
-  public validateConfig(config?: SVGConfig): { valid: boolean; errors: string[] } {
+  public validateConfig(config?: SVGConfig): {
+    valid: boolean;
+    errors: string[];
+  } {
     const configToValidate = config || this.readConfig();
     const errors: string[] = [];
 
     // Required string fields
     const requiredStringFields = ['source', 'output', 'defaultFill'];
     for (const field of requiredStringFields) {
-      if (!configToValidate[field as keyof SVGConfig] || typeof configToValidate[field as keyof SVGConfig] !== 'string') {
+      if (
+        !configToValidate[field as keyof SVGConfig] ||
+        typeof configToValidate[field as keyof SVGConfig] !== 'string'
+      ) {
         errors.push(`${field} must be a non-empty string`);
       }
     }
@@ -210,13 +280,16 @@ export class ConfigService {
     }
 
     // Validate styleRules object
-    if (configToValidate.styleRules && typeof configToValidate.styleRules !== 'object') {
+    if (
+      configToValidate.styleRules &&
+      typeof configToValidate.styleRules !== 'object'
+    ) {
       errors.push('styleRules must be an object');
     }
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
