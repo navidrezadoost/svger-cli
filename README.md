@@ -2344,3 +2344,15 @@ instrumental in shaping the design and functionality of the SVGER-CLI v2.0.
 ---
 
 **© 2025 SVGER-CLI Development Team. Built with ❤️ for the developer community.**
+
+---
+
+## 📚 **Additional Documentation**
+
+- **[📊 Complete Feature Comparison & Benchmarks](./COMPARISON.md)** - Detailed technical analysis with documented performance claims
+  - Benchmark methodology and test environment
+  - Detailed dependency tree analysis
+  - Webpack integration guide
+  - Complete configuration options breakdown
+  - Real-world performance examples
+
