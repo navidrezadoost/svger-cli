@@ -106,11 +106,9 @@ avoids naming conflicts:
 
 ```typescript
 // Auto-generated in your output directory
-// Re-exports with renamed defaults for tree-shaking
+// Named exports for tree-shaking
 export { default as ArrowLeft } from './ArrowLeft';
 export { default as ArrowRight } from './ArrowRight';
-export { default as HomeIcon } from './HomeIcon';
-export { default as UserProfile } from './UserProfile';
 
 /**
  * SVG Components Index
@@ -127,15 +125,15 @@ export { default as UserProfile } from './UserProfile';
 **Import flexibility:**
 
 ```typescript
-// Named imports (recommended - tree-shaking friendly)
-import { ArrowLeft, ArrowRight, HomeIcon } from './components';
+// Named imports (tree-shaking friendly)
+import { ArrowLeft, ArrowRight } from './components';
 
-// Namespace import (for accessing all icons)
+// Namespace import
 import * as Icons from './components';
-const ArrowIcon = Icons.ArrowLeft;
 
-// Individual file imports (when you need just one component)
-import ArrowLeft from './components/ArrowLeft';
+// Default import
+import Icons from './components';
+const { ArrowLeft } = Icons;
 ```
 
 ### **🎯 Enhanced Props & Styling**
