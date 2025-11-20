@@ -2,7 +2,7 @@
 
 /**
  * Framework Testing Script for SVGER-CLI
- * Tests all 8 supported frameworks: React, Vue, Svelte, Angular, Solid, Preact, Lit, Vanilla
+ * Tests all 9 supported frameworks: React, React Native, Vue, Svelte, Angular, Solid, Preact, Lit, Vanilla
  */
 
 import { frameworkTemplateEngine } from './dist/index.js';
@@ -15,6 +15,7 @@ const testSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" wid
 
 const frameworks = [
   { name: 'react', typescript: true, options: {} },
+  { name: 'react-native', typescript: true, options: {} },
   { name: 'vue', typescript: true, options: { scriptSetup: true } },
   { name: 'vue', typescript: true, options: { scriptSetup: false } },
   { name: 'svelte', typescript: true, options: {} },
@@ -23,11 +24,11 @@ const frameworks = [
   { name: 'solid', typescript: true, options: {} },
   { name: 'preact', typescript: true, options: {} },
   { name: 'lit', typescript: true, options: {} },
-  { name: 'vanilla', typescript: true, options: {} }
+  { name: 'vanilla', typescript: true, options: {} },
 ];
 
 console.log('🚀 SVGER-CLI Framework Testing Suite\n');
-console.log('=' .repeat(80));
+console.log('='.repeat(80));
 
 const testOutputDir = path.join(process.cwd(), 'test-output');
 if (!fs.existsSync(testOutputDir)) {
@@ -39,45 +40,57 @@ let failed = 0;
 
 frameworks.forEach((config, index) => {
   const { name, typescript, options } = config;
-  const variant = options.scriptSetup !== undefined 
-    ? (options.scriptSetup ? '-composition' : '-options') 
-    : options.standalone !== undefined 
-    ? (options.standalone ? '-standalone' : '-module')
-    : '';
-  
+  const variant =
+    options.scriptSetup !== undefined
+      ? options.scriptSetup
+        ? '-composition'
+        : '-options'
+      : options.standalone !== undefined
+        ? options.standalone
+          ? '-standalone'
+          : '-module'
+        : '';
+
   const testName = `${name}${variant}`;
-  
+
   try {
-    console.log(`\n[${index + 1}/${frameworks.length}] Testing: ${testName.toUpperCase()}`);
+    console.log(
+      `\n[${index + 1}/${frameworks.length}] Testing: ${testName.toUpperCase()}`
+    );
     console.log('-'.repeat(80));
-    
+
     const componentOptions = {
       framework: name,
       componentName: 'TestIcon',
       svgContent: testSVG,
       typescript,
-      frameworkOptions: options
+      frameworkOptions: options,
     };
-    
+
     // Generate component
-    const component = frameworkTemplateEngine.generateComponent(componentOptions);
-    
+    const component =
+      frameworkTemplateEngine.generateComponent(componentOptions);
+
     // Validate component
     if (!component || component.length === 0) {
       throw new Error('Generated component is empty');
     }
-    
+
     // Get file extension
-    const extension = frameworkTemplateEngine.getFileExtension(name, typescript);
-    
+    const extension = frameworkTemplateEngine.getFileExtension(
+      name,
+      typescript
+    );
+
     // Save to file
     const fileName = `TestIcon-${testName}.${extension}`;
     const filePath = path.join(testOutputDir, fileName);
     fs.writeFileSync(filePath, component, 'utf8');
-    
+
     // Framework-specific validation
     switch (name) {
       case 'react':
+      case 'react-native':
       case 'preact':
       case 'solid':
         if (!component.includes('export default')) {
@@ -86,8 +99,16 @@ frameworks.forEach((config, index) => {
         if (!component.includes('interface')) {
           throw new Error('Missing TypeScript interface');
         }
+        if (name === 'react-native') {
+          if (!component.includes('react-native-svg')) {
+            throw new Error('Missing react-native-svg import');
+          }
+          if (!component.includes('Svg')) {
+            throw new Error('Missing Svg component');
+          }
+        }
         break;
-      
+
       case 'vue':
         if (!component.includes('<template>')) {
           throw new Error('Missing Vue template section');
@@ -99,7 +120,7 @@ frameworks.forEach((config, index) => {
           throw new Error('Missing composition API setup');
         }
         break;
-      
+
       case 'svelte':
         if (!component.includes('<script')) {
           throw new Error('Missing Svelte script section');
@@ -108,7 +129,7 @@ frameworks.forEach((config, index) => {
           throw new Error('Missing Svelte props');
         }
         break;
-      
+
       case 'angular':
         if (!component.includes('@Component')) {
           throw new Error('Missing Angular decorator');
@@ -120,7 +141,7 @@ frameworks.forEach((config, index) => {
           throw new Error('Missing standalone flag');
         }
         break;
-      
+
       case 'lit':
         if (!component.includes('@customElement')) {
           throw new Error('Missing Lit decorator');
@@ -129,7 +150,7 @@ frameworks.forEach((config, index) => {
           throw new Error('Not extending LitElement');
         }
         break;
-      
+
       case 'vanilla':
         if (!component.includes('export function')) {
           throw new Error('Missing function export');
@@ -139,14 +160,13 @@ frameworks.forEach((config, index) => {
         }
         break;
     }
-    
+
     console.log(`✅ SUCCESS: Generated valid ${name.toUpperCase()} component`);
     console.log(`   📄 File: ${fileName}`);
     console.log(`   📏 Size: ${component.length} characters`);
     console.log(`   📝 Extension: .${extension}`);
-    
+
     passed++;
-    
   } catch (error) {
     console.log(`❌ FAILED: ${testName.toUpperCase()}`);
     console.log(`   Error: ${error.message}`);
