@@ -1,4 +1,4 @@
-# SVGER-CLI v2.0.6 - Enterprise SVG Processing Framework
+# SVGER-CLI v2.0.7 - Enterprise SVG Processing Framework
 
 [![npm version](https://badge.fury.io/js/svger-cli.svg)](https://badge.fury.io/js/svger-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -151,7 +151,7 @@ svger-cli lock ./icons/critical-logo.svg  # Protects during all operations
 
 ## 📊 **Feature Comparison Matrix**
 
-| **Feature**                | **SVGER-CLI v2.0.6**       | **SVGR (React)** | **vite-svg-loader (Vue)** | **svelte-svg (Svelte)** | **SVGO**            |
+| **Feature**                | **SVGER-CLI v2.0.7**       | **SVGR (React)** | **vite-svg-loader (Vue)** | **svelte-svg (Svelte)** | **SVGO**            |
 | -------------------------- | -------------------------- | ---------------- | ------------------------- | ----------------------- | ------------------- |
 | **Dependencies**           | ✅ **Zero**                | ❌ 15+ deps      | ❌ 9+ deps                | ❌ 7+ deps              | ❌ 8+ deps          |
 | **Auto-Generated Exports** | ✅ **Full Support**        | ❌ Manual        | ❌ Manual                 | ❌ Manual               | ❌ N/A              |
@@ -2077,7 +2077,7 @@ jobs:
           node-version: '18'
 
       - name: Install SVGER-CLI
-        run: npm install -g svger-cli@2.0.6
+        run: npm install -g svger-cli@2.0.7
 
       - name: Generate Components
         run: |
@@ -2108,7 +2108,7 @@ pipeline {
     stage('Generate SVG Components') {
       steps {
         sh '''
-          npm install -g svger-cli@2.0.6
+          npm install -g svger-cli@2.0.7
           svger-cli build \
             --src ./assets/svg \
             --out ./components \
@@ -2130,7 +2130,7 @@ pipeline {
 FROM node:18-alpine
 
 # Install SVGER-CLI globally
-RUN npm install -g svger-cli@2.0.6
+RUN npm install -g svger-cli@2.0.7
 
 # Set working directory
 WORKDIR /app
@@ -2265,7 +2265,7 @@ svger-cli build --performance --memory
 ```bash
 # Install SVGER-CLI
 npm uninstall @svgr/webpack @svgr/cli
-npm install -g svger-cli@2.0.6
+npm install -g svger-cli@2.0.7
 
 # Migrate configuration
 svger-cli init --framework react --typescript
@@ -2278,7 +2278,7 @@ svger-cli build --src ./assets --out ./components
 
 ```bash
 # Upgrade to v2.0
-npm install -g svger-cli@2.0.6
+npm install -g svger-cli@2.0.7
 
 # Migrate configuration
 svger-cli config --migrate
