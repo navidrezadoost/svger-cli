@@ -157,6 +157,10 @@ svger-cli lock ./icons/critical-logo.svg  # Protects during all operations
 
 ## 📊 **Feature Comparison Matrix**
 
+> 📖 **For detailed technical analysis and documented benchmarks:**  
+> **[→ Read Complete Performance Deep Dive (COMPARISON.md)](./COMPARISON.md)**  
+> Includes: Benchmark methodology, dependency analysis, Webpack integration guide, and all 28 configuration options explained.
+
 | **Feature**                | **SVGER-CLI v2.0.7**       | **SVGR (React)** | **vite-svg-loader (Vue)** | **svelte-svg (Svelte)** | **SVGO**            |
 | -------------------------- | -------------------------- | ---------------- | ------------------------- | ----------------------- | ------------------- |
 | **Dependencies**           | ✅ **Zero**                | ❌ 15+ deps      | ❌ 9+ deps                | ❌ 7+ deps              | ❌ 8+ deps          |
@@ -190,6 +194,17 @@ engineered from the ground up with a single philosophy: **native, zero-dependenc
 
 This lean approach delivers up to **85% faster processing** and a **90% smaller bundle size**
 compared to alternatives that rely on dozens of transitive dependencies.
+
+> 📖 **Want to understand why it's faster?** Read the complete technical analysis with benchmarks, methodology, and measurements:  
+> **[→ View Performance Deep Dive & Benchmarks (COMPARISON.md)](./COMPARISON.md)**
+>
+> Learn about:
+> - Detailed benchmark methodology and test environment
+> - 4 architectural optimizations that deliver 85% improvement
+> - Memory usage comparison (12MB vs 68MB)
+> - Parallel processing performance (6.6x throughput)
+> - Smart caching system (99% hit rate)
+> - Real-world CI/CD impact and cost savings
 
 ---
 
