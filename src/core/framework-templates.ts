@@ -35,6 +35,13 @@ export class FrameworkTemplateEngine {
           typescript,
           frameworkOptions
         );
+      case 'react-native':
+        return this.generateReactNativeComponent(
+          componentName,
+          svgContent,
+          typescript,
+          frameworkOptions
+        );
       case 'vue':
         return this.generateVueComponent(
           componentName,
@@ -88,6 +95,7 @@ export class FrameworkTemplateEngine {
 
     switch (framework) {
       case 'react':
+      case 'react-native':
       case 'preact':
       case 'solid':
         return typescript ? 'tsx' : 'jsx';
@@ -162,6 +170,99 @@ const ${componentName} = React.forwardRef<SVGSVGElement, ${componentName}Props>(
       >
         ${innerContent}
       </svg>
+    );
+  }
+);
+
+${componentName}.displayName = "${componentName}";
+
+export default ${componentName};
+`;
+  }
+
+  private generateReactNativeComponent(
+    componentName: string,
+    svgContent: string,
+    typescript: boolean,
+    options: FrameworkOptions
+  ): string {
+    const { attributes, innerContent } = this.parseSVG(svgContent);
+
+    // Convert SVG elements to React Native SVG components
+    const convertedContent = innerContent
+      .replace(/<path/g, '<Path')
+      .replace(/<\/path>/g, '</Path>')
+      .replace(/<circle/g, '<Circle')
+      .replace(/<\/circle>/g, '</Circle>')
+      .replace(/<rect/g, '<Rect')
+      .replace(/<\/rect>/g, '</Rect>')
+      .replace(/<line/g, '<Line')
+      .replace(/<\/line>/g, '</Line>')
+      .replace(/<polygon/g, '<Polygon')
+      .replace(/<\/polygon>/g, '</Polygon>')
+      .replace(/<polyline/g, '<Polyline')
+      .replace(/<\/polyline>/g, '</Polyline>')
+      .replace(/<ellipse/g, '<Ellipse')
+      .replace(/<\/ellipse>/g, '</Ellipse>')
+      .replace(/<g>/g, '<G>')
+      .replace(/<\/g>/g, '</G>')
+      .replace(/<defs>/g, '<Defs>')
+      .replace(/<\/defs>/g, '</Defs>')
+      .replace(/<clipPath/g, '<ClipPath')
+      .replace(/<\/clipPath>/g, '</ClipPath>')
+      .replace(/<linearGradient/g, '<LinearGradient')
+      .replace(/<\/linearGradient>/g, '</LinearGradient>')
+      .replace(/<radialGradient/g, '<RadialGradient')
+      .replace(/<\/radialGradient>/g, '</RadialGradient>')
+      .replace(/<stop/g, '<Stop')
+      .replace(/<\/stop>/g, '</Stop>')
+      .replace(/stroke-width=/g, 'strokeWidth=')
+      .replace(/stroke-linecap=/g, 'strokeLinecap=')
+      .replace(/stroke-linejoin=/g, 'strokeLinejoin=')
+      .replace(/fill-rule=/g, 'fillRule=')
+      .replace(/clip-rule=/g, 'clipRule=');
+
+    return `import React from "react";
+import Svg, {
+  Path,
+  Circle,
+  Rect,
+  Line,
+  Polygon,
+  Polyline,
+  Ellipse,
+  G,
+  Defs,
+  ClipPath,
+  LinearGradient,
+  RadialGradient,
+  Stop,
+} from "react-native-svg";
+import type { SvgProps } from "react-native-svg";
+
+export interface ${componentName}Props extends SvgProps {
+  size?: number | string;
+  color?: string;
+}
+
+const ${componentName} = React.forwardRef<Svg, ${componentName}Props>(
+  ({ size, color, ...props }, ref) => {
+    const dimensions = size ? { width: size, height: size } : {
+      width: props.width || ${attributes.width || 24},
+      height: props.height || ${attributes.height || 24}
+    };
+
+    return (
+      <Svg
+        ref={ref}
+        viewBox="${attributes.viewBox || '0 0 24 24'}"
+        width={dimensions.width}
+        height={dimensions.height}
+        fill={color || props.fill || "${attributes.fill || 'currentColor'}"}
+        {...props}
+      >
+        ${convertedContent}
+      </Svg>
     );
   }
 );

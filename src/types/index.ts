@@ -4,6 +4,7 @@
 
 export type FrameworkType =
   | 'react'
+  | 'react-native'
   | 'vue'
   | 'svelte'
   | 'angular'

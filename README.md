@@ -1,4 +1,4 @@
-# SVGER-CLI v2.0.5 - Enterprise SVG Processing Framework
+# SVGER-CLI v2.0.6 - Enterprise SVG Processing Framework
 
 [![npm version](https://badge.fury.io/js/svger-cli.svg)](https://badge.fury.io/js/svger-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -6,27 +6,100 @@
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-green.svg)](https://www.npmjs.com/package/svger-cli)
 
 > **The most advanced, zero-dependency SVG to component converter, now with first-class support for
-> 8+ UI frameworks. Enjoy enterprise-grade performance, auto-generated exports, and a unified
-> workflow for your entire design system.**
+> 9+ UI frameworks including React Native. Enjoy enterprise-grade performance, auto-generated
+> exports, and a unified workflow for your entire design system.**
 
-## 🆕 **Latest Developer Experience Improvements**
+---
 
-### **🔧 Recent Critical Fixes (v2.0.5)**
+## 📖 **Table of Contents**
 
-- **🆕 CRITICAL FIX: PascalCase Component Naming**: Fixed issue where files like "ArrowBendDownLeft.svg" were incorrectly converted to "Arrowbenddownleft.tsx" instead of preserving the correct "ArrowBendDownLeft.tsx" format
-- **✅ Fixed TypeScript Duplicate Export Errors**: Resolved duplicate export issues in
-  auto-generated index files
-- **✅ Enhanced PascalCase Preservation**: Improved filename casing preservation (e.g.,
-  "ArrowBendDownLeft.svg" → "ArrowBendDownLeft.tsx")
-- **✅ Comprehensive Configuration Schema**: Complete implementation of all promised configuration
-  features
-- **✅ Framework-Specific Configuration**: Full React, Vue, and Angular configuration support
-- **✅ Advanced Performance Options**: Parallel processing, caching, and memory optimization
-- **✅ Enhanced Error Handling**: Robust error strategies with retry mechanisms
-- **✅ Responsive Design System**: Built-in responsive breakpoints and values
-- **✅ Theme System Integration**: Light/dark mode with CSS variable support
+### 🚀 **Getting Started**
 
-### **Auto-Generated index.ts Exports (Enhanced)**
+- [📦 Installation](#-installation)
+- [🚀 Quick Start: Your First Conversion](#-quick-start-your-first-conversion)
+- [💡 Why SVGER-CLI?](#-why-svger-cli-the-zero-dependency-advantage)
+
+### 📚 **Core Documentation**
+
+- [📊 Feature Comparison Matrix](#-feature-comparison-matrix)
+- [🌐 Multi-Framework Usage Guide](#-multi-framework-usage-guide)
+  - [React](#react)
+  - [React Native](#react-native)
+  - [Vue 3](#vue-3)
+  - [Angular](#angular)
+  - [Svelte](#svelte)
+  - [Solid](#solid)
+  - [Lit](#lit)
+  - [Preact](#preact)
+  - [Vanilla JS/TS](#vanilla-jsts)
+- [🔧 Comprehensive CLI Reference](#-comprehensive-cli-reference)
+
+### 🎨 **Advanced Features**
+
+- [💻 Usage Examples: From Simple to Complex](#-usage-examples-from-simple-to-complex)
+- [🎨 Advanced Styling & Theming](#-advanced-styling--theming)
+  - [Responsive Design System](#responsive-design-system)
+  - [Theme System](#theme-system)
+  - [Animation System](#animation-system)
+- [💻 Programmatic API](#-programmatic-api)
+- [🔧 Configuration Reference](#-configuration-reference)
+
+### ⚡ **Performance & Deployment**
+
+- [⚡ Performance Optimization](#-performance-optimization)
+  - [Benchmarks vs Competitors](#benchmarks-vs-competitors)
+  - [Performance Best Practices](#performance-best-practices)
+- [🚀 Production Deployment](#-production-deployment)
+  - [CI/CD Integration](#cicd-integration)
+  - [Docker Integration](#docker-integration)
+
+### 🧪 **Testing & Quality**
+
+- [🧪 Testing & Quality Assurance](#-testing--quality-assurance)
+- [🔌 Plugin Development](#-plugin-development)
+
+### 🆘 **Support & Resources**
+
+- [🔍 Troubleshooting & FAQ](#-troubleshooting--faq)
+- [📚 Migration Guide](#-migration-guide)
+- [🤝 Contributing & Support](#-contributing--support)
+
+---
+
+## ⚡ **Quick Jump Navigation**
+
+**Looking for something specific?**
+
+| **I want to...**                      | **Go to section**                                               |
+| ------------------------------------- | --------------------------------------------------------------- |
+| 🎯 Get started immediately            | [Quick Start](#-quick-start-your-first-conversion)              |
+| 📦 Install the package                | [Installation](#-installation)                                  |
+| 🤔 Understand why SVGER-CLI is better | [Why SVGER-CLI?](#-why-svger-cli-the-zero-dependency-advantage) |
+| ⚡ Compare features with competitors  | [Feature Comparison](#-feature-comparison-matrix)               |
+| 🚀 Convert SVGs to React components   | [React Guide](#react)                                           |
+| � Use with React Native               | [React Native Guide](#react-native)                             |
+| �💚 Use with Vue                      | [Vue Guide](#vue-3)                                             |
+| 🅰️ Use with Angular                   | [Angular Guide](#angular)                                       |
+| 🌪️ Use with Svelte                    | [Svelte Guide](#svelte)                                         |
+| 📖 Learn all CLI commands             | [CLI Reference](#-comprehensive-cli-reference)                  |
+| 💻 Use the programmatic API           | [API Reference](#-programmatic-api)                             |
+| 🎨 Configure styling & theming        | [Styling Guide](#-advanced-styling--theming)                    |
+| ⚡ Optimize performance               | [Performance Guide](#-performance-optimization)                 |
+| 🚀 Deploy to production               | [Deployment Guide](#-production-deployment)                     |
+| 🐳 Use with Docker                    | [Docker Setup](#docker-integration)                             |
+| 🧪 Test my components                 | [Testing Guide](#-testing--quality-assurance)                   |
+| 🔧 Configure everything               | [Configuration Reference](#-configuration-reference)            |
+| 🔌 Create custom plugins              | [Plugin Development](#-plugin-development)                      |
+| 🐛 Fix issues                         | [Troubleshooting](#-troubleshooting--faq)                       |
+| 📚 Migrate from another tool          | [Migration Guide](#-migration-guide)                            |
+
+---
+
+---
+
+## 🌟 **Key Features Overview**
+
+### **✨ Auto-Generated index.ts Exports (Enhanced)**
 
 Automatically generates clean index.ts files with **unified export pattern** for maximum
 flexibility:
@@ -58,7 +131,7 @@ import Icons from './components';
 const { ArrowLeft } = Icons;
 ```
 
-### **Enhanced Props & Styling**
+### **🎯 Enhanced Props & Styling**
 
 Components now support comprehensive prop interfaces with React.forwardRef:
 
@@ -66,7 +139,7 @@ Components now support comprehensive prop interfaces with React.forwardRef:
 <Icon className="custom-class" style={{ color: 'red' }} size={32} />
 ```
 
-### **Comprehensive File Protection**
+### **🔒 Comprehensive File Protection**
 
 Lock files to prevent accidental modifications during builds:
 
@@ -74,13 +147,16 @@ Lock files to prevent accidental modifications during builds:
 svger-cli lock ./icons/critical-logo.svg  # Protects during all operations
 ```
 
-## 🚀 **Key Features & Competitive Advantages**
+---
 
-| **Feature**                | **SVGER-CLI v2.0.4**       | **SVGR (React)** | **vite-svg-loader (Vue)** | **svelte-svg (Svelte)** | **SVGO**            |
+## 📊 **Feature Comparison Matrix**
+
+| **Feature**                | **SVGER-CLI v2.0.6**       | **SVGR (React)** | **vite-svg-loader (Vue)** | **svelte-svg (Svelte)** | **SVGO**            |
 | -------------------------- | -------------------------- | ---------------- | ------------------------- | ----------------------- | ------------------- |
 | **Dependencies**           | ✅ **Zero**                | ❌ 15+ deps      | ❌ 9+ deps                | ❌ 7+ deps              | ❌ 8+ deps          |
 | **Auto-Generated Exports** | ✅ **Full Support**        | ❌ Manual        | ❌ Manual                 | ❌ Manual               | ❌ N/A              |
-| **Framework Support**      | ✅ **8+ Frameworks**       | ❌ React only    | ❌ Vue only               | ❌ Svelte only          | ❌ N/A              |
+| **Framework Support**      | ✅ **9+ Frameworks**       | ❌ React only    | ❌ Vue only               | ❌ Svelte only          | ❌ N/A              |
+| **React Native Support**   | ✅ **Full Native**         | ❌ None          | ❌ None                   | ❌ None                 | ❌ N/A              |
 | **Advanced Props**         | ✅ **Full Support**        | ❌ Basic         | ❌ Basic                  | ❌ Basic                | ❌ N/A              |
 | **File Protection**        | ✅ **Lock System**         | ❌ None          | ❌ None                   | ❌ None                 | ❌ None             |
 | **Performance**            | ✅ **Up to 85% Faster**    | Standard         | Slow                      | Standard                | Fast (Optimization) |
@@ -187,6 +263,82 @@ const MyIcon: React.FC<IconProps> = React.memo(
 
 MyIcon.displayName = 'MyIcon';
 export default MyIcon;
+```
+
+### **React Native**
+
+Generate optimized React Native components with `react-native-svg` integration.
+
+```bash
+svger-cli build ./my-svgs ./react-native-components --framework react-native
+```
+
+**Generated React Native Component (`.tsx`):**
+
+```tsx
+import React from 'react';
+import Svg, {
+  Path,
+  Circle,
+  Rect,
+  Line,
+  Polygon,
+  Polyline,
+  Ellipse,
+  G,
+  Defs,
+  ClipPath,
+  LinearGradient,
+  RadialGradient,
+  Stop,
+} from 'react-native-svg';
+import type { SvgProps } from 'react-native-svg';
+
+export interface MyIconProps extends SvgProps {
+  size?: number | string;
+  color?: string;
+}
+
+const MyIcon = React.forwardRef<Svg, MyIconProps>(({ size, color, ...props }, ref) => {
+  const dimensions = size
+    ? { width: size, height: size }
+    : {
+        width: props.width || 24,
+        height: props.height || 24,
+      };
+
+  return (
+    <Svg
+      ref={ref}
+      viewBox="0 0 24 24"
+      width={dimensions.width}
+      height={dimensions.height}
+      fill={color || props.fill || 'currentColor'}
+      {...props}
+    >
+      {/* SVG content automatically converted to React Native SVG components */}
+      <Path d="..." />
+    </Svg>
+  );
+});
+
+MyIcon.displayName = 'MyIcon';
+export default MyIcon;
+```
+
+**Key Features:**
+
+- ✅ Automatic conversion of SVG elements to React Native SVG components
+- ✅ Proper prop conversion (strokeWidth, strokeLinecap, fillRule, etc.)
+- ✅ TypeScript support with SvgProps interface
+- ✅ Size and color prop support
+- ✅ ForwardRef implementation for advanced usage
+- ✅ Compatible with `react-native-svg` package
+
+**Installation Requirements:**
+
+```bash
+npm install react-native-svg
 ```
 
 ### **Vue 3**
@@ -398,7 +550,22 @@ export function createMyIcon(options: IconOptions = {}): SVGSVGElement {
 
 ## 🔧 **Comprehensive CLI Reference**
 
-### **1. Initialize Command**
+### **📋 CLI Commands Overview**
+
+| Command                 | Purpose                    | Quick Link                             |
+| ----------------------- | -------------------------- | -------------------------------------- |
+| `svger-cli init`        | Setup configuration        | [Init](#1-initialize-command)          |
+| `svger-cli build`       | Convert SVGs to components | [Build](#2-build-command)              |
+| `svger-cli watch`       | Monitor & auto-generate    | [Watch](#3-watch-command)              |
+| `svger-cli generate`    | Process specific files     | [Generate](#4-generate-command)        |
+| `svger-cli lock`        | Protect files              | [Lock/Unlock](#5-lockun lock-commands) |
+| `svger-cli config`      | Manage settings            | [Config](#6-config-command)            |
+| `svger-cli clean`       | Remove generated files     | [Clean](#7-clean-command)              |
+| `svger-cli performance` | Analyze performance        | [Performance](#8-performance-command)  |
+
+---
+
+### **1️⃣ Initialize Command**
 
 Set up SVGER-CLI configuration for your project.
 
@@ -534,7 +701,7 @@ svger-cli init --interactive
 }
 ```
 
-### **2. Build Command**
+### **2️⃣ Build Command**
 
 Convert SVG files to framework components with advanced processing.
 
@@ -620,7 +787,7 @@ svger-cli build \
   --optimization maximum
 ```
 
-### **3. Watch Command**
+### **3️⃣ Watch Command**
 
 Monitor directories for SVG changes and auto-generate components.
 
@@ -661,7 +828,7 @@ svger-cli watch \
   --performance
 ```
 
-### **4. Generate Command**
+### **4️⃣ Generate Command**
 
 Process specific SVG files with precise control.
 
@@ -707,7 +874,7 @@ svger-cli generate ./icons/logo.svg \
   --theme dark
 ```
 
-### **5. Lock/Unlock Commands**
+### **5️⃣ Lock/Unlock Commands**
 
 Manage file protection during batch operations.
 
@@ -732,7 +899,7 @@ svger-cli unlock ./icons/logo.svg
 svger-cli unlock --all
 ```
 
-### **6. Config Command**
+### **6️⃣ Config Command**
 
 Manage project configuration dynamically.
 
@@ -770,7 +937,7 @@ svger-cli config --reset
 svger-cli config --validate
 ```
 
-### **7. Clean Command**
+### **7️⃣ Clean Command**
 
 Remove generated components and clean workspace.
 
@@ -802,7 +969,7 @@ svger-cli clean --all
 svger-cli clean --all --dry-run
 ```
 
-### **8. Performance Command**
+### **8️⃣ Performance Command**
 
 Analyze and optimize processing performance.
 
@@ -841,7 +1008,19 @@ svger-cli performance --optimize
 
 ## 💻 **Usage Examples: From Simple to Complex**
 
-### **🔥 Example 1: Quick Start (Simplest)**
+### **Example Types & Complexity Levels**
+
+| Complexity      | Example                                                           | Purpose                | Best For              |
+| --------------- | ----------------------------------------------------------------- | ---------------------- | --------------------- |
+| 🟢 Beginner     | [Example 1](#-example-1-quick-start-simplest)                     | Basic SVG conversion   | Getting started       |
+| 🟡 Intermediate | [Example 2](#-example-2-production-setup-intermediate)            | Production-ready setup | Small to medium teams |
+| 🔴 Advanced     | [Example 3](#-example-3-enterprise-multi-framework-advanced)      | Multi-framework setup  | Enterprise projects   |
+| � Expert        | [Example 4](#-example-4-file-protection--team-workflows-advanced) | Team collaboration     | Large teams           |
+| ⚡ Performance  | [Example 5](#-example-5-performance-optimization-expert)          | Optimization           | Large-scale projects  |
+
+---
+
+### **🟢 Example 1: Quick Start (Simplest)**
 
 Get started in 30 seconds:
 
@@ -875,7 +1054,7 @@ function App() {
 
 ---
 
-### **🚀 Example 2: Production Setup (Intermediate)**
+### **� Example 2: Production Setup (Intermediate)**
 
 Professional setup with configuration and optimization:
 
@@ -991,7 +1170,7 @@ function Navigation() {
 
 ---
 
-### **🏗️ Example 3: Enterprise Multi-Framework (Advanced)**
+### **🔴 Example 3: Enterprise Multi-Framework (Advanced)**
 
 Complete enterprise setup supporting multiple frameworks:
 
@@ -1216,7 +1395,7 @@ export class ArrowLeftComponent {
 
 ---
 
-### **🔒 Example 4: File Protection & Team Workflows (Advanced)**
+### **� Example 4: File Protection & Team Workflows (Advanced)**
 
 Protect critical files and manage team workflows:
 
@@ -1464,7 +1643,19 @@ svger-cli build --animations hover,focus --src ./icons --out ./components
 
 ## 💻 **Programmatic API**
 
-### **Core API Usage**
+### **📡 API Modules Overview**
+
+| Module              | Purpose                  | Use Case                |
+| ------------------- | ------------------------ | ----------------------- |
+| `SVGER`             | Main entry point         | General operations      |
+| `svgProcessor`      | SVG file processing      | Custom processing       |
+| `performanceEngine` | Performance optimization | Batch operations        |
+| `styleCompiler`     | CSS generation           | Styling                 |
+| `pluginManager`     | Plugin system            | Extending functionality |
+
+---
+
+### **🔌 Core API Usage**
 
 ```typescript
 import { SVGER, svgProcessor, frameworkTemplateEngine } from 'svger-cli';
@@ -1490,7 +1681,7 @@ const result = await svgProcessor.processSVGFile('./icon.svg', './components/', 
 });
 ```
 
-### **Performance Engine API**
+### **⚡ Performance Engine API**
 
 ```typescript
 import { performanceEngine } from 'svger-cli';
@@ -1511,7 +1702,7 @@ console.log(`Recommendations:`, metrics.recommendations);
 const optimized = performanceEngine.optimizeSVGContent(svgContent, 'maximum');
 ```
 
-### **Style Compiler API**
+### **🎨 Style Compiler API**
 
 ```typescript
 import { styleCompiler } from 'svger-cli';
@@ -1530,7 +1721,7 @@ const styles = styleCompiler.compileStyles({
 const css = styleCompiler.generateCSS(styles);
 ```
 
-### **Plugin System API**
+### **🔧 Plugin System API**
 
 ```typescript
 import { pluginManager } from 'svger-cli';
@@ -1559,6 +1750,23 @@ const processed = await pluginManager.processContent(svgContent, [
 ---
 
 ## 🔧 **Configuration Reference**
+
+### **📝 Configuration Sections Quick Links**
+
+| Section                                           | Options                         | Purpose            |
+| ------------------------------------------------- | ------------------------------- | ------------------ |
+| [Source & Output](#complete-configuration-schema) | `source`, `output`              | Paths              |
+| [Framework](#complete-configuration-schema)       | `framework`, `typescript`       | Framework choice   |
+| [Processing](#complete-configuration-schema)      | `parallel`, `batchSize`         | Performance        |
+| [Defaults](#complete-configuration-schema)        | `defaultWidth`, `defaultHeight` | Defaults           |
+| [Styling](#complete-configuration-schema)         | `styleRules`, `responsive`      | Styling            |
+| [Theme](#complete-configuration-schema)           | `theme`, `variables`            | Theme system       |
+| [Error Handling](#complete-configuration-schema)  | `strategy`, `maxRetries`        | Error handling     |
+| [Performance](#complete-configuration-schema)     | `optimization`, `memoryLimit`   | Performance tuning |
+| [Output](#complete-configuration-schema)          | `naming`, `extension`           | Output format      |
+| [Framework-Specific](#framework-specific-options) | `react`, `vue`, `angular`       | Framework options  |
+
+---
 
 ### **Complete Configuration Schema**
 
@@ -1869,7 +2077,7 @@ jobs:
           node-version: '18'
 
       - name: Install SVGER-CLI
-        run: npm install -g svger-cli@2.0.5
+        run: npm install -g svger-cli@2.0.6
 
       - name: Generate Components
         run: |
@@ -1900,7 +2108,7 @@ pipeline {
     stage('Generate SVG Components') {
       steps {
         sh '''
-          npm install -g svger-cli@2.0.5
+          npm install -g svger-cli@2.0.6
           svger-cli build \
             --src ./assets/svg \
             --out ./components \
@@ -1922,7 +2130,7 @@ pipeline {
 FROM node:18-alpine
 
 # Install SVGER-CLI globally
-RUN npm install -g svger-cli@2.0.5
+RUN npm install -g svger-cli@2.0.6
 
 # Set working directory
 WORKDIR /app
@@ -2057,7 +2265,7 @@ svger-cli build --performance --memory
 ```bash
 # Install SVGER-CLI
 npm uninstall @svgr/webpack @svgr/cli
-npm install -g svger-cli@2.0.5
+npm install -g svger-cli@2.0.6
 
 # Migrate configuration
 svger-cli init --framework react --typescript
@@ -2070,7 +2278,7 @@ svger-cli build --src ./assets --out ./components
 
 ```bash
 # Upgrade to v2.0
-npm install -g svger-cli@2.0.5
+npm install -g svger-cli@2.0.6
 
 # Migrate configuration
 svger-cli config --migrate
