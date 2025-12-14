@@ -1,5 +1,5 @@
 {
-  "name": "svger-cli",
+  "name": "@navidrezadoost/svger-cli",
   "version": "3.0.0",
   "description": "Enterprise-grade, zero-dependency SVG to component converter with official Webpack, Vite, Rollup, Babel, Next.js & Jest integrations. Supporting React, React Native, Vue, Angular, Svelte, Solid, Lit, Preact & Vanilla. Features auto-generated TypeScript exports, HMR, responsive design, themes & 85% faster processing than SVGR.",
   "main": "dist/index.js",
@@ -183,12 +183,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/faezemohades/svger-cli.git",
+    "url": "git+https://github.com/navidrezadoost/svger-cli.git",
     "directory": "."
   },
-  "homepage": "https://github.com/faezemohades/svger-cli#readme",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "homepage": "https://github.com/navidrezadoost/svger-cli#readme",
   "bugs": {
-    "url": "https://github.com/faezemohades/svger-cli/issues",
+    "url": "https://github.com/navidrezadoost/svger-cli/issues",
     "email": "faezemohades@gmail.com"
   },
   "funding": [
